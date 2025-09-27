@@ -1,11 +1,14 @@
 require('dotenv').config();
 const express = require("express");
+const cors=require("cors");
 const app = express();
-const port = 3000;
+app.use(cors());
+app.use(express.json());
+const PORT = 3000;
 let quotes = [
-  "Push yourself, no one else is going to do it for you.",
-  "Great things never come from comfort zones.",
-  "Dream it. Wish it. Do it."
+  { text: "Push yourself, no one else is going to do it for you." },
+  { text: "Great things never come from comfort zones." },
+  { text: "Dream it. Wish it. Do it." }
 ];
 
 app.get("/", (req, res) => {
@@ -19,6 +22,5 @@ app.get("/quotes/random",(req,res) => {
  const randidx=Math.floor(Math.random()*quotes.length);
  res.json(quotes[randidx]);
 });
-app.listen(process.env.PORT, () => {
-  console.log(`Server running at http://localhost:${process.env.PORT}`);
-});
+app.listen(PORT, '0.0.0.0', () => console.log(`Backend running on port ${PORT}`));
+

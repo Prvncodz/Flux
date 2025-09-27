@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Frontend and backend connection</title>
+</head>
+<body>
+  <h1>Quotes</h1>
+  <ul id="quote"></ul>
+  <script>
+    fetch("http://127.0.0.1:3000/quotes")
+    .then(res =>res.json())
+    .then(data =>{
+        const list=document.getElementById("quote");
+    	
+    	data.forEach(q=>{
+               let li=document.createElement('li');
+    		li.textContent=q.text;
+    		list.appendChild(li);
+    	});
+      })
+ .catch(err => 
+console.error("Error fetching quotes:", err));
+  </script>
+</body>
+</html>
