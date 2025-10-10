@@ -1,6 +1,6 @@
-const asyncHandler= (fnc)=> async(res,req,next)=>{
+const asyncHandler= (fnc)=> async(req,res,next)=>{
    try{
-     await fnc(res,req,next);
+  return await fnc(res,req,next);
    }
    catch(err){
     res.status(err.code||500).json({
@@ -9,4 +9,4 @@ const asyncHandler= (fnc)=> async(res,req,next)=>{
    })
    }
 }
-export {asyncHandler};
+export {asyncHandler}
