@@ -4,7 +4,7 @@ import {User} from "../models/user.model.js"
 import {router} from "../routes/user.routes.js"
 import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud} from "../utils/cloudinary.js"
-
+import {ApiResponse}  from "../utils/ApiResponse.js"
 const  registerUser=asyncHandler(async (req,res)=>{
         // we will get the user info
         // validate the info
@@ -17,8 +17,7 @@ const  registerUser=asyncHandler(async (req,res)=>{
 
  const {fullName,userName,password,email}=req.body
 
-
-if([fullName,userName,email].some((feild) =>feild?.trim()==="")){
+if([fullName,userName,password,email].some((feild) =>feild?.trim()==="")){
   throw new ApiError(400,"All feilds are required");
 }
   //we should await before interacting with the db
@@ -40,7 +39,7 @@ if(!avatarLocalPath){
  throw new ApiError(403,"avatar is required to register");
 }
 
- const user=User.create({
+ const user=await User.create({
     userName:userName.toLowerCase(),
     fullName,
     email,
@@ -48,11 +47,11 @@ if(!avatarLocalPath){
     coverImage:coverImage?coverImage:" ",
     password
 })
-   const createdUser=User.findById(user._id).select(" -password -refreshTokens")
+   const createdUser=await User.findById(user._id).select(" -password -refreshTokens")
    if(!createdUser){
    throw new ApiError(500,"Unable to register user")
    }
-    return res.status(200).json(ApiResponse(203,createdUser,"User registered successfully"))
+    return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
 export {registerUser}
