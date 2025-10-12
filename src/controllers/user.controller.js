@@ -5,6 +5,7 @@ import {router} from "../routes/user.routes.js"
 import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
+
 const  registerUser=asyncHandler(async (req,res)=>{
         // we will get the user info
         // validate the info
