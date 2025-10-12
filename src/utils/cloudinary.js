@@ -6,23 +6,28 @@ cloudinary.config({
  api_key:process.env.CLOUDINARY_API_KEY,
  api_secret:process.env.CLOUDINARY_API_SECRET,
 });
-console.log("env check KEY AND SECRET of cloud:",process.env.CLOUDINARY_API_KEY,"SEC:",process.env.CLOUDINARY_API_SECRET)
 //method to upload on cloudinary
 
 const uploadOnCloud=async (filePath)=>{
   try{
-  if(!filePath)return null;
+  if(!filePath){
+   return null;
+}
+  if(!fs.existsSync(filePath)){
+	console.log("file doesn't exist");
+}
+  console.log("attempting to upload a file...");
   const response= await cloudinary.uploader.upload(filePath,{
                   resource_type:"auto"
 })
 
   console.log("File uploaded to cloudinary")
  fs.unlinkSync(filePath)
- return response.secure_url;
+  return response.secure_url;
 	}
    catch(error){
    fs.unlinkSync(filePath)
-     console.log("the catch in cloudinary is triggered") 
+     console.log("cloudinary upload fail error :",error.message) 
 return null;
   	}
 }
