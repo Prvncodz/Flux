@@ -6,6 +6,23 @@ import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
 
+// generate refresh and access tokens for the user
+const generateAccessAndRefreshTokens=async(userId){
+    try{
+	const user=await User.findById(userId)
+	const accessTokens=user.generateAccessTokens()
+	const refreshTokens=user.generateRefreshTokens()
+
+	user.refreshToken=refreshTokens
+       await  user.save({validateBeforeSave:false})
+	return {accessTokens,refreshTokens};
+
+}catch(error){
+       throw new ApiError(500,"unable to generate access and refresh tokens")
+	}
+}
+
+//register
 const  registerUser=asyncHandler(async (req,res)=>{
         // we will get the user info
         // validate the info
@@ -29,7 +46,7 @@ throw new ApiError(402,"user already exists");
 
   const avatarLocalPath=req.files?.avatar?.[0]?.path;
  const coverImageLocalPath=req.files?.coverImage?.[0]?.path;
- 
+
 if(!avatarLocalPath){
    throw new ApiError(403,"avatar file path is required to register");
 }   // we should use await while the file get uploaded to the cloud from the local path
@@ -55,4 +72,35 @@ if(!avatarLocalPath){
     return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
-export {registerUser}
+//login
+const  loginUser=asyncHandler(async (req,res)=>{
+          //get the info
+         // validate the input
+         // check for user in db
+        // check password
+        //get res from db
+       // generate acces and refresh tokens
+       //  send cookie
+     const {userName,password}=req.body;
+    if(!userName || !password){
+	throw new ApiError(407,"username and password are required to login");
+	}
+    const user=await User.findOne({userName});
+
+    if(!user){
+ 	throw new ApiError(404,"user is not registered yet");
+	}
+
+    const isPassValid=await user.isPasswordCorrect(password)
+    if(!isPassValid){
+        throw new ApiError(401,"invalid password credentials");
+
+        }
+    const {accessTokens,refreshTokens}=	await generateAccessAndRefreshTokens(user._id)
+
+    return res.status(200).json( new ApiResponse(200,user,"user logged in successfully");
+
+})
+
+
+export {registerUser,loginUser}
