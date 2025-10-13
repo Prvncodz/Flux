@@ -16,7 +16,7 @@ const  registerUser=asyncHandler(async (req,res)=>{
         // while removing the pass and refreshTokens because we dont want to send them in the response.
         // return res
 
- const {fullName,userName,password,email}=req.body
+f const {fullName,userName,password,email}=req.body
     console.log("pass :",password);
 if([fullName,userName,password,email].some((feild) =>feild?.trim()==="")){
   throw new ApiError(400,"All feilds are required");
