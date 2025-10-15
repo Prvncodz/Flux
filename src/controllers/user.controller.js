@@ -69,7 +69,8 @@ if(!avatarLocalPath){
    if(!createdUser){
    throw new ApiError(500,"Unable to register user")
    }
-    return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
+
+  return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
 //login
@@ -97,8 +98,14 @@ const  loginUser=asyncHandler(async (req,res)=>{
 
         }
     const {accessTokens,refreshTokens}=	await generateAccessAndRefreshTokens(user._id)
-
-    return res.status(200).json( new ApiResponse(200,user,"user logged in successfully");
+     const loggedUser=await user.findOne(user._id).select("-password -refreshTokens")
+     
+  const options={
+    httpOnly:true,
+    secure:true
+  }
+  
+    return res.status(200).cookie("accessTokens",accessTokens,options).cookie("refreshTokens",refreshTokensTokens,options).json( new ApiResponse(200,{user:loggedUser,accessTokens,refreshTokens},"user logged in successfully");
 
 })
 
