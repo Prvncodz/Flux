@@ -1,21 +1,22 @@
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
-import {router} from "../routes/user.routes.js"
+import router from "../routes/user.routes.js"
 import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
 
 // generate refresh and access tokens for the user
-const generateAccessAndRefreshTokens=async(userId){
+const generateAccessAndRefreshTokens=async(userId)=>{
+   console.log("generateAccessAndRefreshTokens is called ")
     try{
 	const user=await User.findById(userId)
-	const accessTokens=user.generateAccessTokens()
-	const refreshTokens=user.generateRefreshTokens()
-
-	user.refreshToken=refreshTokens
-       await  user.save({validateBeforeSave:false})
-	return {accessTokens,refreshTokens};
+	const accessTokens=await user.generateAccessTokens()
+	const refreshTokens=await user.generateRefreshTokens()
+  
+	user.refreshTokens=refreshTokens
+   await  user.save({validateBeforeSave:false})
+    return {accessTokens,refreshTokens};
 
 }catch(error){
        throw new ApiError(500,"unable to generate access and refresh tokens")
@@ -83,7 +84,7 @@ const  loginUser=asyncHandler(async (req,res)=>{
        // generate acces and refresh tokens
        //  send cookie
      const {userName,password}=req.body;
-    if(!userName || !password){
+    if(!userName){
 	throw new ApiError(407,"username and password are required to login");
 	}
     const user=await User.findOne({userName});
@@ -97,31 +98,52 @@ const  loginUser=asyncHandler(async (req,res)=>{
         throw new ApiError(401,"invalid password credentials");
 
         }
-    const {accessTokens,refreshTokens}=	await generateAccessAndRefreshTokens(user._id)
-     const loggedUser=await user.findOne(user._id).select("-password -refreshTokens")
+
+  const { accessTokens, refreshTokens } = await generateAccessAndRefreshTokens(user._id);
+  
+
+     const loggedUser=await User.findById(user._id).select("-password -refreshTokens")
      
   const options={
     httpOnly:true,
-    secure:true
+    secure:false
   }
   
-    return res.status(200).cookie("accessTokens",accessTokens,options).cookie("refreshTokens",refreshTokensTokens,options).json( new ApiResponse(200,{user:loggedUser,accessTokens,refreshTokens},"user logged in successfully");
+    return res
+    .status(200)
+    .cookie("accessTokens",accessTokens,options)
+    .cookie("refreshTokens",refreshTokens,options)
+    .json( new ApiResponse(
+      200,
+      {
+        user:loggedUser,accessTokens,refreshTokens
+      },
+      "user logged in successfully"));
 
 })
+//logoutUser
 
 const logoutUser=asyncHandler(async (req,res)=>{
    await User.findByIdAndUpdate(
     req.user._id,
+  {
     $set:{
       accessTokens:undefined
-    },
+    }
+  },
     {
       new:true
     }
   )
-   const options={                                 httpOnly:true,                                 secure:true                                    }
+   const options={                                 httpOnly:true,                                 secure:false                                }
   
-  return res.status(200).clearCookie("accessTokens",options).clearCookie("refreshTokens",options).json( new ApiResponse(200,{},"user loggedout successfully");)
+  return res
+    .status(200)
+    .clearCookie("accessTokens",options)
+    .clearCookie("refreshTokens",options)
+    .json( 
+      new ApiResponse(200,{},"user loggedout successfully")
+    )
 })
 
 
