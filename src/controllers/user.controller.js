@@ -226,4 +226,30 @@ const updateAccountInfo=asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,user,"information updated successfully"));
 })
 
-export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo}
+// update user avatar
+const updateUserAvatar=asyncHandler(async(req,res)=>{
+       const avatarLocalPath=req.file?.path
+       if (!avatarLocalPath) {
+         throw new ApiError(400,"uploaded file path unaccessable")
+       }
+       const avatar=uploadOnCloud(avatarLocalPath)
+    if (!avatar.url) {
+      throw new ApiError(401,"clodinary upload failed")
+    }
+  const updateAvatar=  await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      set:{
+        avatar:avatar.url
+      }
+    },
+    {new:true}
+  ).select("-password")
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,updateAvatar,"avatar uploaded "));
+
+})
+
+export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo,updateUserAvatar}
