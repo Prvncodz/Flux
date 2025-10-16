@@ -59,7 +59,7 @@ userSchema.methods.generateAccessTokens=async function(){
   return await jwt.sign(
       { _id:this._id,
        email:this.email,
-       userName:this.username,
+       userName:this.userName,
       fullName:this.fullName
      },
      process.env.ACCESS_TOKEN_SECRET,
@@ -73,7 +73,7 @@ userSchema.methods.generateRefreshTokens=async function(){
        return await jwt.sign(
       { _id:this._id,
        email:this.email,
-       userName:this.username,
+       userName:this.userName,
       fullName:this.fullName
      },
      process.env.REFRESH_TOKEN_SECRET,
