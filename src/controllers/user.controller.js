@@ -5,6 +5,8 @@ import router from "../routes/user.routes.js"
 import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
+import jwt from "jsonwebtoken"
+
 
 // generate refresh and access tokens for the user
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -106,7 +108,7 @@ const  loginUser=asyncHandler(async (req,res)=>{
      
   const options={
     httpOnly:true,
-    secure:false
+    secure:true
   }
   
     return res
@@ -135,7 +137,7 @@ const logoutUser=asyncHandler(async (req,res)=>{
       new:true
     }
   )
-   const options={                                 httpOnly:true,                                 secure:false                                }
+   const options={                                 httpOnly:true,                                 secure:true                                }
   
   return res
     .status(200)
@@ -146,5 +148,35 @@ const logoutUser=asyncHandler(async (req,res)=>{
     )
 })
 
+//update access tokens
+const refreshAccessTokens=asyncHandler(async(req,res)=>{
+  const  incomingRefreshTokens=req.cookies.refreshTokens || req.body.refreshTokens
+
+  if (!incomingRefreshTokens) {
+    throw new ApiError(401,"unauthorized refreshToken ")
+  }
+
+  const decodedToken=await jwt.verify(incomingRefreshTokens,process.env.REFRESH_TOKEN_SECRET)
+  const user=await User.findById(decodedToken?._id)
+ if (!user) {
+  throw new ApiError(404,"user not found")
+ }
+  if (user.refreshTokens!==decodedToken) {
+    throw new ApiError(404,"refresh tokens expired")
+  }
+  const {accessTokens,refreshTokens}= await generateAccessAndRefreshTokens(user._id)
+
+  const options={                                       httpOnly:true,                              secure:true                                      }
+  return res
+  .status(200)
+  .cookie("accessTokens",accessTokens,options)
+  .cookie("refreshTokens",refreshTokens,options)
+  .json(new ApiResponse(
+      200,
+      {user:user,accessTokens,refreshTokens},
+      "generated new access tokens successfully"
+    ))
+
+})
 
 export {registerUser,loginUser,logoutUser}
