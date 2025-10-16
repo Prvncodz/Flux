@@ -230,11 +230,11 @@ const updateAccountInfo=asyncHandler(async(req,res)=>{
 const updateUserAvatar=asyncHandler(async(req,res)=>{
        const avatarLocalPath=req.file?.path
        if (!avatarLocalPath) {
-         throw new ApiError(400,"uploaded file path unaccessable")
+         throw new ApiError(400,"uploaded avatar file path unaccessable")
        }
        const avatar=uploadOnCloud(avatarLocalPath)
     if (!avatar.url) {
-      throw new ApiError(401,"clodinary upload failed")
+      throw new ApiError(401,"clodinary upload of avatar failed")
     }
   const updateAvatar=  await User.findByIdAndUpdate(
     req.user?._id,
@@ -248,8 +248,35 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
 
   return res
   .status(200)
-  .json(new ApiResponse(200,updateAvatar,"avatar uploaded "));
+  .json(new ApiResponse(200,updateAvatar,"avatar uploaded successfully"));
 
 })
 
-export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo,updateUserAvatar}
+//updare cover image
+const updateUserCoverImage=asyncHandler(async(req,res)=>{
+         const coverImageLocalPath=req.file?.path
+         if (!coverImageLocalPath) {
+             throw new ApiError(400,"uploaded cover image file path unaccessable")
+           }
+         const coverImage=uploadOnCloud(coverImageLocalPath)
+      if (!coverImage.url) {
+          throw new ApiError(401,"clodinary upload of cover image failed ")
+        }
+    const user=  await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            set:{
+                coverImage:coverImage.url
+              }
+          },
+        {new:true}
+      ).select("-password")
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200,user,"cover image uploaded successfully "));
+
+})
+
+
+export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo,updateUserAvatar,updateUserCoverImage}
