@@ -3,7 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import router from "../routes/user.routes.js"
 import {upload} from "../middlewares/multer.js"
-import {uploadOnCloud} from "../utils/cloudinary.js"
+import {uploadOnCloud,deleteFromCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 
@@ -59,13 +59,13 @@ if(!avatarLocalPath){
    if(!avatar){
  throw new ApiError(403,"avatar is required to register");
 }
-
+  
  const user=await User.create({
     userName:userName.toLowerCase(),
     fullName,
     email,
     avatar:avatar,
-    coverImage:coverImage?coverImage:" ",
+    coverImage:coverImage?coverImage||{},
     password
 })
    const createdUser=await User.findById(user._id).select(" -password -refreshTokens")
@@ -233,19 +233,31 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
          throw new ApiError(400,"uploaded avatar file path unaccessable")
        }
        const avatar=uploadOnCloud(avatarLocalPath)
-    if (!avatar.url) {
+    console.log(avatar);
+  if (!avatar) {
       throw new ApiError(401,"clodinary upload of avatar failed")
     }
+    const user=req.user   
+   const fileToBeDeleted=user.avatar.public_id
+  if (!fileToBeDeleted) {
+    throw new ApiError(500,"unable to find old avatae file") 
+  }
+
   const updateAvatar=  await User.findByIdAndUpdate(
-    req.user?._id,
+    user?._id,
     {
       set:{
-        avatar:avatar.url
+        avatar:avatar
       }
     },
     {new:true}
   ).select("-password")
-
+  
+ const fileDeleted=await deleteFromCloud(fileToBeDeleted)
+  if (!fileDeleted) {
+    throw new ApiError(500,"unable to delete old avatar file");
+  }
+  console.log("avatar file deleted");
   return res
   .status(200)
   .json(new ApiResponse(200,updateAvatar,"avatar uploaded successfully"));
@@ -262,19 +274,26 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
       if (!coverImage.url) {
           throw new ApiError(401,"clodinary upload of cover image failed ")
         }
-    const user=  await User.findByIdAndUpdate(
-        req.user?._id,
+   const user=req.user
+  const public_id=user.coverImage.public_id
+  const fileToBeDeleted=public_id;         
+  if (!fileToBeDeleted) {                      throw new ApiError(500,"unable to find cover image file")                     }
+    const updateCoverImage=  await User.findByIdAndUpdate(
+        user?._id,
         {
             set:{
-                coverImage:coverImage.url
+                coverImage:coverImage
               }
           },
         {new:true}
       ).select("-password")
 
+    const fileDeleted=await deleteFromCloud(fileToBeDeleted)
+   if (!fileDeleted) {                        throw new ApiError(500,"unable to delete       old cover image file");                         }                                          console.log("cover image file deleted");
+
     return res
     .status(200)
-    .json(new ApiResponse(200,user,"cover image uploaded successfully "));
+    .json(new ApiResponse(200,updateCoverImage,"cover image updated successfully "));
 
 })
 
