@@ -1,18 +1,18 @@
-import mongoose from "mongoose";
+import mongoose,{Schema} from "mongoose";
 
-const likeSchema= new mongoose.Schema({
+const likeSchema= new Schema({
   comment:{
-    type:mongoose.Types.ObjectId,
+    type:Schema.Types.ObjectId,
     ref:"Comment"
   },
   video:{
-    type:mongoose.Types.ObjectId,                  ref:"Video"
+    type:Schema.Types.ObjectId,                  ref:"Video"
   },
   tweet:{
-    type:mongoose.Types.ObjectId,                   ref:"Tweet"
+    type:Schema.Types.ObjectId,                   ref:"Tweet"
   },⅝
   likedBy:{
-    type:mongoose.Types.ObjectId,                   ref:"User"
+    type:Schema.Types.ObjectId,                   ref:"User"
   },
 },{timestamps:true})
 

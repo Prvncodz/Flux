@@ -1,17 +1,17 @@
-import mongoose from "mongoose";
+import mongoose,{Schema} from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"
 
-const commentSchema=new mongoose.Schema({
+const commentSchema=new Schema({
    content:{
     type:String,
     required:true
   },
   video:{
-     type:mongoose.Types.ObjectId,
+     type:Schema.Types.ObjectId,
      ref:"Video"
   },
   owner:{
-     type:mongoose.Types.ObjectId,
+     type:Schema.Types.ObjectId,
      ref:"User"
   }
 
