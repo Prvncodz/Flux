@@ -10,11 +10,11 @@ import jwt from "jsonwebtoken"
 
 // generate refresh and access tokens for the user
 const generateAccessAndRefreshTokens=async(userId)=>{
-   console.log("generateAccessAndRefreshTokens is called ")
     try{
 	const user=await User.findById(userId)
 	const accessTokens=await user.generateAccessTokens()
 	const refreshTokens=await user.generateRefreshTokens()
+  
   
 	user.refreshTokens=refreshTokens
    await  user.save({validateBeforeSave:false})
@@ -65,7 +65,7 @@ if(!avatarLocalPath){
     fullName,
     email,
     avatar:avatar,
-    coverImage:coverImage?coverImage||{},
+    coverImage:coverImage?coverImage:{},
     password
 })
    const createdUser=await User.findById(user._id).select(" -password -refreshTokens")
@@ -155,13 +155,15 @@ const refreshAccessTokens=asyncHandler(async(req,res)=>{
   if (!incomingRefreshTokens) {
     throw new ApiError(401,"unauthorized refreshToken ")
   }
-
+  console.log("incomingRefreshTokens :",incomingRefreshTokens)
   const decodedToken=await jwt.verify(incomingRefreshTokens,process.env.REFRESH_TOKEN_SECRET)
   const user=await User.findById(decodedToken?._id)
+  console.log("decodedToken :",decodedToken)
  if (!user) {
   throw new ApiError(404,"user not found")
  }
-  if (user.refreshTokens!==decodedToken) {
+  console.log("user :",user)
+  if (!user.refreshTokens.includes(incomingRefreshTokens)) {
     throw new ApiError(404,"refresh tokens expired")
   }
   const {accessTokens,refreshTokens}= await generateAccessAndRefreshTokens(user._id)
@@ -183,7 +185,7 @@ const refreshAccessTokens=asyncHandler(async(req,res)=>{
 
 const changePassword=asyncHandler(async(req,res)=>{
   const {oldPassword,newPassword}=req.body
-  const user=await User.findById(req.user?_id)
+  const user=await User.findById(req.user?._id)
   const isPasswordCorrect= await user.isPasswordCorrect(oldPassword)
   if(!isPasswordCorrect){
     throw new ApiError(400,"wrong password")
@@ -205,7 +207,7 @@ const currentUser=asyncHandler(async (req,res) => {
 
 //update account information
 const updateAccountInfo=asyncHandler(async(req,res)=>{
-   {fullName,email}=req.body
+  const {fullName,email}=req.body
    if (!(fullName||email)) {
     throw new ApiError(400,"fullname and email are required to update the account information ")
   }
@@ -301,7 +303,7 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
   if(!username?.trim()){
     throw new ApiError(400,"username is missing")
   }
-  const channel =await User.aggregiate([
+  const channel =await User.aggregate([
     {
       $match:{
         userName:username?.toLowerCase()
@@ -309,16 +311,16 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
     },
     {
       $lookup:{
-        from:"subscriptions"
+        from:"subscriptions",
         localField:"_id",
-        foriegnField:"channel",
+        foreignField:"channel",
         as:"subscribers"
       }
     },
     {
-      $lookup:{                                    from:"subscriptions"     
-       localField:"_id",        
-        foriegnField:"subscriber",                      as:"subscribed"
+      $lookup:{                                     from:"subscriptions", 
+        localField:"_id",        
+        foreignField:"subscriber",                  as:"subscribed"
       }
     },
     {
@@ -331,7 +333,7 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
       },
         isSubscribed:{
          $cond:{
-            if:{$in[req.user?_id,"$subscribed.subscriber"]},
+            if:{$in:[req.user?._id,"$subscribed.subscriber"]},
             then:true,
             else:false
           }
@@ -355,30 +357,30 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
  }
   return res
   .status(200)
-  .json(new ApiResponse(200,channel.[0],"user profile fetched successfully"))
+  .json(new ApiResponse(200,channel[0],"user profile fetched successfully"))
 })
 
 //user watch history 
 const getWatchHistory=asyncHandler(async(req,res)=>{
-  const user=await User.aggregiate([
+  const user=await User.aggregate([
       {
-      $match:{
+        $match:{
         _id:new mongoose.Types.ObjectId(req.user._id)
-      } 
-    },
-    {
-      $lookup:{
-        from:"videos",
-        localField:"watchHistory",
-        foreignField:"_id",
-        as:"watchHistory",
-        pipeline:[
-         {
-         $lookup:{
-              from:"users",
+        } 
+      },
+      {
+       $lookup:{
+         from:"videos",
+         localField:"watchHistory",
+         foreignField:"_id",
+         as:"watchHistory",
+         pipeline:[
+          {
+          $lookup:{
+               from:"users",
               localField:"owner",
               foreignField:"_id",
-              as:"owner"
+              as:"owner",
               pipeline:[
                 {
                   $project:{
@@ -391,7 +393,7 @@ const getWatchHistory=asyncHandler(async(req,res)=>{
            }
           },
             {
-             $addFieds:{
+             $addFields:{
               owner:{
               $first:"$owner"
               }
