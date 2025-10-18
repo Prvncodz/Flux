@@ -22,7 +22,7 @@ router.patch("/update-user-info",verifyJwt,updateAccountInfo)
 router.patch("/update-user-avatar",verifyJwt,upload.single("avatar"), updateUserAvatar)
 router.patch("/update-user-coverimage",verifyJwt,upload.single("coverImage"),updateUserCoverImage)
 
-router.get("/user-profile",verifyJwt,showUserProfile)
+router.get("/c/:username",verifyJwt,showUserProfile)
 router.get("/user-watch-history",verifyJwt,getWatchHistory)
 
 export default router ;
