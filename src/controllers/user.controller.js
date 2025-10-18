@@ -37,7 +37,7 @@ const  registerUser=asyncHandler(async (req,res)=>{
         // return res
 
  const {fullName,userName,password,email}=req.body
-    console.log("pass :",password);
+    
 if([fullName,userName,password,email].some((feild) =>feild?.trim()==="")){
   throw new ApiError(400,"All feilds are required");
 }
@@ -155,14 +155,14 @@ const refreshAccessTokens=asyncHandler(async(req,res)=>{
   if (!incomingRefreshTokens) {
     throw new ApiError(401,"unauthorized refreshToken ")
   }
-  console.log("incomingRefreshTokens :",incomingRefreshTokens)
+  
   const decodedToken=await jwt.verify(incomingRefreshTokens,process.env.REFRESH_TOKEN_SECRET)
   const user=await User.findById(decodedToken?._id)
-  console.log("decodedToken :",decodedToken)
+
  if (!user) {
   throw new ApiError(404,"user not found")
  }
-  console.log("user :",user)
+  
   if (!user.refreshTokens.includes(incomingRefreshTokens)) {
     throw new ApiError(404,"refresh tokens expired")
   }
@@ -185,6 +185,9 @@ const refreshAccessTokens=asyncHandler(async(req,res)=>{
 
 const changePassword=asyncHandler(async(req,res)=>{
   const {oldPassword,newPassword}=req.body
+  if(!(oldPassword||newPassword)){
+    throw new ApiError(400,"oldPassword and newPassword is required to make changes")
+  }
   const user=await User.findById(req.user?._id)
   const isPasswordCorrect= await user.isPasswordCorrect(oldPassword)
   if(!isPasswordCorrect){
@@ -235,14 +238,15 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
          throw new ApiError(400,"uploaded avatar file path unaccessable")
        }
        const avatar=uploadOnCloud(avatarLocalPath)
-    console.log(avatar);
+    
   if (!avatar) {
       throw new ApiError(401,"clodinary upload of avatar failed")
     }
     const user=req.user   
    const fileToBeDeleted=user.avatar.public_id
+ 
   if (!fileToBeDeleted) {
-    throw new ApiError(500,"unable to find old avatae file") 
+    throw new ApiError(500,"unable to find old avatar file") 
   }
 
   const updateAvatar=  await User.findByIdAndUpdate(
@@ -259,7 +263,6 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
   if (!fileDeleted) {
     throw new ApiError(500,"unable to delete old avatar file");
   }
-  console.log("avatar file deleted");
   return res
   .status(200)
   .json(new ApiResponse(200,updateAvatar,"avatar uploaded successfully"));
@@ -272,7 +275,8 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
          if (!coverImageLocalPath) {
              throw new ApiError(400,"uploaded cover image file path unaccessable")
            }
-         const coverImage=uploadOnCloud(coverImageLocalPath)
+         const coverImage=await uploadOnCloud(coverImageLocalPath)
+    
       if (!coverImage.url) {
           throw new ApiError(401,"clodinary upload of cover image failed ")
         }
@@ -291,13 +295,14 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
       ).select("-password")
 
     const fileDeleted=await deleteFromCloud(fileToBeDeleted)
-   if (!fileDeleted) {                        throw new ApiError(500,"unable to delete       old cover image file");                         }                                          console.log("cover image file deleted");
+   if (!fileDeleted) {                        throw new ApiError(500,"unable to delete       old cover image file");                         }              
 
     return res
     .status(200)
     .json(new ApiResponse(200,updateCoverImage,"cover image updated successfully "));
 
 })
+// show profile
    const showUserProfile=asyncHandler(async(req,res)=>{
   const {username}=req.params
   if(!username?.trim()){
