@@ -22,11 +22,20 @@ const userSchema=new Schema({
     trim:true
 },
    avatar:{
-   type:String,// cloudinary url
+   // cloudinary url
+   url:{
+      type:String,
+      required:true
+    },
+  
+   public_id:{
+   type:String,
    required:true
+  }
 },
   coverImage:{
-  type:String
+  url:String,
+  public_id:String
 },
   password:{
   type:String,
