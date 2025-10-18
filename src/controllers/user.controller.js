@@ -358,4 +358,54 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
   .json(new ApiResponse(200,channel.[0],"user profile fetched successfully"))
 })
 
-export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo,updateUserAvatar,updateUserCoverImage}
+//user watch history 
+const getWatchHistory=asyncHandler(async(req,res)=>{
+  const user=await User.aggregiate([
+      {
+      $match:{
+        _id:new mongoose.Types.ObjectId(req.user._id)
+      } 
+    },
+    {
+      $lookup:{
+        from:"videos",
+        localField:"watchHistory",
+        foreignField:"_id",
+        as:"watchHistory",
+        pipeline:[
+         {
+         $lookup:{
+              from:"users",
+              localField:"owner",
+              foreignField:"_id",
+              as:"owner"
+              pipeline:[
+                {
+                  $project:{
+                    fullName:1,
+                    userName:1,
+                    avatar:1
+                  }
+                }
+              ]          
+           }
+          },
+            {
+             $addFieds:{
+              owner:{
+              $first:"$owner"
+              }
+            }
+          }
+         
+        ]
+      }
+    }
+  ])
+  return res
+  .status(200)
+  .json(new ApiResponse(200,user[0].watchHistory,"user watchhistory fetched successfully"))
+})
+
+
+export {registerUser,loginUser,logoutUser,refreshAccessTokens,changePassword,currentUser,updateAccountInfo,updateUserAvatar,updateUserCoverImage,showUserProfile,getWatchHistory}
