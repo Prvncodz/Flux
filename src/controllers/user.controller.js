@@ -6,7 +6,7 @@ import {upload} from "../middlewares/multer.js"
 import {uploadOnCloud,deleteFromCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
-
+import mongoose from "mongoose"
 
 // generate refresh and access tokens for the user
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -329,12 +329,12 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
       }
     },
     {
-      $addFieds:{
+      $addFields:{
         subscriberCount:{
-          $size:"subscribers"
+          $size:"$subscribers"
         },
         channelsSubscribedCount:{
-        $size:"subscribed"
+        $size:"$subscribed"
       },
         isSubscribed:{
          $cond:{
@@ -356,7 +356,6 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
       }
     }
   ])
-  console.log(channel)
  if (!channel?.length) {
     throw new ApiError(404,"channel does not exist")
  }
