@@ -64,8 +64,13 @@ if(!avatarLocalPath){
     userName:userName.toLowerCase(),
     fullName,
     email,
-    avatar:avatar,
-    coverImage:coverImage?coverImage:{},
+    avatar:{
+      public_id:avatar?.public_id,
+      url:avatar?.secure_url
+    },
+    coverImage:coverImage?{
+      public_id:coverImage?.public_id,                url:coverImage?.secure_url
+    }:{},
     password
 })
    const createdUser=await User.findById(user._id).select(" -password -refreshTokens")
@@ -252,8 +257,11 @@ const updateUserAvatar=asyncHandler(async(req,res)=>{
   const updateAvatar=  await User.findByIdAndUpdate(
     user?._id,
     {
-      set:{
-        avatar:avatar
+      $set:{
+        avatar:{
+          public_id:avatar?.public_id,
+          url:avatar?.secure_url
+        }
       }
     },
     {new:true}
@@ -288,7 +296,9 @@ const updateUserCoverImage=asyncHandler(async(req,res)=>{
         user?._id,
         {
             set:{
-                coverImage:coverImage
+                coverImage:{
+               public_id:coverImage?.public_id,                 url:coverImage?.secure_url
+        }
               }
           },
         {new:true}

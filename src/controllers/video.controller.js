@@ -9,18 +9,7 @@ import {uploadOnCloud} from "../utils/cloudinary.js"
 
 // get all exixting users
 const getAllVideos = asyncHandler(async (req, res) => {
-       //get all the query with req.query set page=1 and limit=10 as default so the code will not break by loading all docs at once
-
-      //convert the string to number where needed
-      // validate values 
-      
-      //use queries and sort if there any 
-
-      // use those values to get the data
-      
-      //return the recieved data
-      
-      
+    
       const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
       
      
@@ -37,9 +26,11 @@ const getAllVideos = asyncHandler(async (req, res) => {
       //we will make a filter object which will help in filtering the videos with user search query if there is an query given
      const filter={}
       if(query){
-     filter.title={$regex:query,$options:"i"},
-     filter.owner=userId
+     filter.title={$regex:query,$options:"i"}
   }   
+     if(userId){
+    filter.owner=userId
+  }
     const sort={}
      if(sortBy){
      sort[sortBy]=sortType==="desc"?-1:1;
@@ -52,7 +43,9 @@ const getAllVideos = asyncHandler(async (req, res) => {
     
   
    
-  return res.json(
+  return res
+    .status(200)
+    .json(
     new ApiResponse(
       200,
       videos,
@@ -63,8 +56,74 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 // publish a video
 const publishAVideo = asyncHandler(async (req, res) => {
+  try{
       const { title, description} = req.body
-      // TODO: get video, upload to cloudinary, create video
+    
+  // get video file,thumbnail,owner,title,description, duration of the video from cloudinary,togglePublishStatus
+  
+  // validate things
+
+  //upload video and thumbnail to cloudinary
+
+  // creat a video with mongoose models
+  
+  //check if null 
+
+  //return video
+   
+   if(!title){
+    throw new ApiError(407,"title field is required to publish a video")
+  }
+   const videoFileToPath=req.files?.videofile?.[0]?.path;
+   const thumbnailFileToPath=req.files?.thumbnail?.[0]?.path;
+
+  if(!videoFileToPath){
+  throw new ApiError(400,"unable to fetch video file path")
+  }
+  if(!thumbnailFileToPath){
+  throw new ApiError(400,"unable to fetch thumbsnail file path")                                 }
+  
+  const videoResponse = await uploadOnCloud(videoFileToPath)
+  const thumbnailResponse = await uploadOnCloud(thumbnailFileToPath)
+
+  if(!videoResponse){
+    throw new ApiError(500,"video upload to cloudinary failed")
+  }
+  if(!thumbnailResponse){                              throw new ApiError(500,"thumbnail upload to cloudinary failed")
+  }
+  const user=await User.findById(req.user?._id)
+  if(!user){
+    throw ApiError(400,"cannot find user")
+  }
+  const publishedVideo= await Video.create({
+    videofile:{
+        public_id:videoResponse.public_id,
+        url:videoResponse.url
+      },
+    thumbnail:{
+        public_id:thumbnailResponse.public_id,         url:thumbnailResponse.url
+      },
+    owner:user._id,
+    description:description?description:"",
+    title:title,
+    duration:videoResponse?.duration,
+    isPublished:true
+    })
+  if(!publishedVideo){
+    throw new ApiError(500,"error while publishing video")
+  }
+  
+  return res
+  .status(200)
+  .json(
+      new ApiResponse(200,publishedVideo,"videopublished succesfully")
+    )
+
+  }catch(error){
+    console.log("Error :",error.message)
+   throw new ApiError(500,"unable to publish the video")
+    
+  }
 })
 
 //get video details by its id
