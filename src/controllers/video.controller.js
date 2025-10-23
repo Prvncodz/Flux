@@ -7,7 +7,7 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 import {uploadOnCloud,deleteFromCloud} from "../utils/cloudinary.js"
 
 
-// get all exixting users
+// get all exixting users videos
 const getAllVideos = asyncHandler(async (req, res) => {
     
       const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
@@ -129,6 +129,15 @@ const getVideoById = asyncHandler(async (req, res) => {
       if(!video){
      throw new ApiError(500,"unable to find the video")
   }
+  await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $inc:{
+        views:1
+      }
+    }
+  ).exec()
+
    return res
   .status(200)
   .json(
