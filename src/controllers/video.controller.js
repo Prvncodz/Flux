@@ -25,7 +25,8 @@ const getAllVideos = asyncHandler(async (req, res) => {
   }
       //we will make a filter object which will help in filtering the videos with user search query if there is an query given
      const filter={}
-      if(query){
+     filter.isPublished=true
+  if(query){
      filter.title={$regex:query,$options:"i"}
   }   
      if(userId){
