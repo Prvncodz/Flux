@@ -95,7 +95,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     description:description?description:"",
     title:title,
     duration:videoResponse?.duration,
-    isPublished:true
+    isPublished:false
     })
   if(!publishedVideo){
     throw new ApiError(500,"error while publishing video")
@@ -145,7 +145,7 @@ const updateVideo = asyncHandler(async (req, res) => {
   try{
         
        const { videoId } = req.params;
-       if(!videoId){
+       if(!isValidObjectId(videoId)){
        throw new ApiError(400,"videoid is not provided in videoId")
   }
 
@@ -204,12 +204,45 @@ const updateVideo = asyncHandler(async (req, res) => {
 //delete a Video
 const deleteVideo = asyncHandler(async (req, res) => {
      const { videoId } = req.params
-  //       //TODO: delete videos
+     if (!isValidObjectId(videoId)) {
+      throw new ApiError(400,"Invalid video-id")
+     }
+     const video=await Video.findById(videoId)
+     await deleteFromCloud(video.videofile.public_id)
+     await deleteFromCloud(video.thumbnail.public_id)
+     const deletedVideo=await Video.findByIdAndDelete(videoId)
+     if(!deletedVideo){
+     throw new ApiError(500,"Unable to delete the video")
+  }
+
+   return res
+  .status(200)
+  .json(
+      new ApiResponse(
+        200,
+        deletedVideo,
+        "video deleted succesfully"
+      )
+    );
+
   })
 
 //video is published or not
 const togglePublishStatus = asyncHandler(async (req, res) => {
    const { videoId } = req.params
+   if(!isValidObjectId(videoId)){
+    throw new ApiError(400,"video Id invalid or the video removed by its owner")
+  }
+   const video=await Video.findById(videoId)
+   if(!video){
+    throw new ApiError(500,"Unable to find the video")
+  }
+   video.isPublished=!video.isPublished
+   await video.save()
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,{},"toggled publish status succesfully"));
  })
   
      export {
