@@ -23,7 +23,8 @@ const uploadOnCloud=async (filePath)=>{
 
   console.log("File uploaded to cloudinary")
  fs.unlinkSync(filePath)
-  return response.secure_url;
+
+    return response;
 	}
    catch(error){
    fs.unlinkSync(filePath)
@@ -31,5 +32,20 @@ const uploadOnCloud=async (filePath)=>{
 return null;
   	}
 }
+//method to delete from cloudinary
 
-export {uploadOnCloud}
+const deleteFromCloud=async (public_id) => {
+  try {
+  if(!public_id){
+    return null
+  }
+  await cloudinary.uploader.destroy(public_id)
+  console.log("old file deleted successfully");
+  return true;
+}catch(error){
+  console.log("error :",error.message);
+   return null;
+  }
+}
+
+export {uploadOnCloud,deleteFromCloud}

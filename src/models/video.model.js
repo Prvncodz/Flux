@@ -1,16 +1,29 @@
-import mongoose from "mongoose"
+import mongoose,{Schema} from "mongoose"
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 
 const videoSchema=new Schema({
-   videoFile:{
-   type:String,
-   required:true
+   videofile:{
+    url:{
+      type:String,
+      required:true
+    },
+    public_id:{
+      type:String,
+      required:true
+  }
+
 },
   thumbnail:{
-   type:String,
-   required:true
+    url:{
+      type:String,
+      required:true
+    },
+    public_id:{
+      type:String,
+      required:true
+    }
 },
   owner:{
   type:Schema.Types.ObjectId,
@@ -34,7 +47,8 @@ views:{
 },
 isPublished:{
     type:Boolean,
-    required:true
+    required:true,
+    default:false
 }
 },{timestamps:true}
 )
