@@ -1,6 +1,7 @@
 import mongoose, {isValidObjectId,Types} from "mongoose"
 import {Video} from "../models/video.model.js"
 import {User} from "../models/user.model.js"
+import {View} from "../models/view.model.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
@@ -129,6 +130,20 @@ const getVideoById = asyncHandler(async (req, res) => {
       if(!video){
      throw new ApiError(500,"unable to find the video")
   }
+  const oneHourAgo=Date.now()-(60*60*1000)
+  const hasViewed= await View.exists({
+    videoId,
+    userId:req.user._id,
+    createdAt:{
+       $gt:oneHourAgo
+    }
+  })
+  
+  if(!hasViewed){
+  await View.create({
+      videoId,
+      userId:req.user._id,
+    })
   await Video.findByIdAndUpdate(
     videoId,
     {
@@ -137,7 +152,7 @@ const getVideoById = asyncHandler(async (req, res) => {
       }
     }
   ).exec()
-
+  }
    return res
   .status(200)
   .json(
