@@ -4,7 +4,7 @@ import {User} from "../models/user.model.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
-import {uploadOnCloud} from "../utils/cloudinary.js"
+import {uploadOnCloud,deleteFromCloud} from "../utils/cloudinary.js"
 
 
 // get all exixting users
@@ -152,9 +152,11 @@ const updateVideo = asyncHandler(async (req, res) => {
      const{title,description}=req.body   
   
      const NewThumbnailPath=req.file?.path
-    
+      
      const thumbnailResponse=await uploadOnCloud(NewThumbnailPath)
     
+     const video = await Video.findById(videoId)
+     const fileToBeDeleted=video?.thumbnail.public_id
      const videoChanges=await Video.findByIdAndUpdate(
           videoId,
           {
@@ -174,6 +176,15 @@ const updateVideo = asyncHandler(async (req, res) => {
           }
     )
    
+     if(thumbnailResponse){
+      if(!fileToBeDeleted){
+        throw new ApiError(500,"unable to find old thumbnail")
+      }
+      const deletedThumbnail=await deleteFromCloud(fileToBeDeleted)
+      if(!deletedThumbnail){
+        throw new ApiError(500,"unable to delete old thumbnail from cloud")
+      }
+    }
 
    return res
    .status(200)
