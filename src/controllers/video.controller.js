@@ -58,18 +58,6 @@ const getAllVideos = asyncHandler(async (req, res) => {
 const publishAVideo = asyncHandler(async (req, res) => {
   try{
       const { title, description} = req.body
-    
-  // get video file,thumbnail,owner,title,description, duration of the video from cloudinary,togglePublishStatus
-  
-  // validate things
-
-  //upload video and thumbnail to cloudinary
-
-  // creat a video with mongoose models
-  
-  //check if null 
-
-  //return video
    
    if(!title){
     throw new ApiError(407,"title field is required to publish a video")
@@ -153,7 +141,53 @@ const getVideoById = asyncHandler(async (req, res) => {
   
 //update changes existing video
 const updateVideo = asyncHandler(async (req, res) => {
-       const { videoId } = req.params                     //TODO: update video details like title, description, thumbnail
+   
+  try{
+        
+       const { videoId } = req.params;
+       if(!videoId){
+       throw new ApiError(400,"videoid is not provided in videoId")
+  }
+
+     const{title,description}=req.body   
+  
+     const NewThumbnailPath=req.file?.path
+    
+     const thumbnailResponse=await uploadOnCloud(NewThumbnailPath)
+    
+     const videoChanges=await Video.findByIdAndUpdate(
+          videoId,
+          {
+           $set:{
+            ...(thumbnailResponse && {
+            thumbnail:{
+             ...(thumbnailResponse?.secure_url && {url:thumbnailResponse.secure_url}),
+             ...(thumbnailResponse?.public_id && {public_id:thumbnailResponse.public_id})
+             }
+             }),
+              ...(title && {title:title}),
+              ...(description && {description:description})
+           }
+          },
+          {
+          new:true
+          }
+    )
+   
+
+   return res
+   .status(200)
+   .json(
+   new ApiResponse(
+   200,
+   videoChanges,
+   "Changes applied applied to the video succesfully"
+   )
+   );
+
+  }catch(error){
+    throw new ApiError(400,"only thumbnail,title or description can be updated")
+  }
 })
   
 //delete a Video
