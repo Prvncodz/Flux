@@ -11,9 +11,14 @@ const router = Router();
 
 router.use(verifyJwt); // Apply verifyJWT middleware to all routes in this file
 
-router.get("/c/:videoId/get-video-comments",getVideoComments)
+router.get("/:videoId/get-video-comments",getVideoComments)
 
-router.delete("/c/:commentId/delete-comment",deleteComment)
+router.post("/:videoId/add-comment",addComment)
+
+router.patch("/:commentId/update-comment",updateComment)
+
+router.delete("/:commentId/delete-comment",deleteComment)
+
 
 export default router
 
