@@ -3,12 +3,18 @@ import { ApiError } from "../utils/ApiError.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import { Like } from "../models/like.model.js"
+import {Video} from "../models/video.model.js"
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
       const {videoId} = req.params
       if(!isValidObjectId(videoId)){
      throw new ApiError(400,"object id invalid")
   }
+     const video=await Video.findById(videoId)
+     if(!video.isPublished){
+    throw new ApiError(400,"this video is unpublished unable to like the video")
+  }
+
      const existingLike=await Like.findOne({
       video:videoId,
       likedBy:req.user?._id
@@ -25,7 +31,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
           "video disliked successfully"
       ))
   }
-
+   
      const liked=  await Like.create(
       {
       video:videoId,
