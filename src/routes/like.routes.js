@@ -11,9 +11,9 @@ const router = Router();
 router.use(verifyJwt); // Apply verifyJWT middleware to all routes in this file
 
 router.post("/toggle/v/:videoId",toggleVideoLike)
-router.route("/toggle/c/:commentId",toggleCommentLike)
-router.route("/toggle/t/:tweetId",toggleTweetLike)
-router.route("/videos",getLikedVideos)
+router.post("/toggle/c/:commentId",toggleCommentLike)
+router.post("/toggle/t/:tweetId",toggleTweetLike)
+router.get("/videos",getLikedVideos)
 
 export default router
 
