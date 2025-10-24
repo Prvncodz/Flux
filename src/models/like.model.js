@@ -10,7 +10,7 @@ const likeSchema= new Schema({
   },
   tweet:{
     type:Schema.Types.ObjectId,                   ref:"Tweet"
-  },⅝
+  },
   likedBy:{
     type:Schema.Types.ObjectId,                   ref:"User"
   },
