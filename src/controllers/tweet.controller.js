@@ -29,10 +29,40 @@ const createTweet = asyncHandler(async (req, res) => {
 })
 
 const getUserTweets=asyncHandler(async(req,res)=>{
-     
+     const {userId}=req.params
+     const {page=1,limit=10} =req.query
+     const pageNum=parseInt(page)
+     const limitNum=parseInt(limit)
+     const skipNum=(pageNum-1)*limitNum
+
+     if(isNaN(pageNum)|| pageNum<1){
+    throw new ApiError(400,"page number invalid")
+  }
+   if(isNaN(limitNum)|| limitNum<1){
+      throw new ApiError(400,"limit is invalid")
+  }
+    const allTweetDocsOfUser=await Tweet
+    .find({owner:userId})
+    .skip(skipNum)
+    .limit(limitNum)
+    
+  const allTweetsOfUser=allTweetDocsOfUser.map(Tweet => Tweet.content)
+   if(!allTweetsOfUser){
+    throw new ApiError(500,"unable to fetch all tweets of user")
+  }
+  return res
+  .status(200)
+  .json(
+      new ApiResponse(
+        200,
+        allTweetsOfUser,
+        "All tweets of user fetched successfully"
+      )
+    )
 })
+
 const updateTweet=asyncHandler(async(req,res)=>{
-  
+     
   })
 const deleteTweet=asyncHandler(async(req,res)=>{
 
