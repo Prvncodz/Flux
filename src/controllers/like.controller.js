@@ -148,7 +148,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
   } 
             const skipNum=(pageNum-1)*limitNum
             
-       const allLikedDocsByUser=  await Like
+   const allLikedDocsByUser=  await Like
        .find({likedBy:req.user._id})
        .populate("video")
        .skip(skipNum)
@@ -158,6 +158,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
     throw new ApiError(500,"Unable to get all liked docs")
   }
     const allLikedVideos=allLikedDocsByUser.map(Like => Like.video)
+
    return res
   .status(200)
   .json(new ApiResponse(

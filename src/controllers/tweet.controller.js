@@ -62,10 +62,49 @@ const getUserTweets=asyncHandler(async(req,res)=>{
 })
 
 const updateTweet=asyncHandler(async(req,res)=>{
-     
+    const {tweetId}=req.params
+    const {content}=req.body
+   if(!content){
+    throw new ApiError(400,"Add content to update tweet")
+  }
+    if (!tweetId) {
+      throw new ApiError(400,"tweetId is expired or tweet is deleted by its user")
+    }
+    const updatedTweet=await Tweet.findByIdAndUpdate(
+    tweetId,
+    {
+      $set:{
+        content:content
+      }
+    },
+    {new:true}
+  )
+  return res
+  .status(200)
+  .json(new ApiResponse(
+      200,
+      updatedTweet,
+      "updated tweet successfully"
+    ))
+
   })
 const deleteTweet=asyncHandler(async(req,res)=>{
-
+          const {tweetId}=req.params
+        if(!tweetId){
+        throw new ApiError(400,"tweetId is expired or tweet is deleted by its user")
+  }
+      const deletedTweet=await Tweet.findByIdAndDelete(tweetId)
+      if (!deletedTweet) {
+        throw new ApiError(500,"unable to deleted this tweet")
+      }
+     
+  return res
+  .status(200)
+  .json(new ApiResponse(
+      200,
+      deletedTweet,
+      "tweet deleted successfully"
+    ))
 })
 
            export {
