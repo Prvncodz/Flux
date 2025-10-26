@@ -86,8 +86,34 @@ const getChannelStats = asyncHandler(async (req, res) => {
  })
   
   const getChannelVideos = asyncHandler(async (req, res) => {
-   // TODO: Get all the videos uploaded by the channel
+   // TODO: Get all the videos uploaded by the channel     
+  
+   const { page = 1, limit = 10 } = req.query  
 
+  const pageNum=parseInt(page)        
+    const limitNum=parseInt(limit)              
+    const skipNum=(pageNum-1)*limitNum  
+   if (isNaN(pageNum) || pageNum<1) {                  throw new ApiError(400,"page number is invalid")                                                }                                              
+   if(isNaN(limitNum)|| limitNum<1){            
+    throw new ApiError(400,"limit number is invalid")                                            
+  } 
+      
+  const allVideos  = await Video
+    .find({owner:req.user._id})
+    .skip(skipNum)
+    .limit(limitNum)
+    .select("-description")
+
+    if(!allVideos){
+    throw new ApiError(500,"Unable to fetch all channel videos")
+  }
+  return res
+  .status(200)
+  .json(new ApiResponse(
+   200,
+   allVideos,
+   "All channel video fetched successfully"
+  ))
    })
   
     export {
