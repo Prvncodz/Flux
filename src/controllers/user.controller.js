@@ -90,14 +90,19 @@ const  loginUser=asyncHandler(async (req,res)=>{
         //get res from db
        // generate acces and refresh tokens
        //  send cookie
-     const {userName,password}=req.body;
-    if(!userName){
-	throw new ApiError(407,"username and password are required to login");
+     const {userName,email,password}=req.body
+    if(!(userName||email)){
+	throw new ApiError(407,"username or email is required to login")
 	}
-    const user=await User.findOne({userName});
+  if(!password){
+    throw new ApiError(407,"password is required to login")
+  }
+    const user=await User.findOne({
+    $or:[{userName},{email}]
+  });
 
     if(!user){
- 	throw new ApiError(404,"user is not registered yet");
+ 	throw new ApiError(404,"user is not registered yet")
 	}
 
     const isPassValid=await user.isPasswordCorrect(password)
