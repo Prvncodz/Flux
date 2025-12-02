@@ -8,7 +8,11 @@ const tweetSchema=new Schema({
   owner:{
    type:Schema.Types.ObjectId,
    ref:"User"
-}
+},
+  isPublished:{
+    type: Boolean,
+    default:true
+  }
 },{timestamps:true})
 
 export const Tweet = mongoose.model("Tweet",tweetSchema)

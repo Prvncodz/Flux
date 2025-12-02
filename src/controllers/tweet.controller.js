@@ -12,7 +12,8 @@ const createTweet = asyncHandler(async (req, res) => {
       }
    const createdTweet=await Tweet.create({
     content,
-    owner:req.user._id
+    owner:req.user._id,
+    isPublished:true
   })
    if (!createdTweet) {
     throw new ApiError(500,"unable to create tweet")
@@ -107,10 +108,52 @@ const deleteTweet=asyncHandler(async(req,res)=>{
     ))
 })
 
+
+const getAllTweets= asyncHandler(async(req,res)=>{
+       const {page=1,limit=10,query,userId}=req.query
+
+          const pageNum=parseInt(page)
+          const limitNum=parseInt(limit)
+          const  skipNum=(pageNum-1)*limitNum 
+          if (pageNum<1|| isNaN(pageNum)) {
+            throw new ApiError(500,"Invalid page number")
+          }
+          if (limitNum<1|| isNaN(limitNum)) {
+            throw new ApiError(500,"Invalid limit is given to the page")
+          }
+  const filter={}
+  filter.isPublished=true
+  if(query){
+  filter.content={$regex:query,$options:"i"}
+  }
+  if(userId){
+   filter.owner=userId
+  }
+
+  const allTweets=await Tweet
+    .find(filter)
+    .skip(skipNum)
+    .limit(limitNum)
+
+  if(!allTweets){
+    throw new ApiError(500,"Unable to fetch records from database")
+  }
+
+  return res
+  .status(200)
+  .json(new ApiResponse(
+      200,
+      allTweets,
+      "fetched tweets feed successfully"
+    ))
+
+})
+
            export {
                  createTweet,
                     getUserTweets,
                          updateTweet,
-                           deleteTweet
+                           deleteTweet,
+                              getAllTweets
                      }
   
