@@ -77,7 +77,7 @@ if(!avatarLocalPath){
    if(!createdUser){
    throw new ApiError(500,"Unable to register user")
    }
-
+   console.log("user:",createdUser)
   return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
