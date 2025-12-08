@@ -27,12 +27,12 @@ export default function SignUp(){
 			}
 		})
 		if(res.ok){
-		alert("Success");
+		console.log("successfully registered user");
 		}else{
-   alert("Server error");
+   console.log("registration failed")
 		}
 	  }catch(err){
-	  	alert("Error while submitting the form")
+	  	console.error("Error :",err.message)
 	  	e.target.reset();
 	  }
 	  e.target.reset();
@@ -57,14 +57,14 @@ export default function SignUp(){
 	return(
 		<div id="signup-bg" className="h-screen w-screen flex flex-col justify-center
 		items-center bg-gray-200">
-			<div id="signup-card" className="h-auto w-90 bg-gray-100 flex flex-col
+			<div id="signup-card" className="h-auto w-87 bg-gray-100 flex flex-col
 			justify-center overflow-hidden rounded-xl">
 				<h1 className="mt-5 text-3xl font-bold text-blue-400 relative" >Sign Up</h1>
 				
 				
 				<form className="p-7" onSubmit={handleFormSubmission}>
 			 <div className="wrapper relative transition-all ease">
-			 	<div>
+			 	<div className="relative z-1">
 			 	<img src={coverImagePreview?coverImagePreview:defaultBanner}
 			 	onClick={()=>{
 			 	 	fileRefci.current.click();
@@ -72,11 +72,19 @@ export default function SignUp(){
 			 	className="h-33
 			 	w-full rounded-lg relative cursor-pointer"/>
 			 	
-			 	
+			 		<div onClick={()=>{
+			 	 	fileRefci.current.click();
+			 	 }}>
+			 		
+			 <div className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
+			 cursor-pointer top-0"></div>	
+			 <img src={editIcon} className="absolute h-15 w-15 z-3 -top-2 right-0"/>
+			 	</div>
 			 	<input type="file" ref={fileRefci} className="hidden" name="coverImage"
 			 	accept="image/*" onChange={handleCoverImage}/>
 			 
 			 </div>
+			 
 			 <div className="relative">
 			 	<img src={avatarPreview?avatarPreview:defaultPfp}
 			 	onClick={()=>{
@@ -86,9 +94,14 @@ export default function SignUp(){
 			 	w-15 rounded-full absolute -left-1 -bottom-3 cursor-pointer
 			  z-1
 			 	${DisplayAvatarRequired?'border-2 border-red-400':''}`}  />
-			 <div className="absolute z-2 bg-gray-800 transparent h-15 w-15 rounded-full -left-1
-			 -bottom-3"></div>	
+			 	<div onClick={()=>{
+			 	 	fileRefav.current.click();
+			 	 }}>
+			 		
+			 <div className="absolute z-2 bg-black/50 h-15 w-15 rounded-full -left-1
+			 -bottom-3  cursor-pointer"></div>	
 			 <img src={editIcon} className="absolute h-12 w-13 -bottom-1 left-0 z-3"/>
+			 	</div>
 			 
 			 	{ DisplayAvatarRequired?(<div className="bg-gray-100 rounded-sm h-5 w-auto
 			 	ml-2 mt-2 text-red-400">Avatar is required to register</div>):(<p></p>)}
@@ -118,7 +131,7 @@ export default function SignUp(){
 		 flex justify-center items-center rounded-4xl
 		  font-semibold text-center text-lg "
 		  type="submit">Submit</button>
-			<p className="mt-3">Already have an account?<a href="#"> Sign in</a></p>
+			<p className="mt-5">Already have an account?<a href="#"> Sign in</a></p>
 
 				</form>
 			</div>
