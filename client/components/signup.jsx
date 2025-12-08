@@ -2,6 +2,7 @@ import defaultPfp from "./assets/dpfp.jpg"
 import defaultBanner from "./assets/dbanner.jpg"
 import editIcon from "./assets/editimage.png"
 import {useState,useEvent,useRef} from 'react'
+import SubmitButton from "./submitButton.jsx"
 import axios from "axios"
 
 export default function SignUp(){
@@ -12,7 +13,7 @@ export default function SignUp(){
 	const fileRefav=useRef(null)
 
 	
-	function handleFormSubmission(e){
+	async function handleFormSubmission(e){
 		e.preventDefault()
 		const formData=new FormData(e.target)
 	 const avatar=formData.get("avatar");
@@ -21,7 +22,7 @@ export default function SignUp(){
 	 	return
 	 }
 	  try{
-		const res=axios.post("http://localhost:8000/api/v1/user/register",formData,{
+		const res= await axios.post("http://localhost:8000/api/v1/user/register",formData,{
 			headers:{
 				'Content-Type':'multipart/form-data'
 			}
@@ -112,26 +113,21 @@ export default function SignUp(){
 			 
 			<div className="form-inputs mt-10 mb-5  h-auto w-full relative
 			text-left">
-			<label className="text-lg font-medium text-gray-700">Fullname<input name="fullName"
+			<label className="text-md font-medium text-gray-700">Fullname<input name="fullName"
 			type="text" className="bg-gray-100
 		 w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs" required /></label>
-			<label className="text-lg font-medium text-gray-700">Username<input name="userName"
+			<label className="text-md font-medium text-gray-700">Username<input name="userName"
 			type="text" className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
 			border-gray-200 shadow-xs mt-1" required/></label>
-			<label className="text-lg font-medium text-gray-700">Email<input name="email" type="email"
+			<label className="text-md font-medium text-gray-700">Email<input name="email" type="email"
 			className="bg-gray-100 w-full mb-4 rounded-md p-1 border border-gray-200
 			shadow-xs mt-1" required/></label>
-			<label className="text-lg font-medium text-gray-700">Password<input name="password"
+			<label className="text-md font-medium text-gray-700">Password<input name="password"
 			type="password" className="bg-gray-100 w-full mb-4 rounded-md p-1 border
 			border-gray-200 shadow-xs mt-1 " required/></label> 
 		</div>
-		  <button className="bg-blue-500 hover:bg-blue-600 
-		  focus:outline-offset-2 active:bg-blue-800
-		  text-gray-200 p-5 w-44 h-12 ml-auto mr-auto
-		 flex justify-center items-center rounded-4xl
-		  font-semibold text-center text-lg "
-		  type="submit">Submit</button>
-			<p className="mt-5">Already have an account?<a href="#"> Sign in</a></p>
+     <SubmitButton/>
+			<p className="mt-3">Already have an account?<a href="#"> Sign in</a></p>
 
 				</form>
 			</div>
