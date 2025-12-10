@@ -12,8 +12,12 @@ export default function SignUp(){
 	const fileRefci=useRef(null)
 	const fileRefav=useRef(null)
 
-	
+	const [loading,SetLoading]=useState(false)
+	 const [error,SetError]=useState(false)
+	 const [isSubmmited,setIsSubmmited]=useState(false)
+	 
 	async function handleFormSubmission(e){
+		SetLoading(true)
 		e.preventDefault()
 		const formData=new FormData(e.target)
 	 const avatar=formData.get("avatar");
@@ -27,19 +31,26 @@ export default function SignUp(){
 				'Content-Type':'multipart/form-data'
 			}
 		})
-		if(res.ok){
-		console.log("successfully registered user");
-		}else{
-   console.log("registration failed")
-		}
-	  }catch(err){
-	  	console.error("Error :",err.message)
+		setIsSubmmited(true)
+		
+	  }catch(error){
+	  	SetError(true)
+ console.log(`Error name: ${error.name}`) 
+  console.log(`Backend message: ${error.response?.data?.message}`)
+  
 	  	e.target.reset();
+	  }finally{
+    SetError(false)
+    SetLoading(false)
 	  }
-	  e.target.reset();
 	  setCoverImagePreview(null)
 	  setAvatarPreview(null)
+		e.target.reset();
+	  setTimeout(()=>{
+     setIsSubmmited(false)
+    },2000)
 	}
+	
 	function handleCoverImage(e){
 		const file=e.target.files[0]
 		if(file){
@@ -91,21 +102,21 @@ export default function SignUp(){
 			 	onClick={()=>{
 			 	 	fileRefav.current.click();
 			 	 }} 
-			 	className={`h-15
+			 	className="h-15
 			 	w-15 rounded-full absolute -left-1 -bottom-3 cursor-pointer
-			  z-1
-			 	${DisplayAvatarRequired?'border-2 border-red-400':''}`}  />
+			  z-1"/>
 			 	<div onClick={()=>{
 			 	 	fileRefav.current.click();
 			 	 }}>
 			 		
-			 <div className="absolute z-2 bg-black/50 h-15 w-15 rounded-full -left-1
-			 -bottom-3  cursor-pointer"></div>	
+			 <div className={`absolute z-2 bg-black/50 h-15 w-15 rounded-full -left-1
+			 -bottom-3  cursor-pointer ${DisplayAvatarRequired?'border-2 border-red-600':''} `}></div>	
+			 
 			 <img src={editIcon} className="absolute h-12 w-13 -bottom-1 left-0 z-3"/>
 			 	</div>
 			 
 			 	{ DisplayAvatarRequired?(<div className="bg-gray-100 rounded-sm h-5 w-auto
-			 	ml-2 mt-2 text-red-400">Avatar is required to register</div>):(<p></p>)}
+			 	ml-7 mt-2 font-medium text-red-400">Avatar is required to register</div>):(<p></p>)}
 			 	<input type="file" ref={fileRefav} className="hidden" name="avatar"
 			 	accept="image/*" onChange={handleAvatar}/>
 			 	</div>
@@ -126,7 +137,8 @@ export default function SignUp(){
 			type="password" className="bg-gray-100 w-full mb-4 rounded-md p-1 border
 			border-gray-200 shadow-xs mt-1 " required/></label> 
 		</div>
-     <SubmitButton/>
+     <SubmitButton
+     currentSubmitStatus={isSubmmited?"submited":loading?"loading":"normal"}/>
 			<p className="mt-3">Already have an account?<a href="#"> Sign in</a></p>
 
 				</form>

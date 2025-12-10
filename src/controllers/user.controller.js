@@ -77,11 +77,13 @@ if(!avatarLocalPath){
    if(!createdUser){
    throw new ApiError(500,"Unable to register user")
    }
+   console.log("new user",createdUser)
   return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
 //login
 const  loginUser=asyncHandler(async (req,res)=>{
+    console.log('touched the login endpoint')
           //get the info
          // validate the input
          // check for user in db
@@ -107,7 +109,6 @@ const  loginUser=asyncHandler(async (req,res)=>{
     const isPassValid=await user.isPasswordCorrect(password)
     if(!isPassValid){
         throw new ApiError(401,"invalid password credentials");
-
         }
 
   const { accessTokens, refreshTokens } = await generateAccessAndRefreshTokens(user._id);

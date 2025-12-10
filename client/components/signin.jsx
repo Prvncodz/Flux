@@ -1,34 +1,34 @@
 import {useState,useEvent,useRef} from 'react'
 import axios from "axios"
 import SubmitButton from "./submitButton.jsx"
+
 export default function SignIn(){
-	
-	
+	 const [loading,SetLoading]=useState(false)
+	 const [error,SetError]=useState(false)
+	 const [isSubmmited,setIsSubmmited]=useState(false)
+	 const [firstInputField,setFirstInputField]=useState("")
 	async function handleFormSubmission(e){
+		
 		e.preventDefault()
 	const	formData=new FormData(e.target)
-	const jsonData=object.fromEntries(formData)
-	
+	const Data=Object.fromEntries(formData)
+	  SetLoading(true)
 	  try{
-		const res= await
-		axios.post("http://localhost:8000/api/v1/user/login",jsonData,{
-			headers:{
-				'Content-Type':'application/json'
-			}
-		})
-		
-		if(res.ok){
-		alert("successfully logged in user");
-		e.target.reset();
-		}else{
-    alert("user not found")
+		const res=await axios.post("http://localhost:8000/api/v1/user/login",Data)
+		setIsSubmmited(true)
     e.target.reset();
-		}
-	  }catch(err){
-	  	alert("error while submitting form")
+	  }catch(error){
+	  	SetError(true)
+	  	alert(error.message)
 	  	e.target.reset();
+	  }finally{
+	  	SetLoading(false)
 	  }
 	  e.target.reset();
+	  setFirstInputField("")
+	  setTimeout(()=>{
+	  	setIsSubmmited(false)
+	  },2000)
 	}
 	
 	
@@ -45,14 +45,18 @@ export default function SignIn(){
 			<div className="form-inputs mt-4 mb-5  h-auto w-full relative
 			text-left">
 			<label className="text-md font-medium text-gray-700">Username or Email
-			address<input name="userName"
-			type="text" className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
+			address<input
+			type="text" value={firstInputField}
+			onChange={(e)=>setFirstInputField(e.target.value)}
+			name={firstInputField.includes("@")?"email":"userName"} className="bg-gray-100 w-full
+			mb-4 rounded-md p-1 border
 			border-gray-200 shadow-xs mt-1" required/></label>
 			<label className="text-md font-medium text-gray-700">Password<input name="password"
 			type="password" className="bg-gray-100 w-full mb-4 rounded-md p-1 border
 			border-gray-200 shadow-xs mt-1 " required/></label> 
 		</div>
-      <SubmitButton/>
+ <SubmitButton
+     currentSubmitStatus={isSubmmited?"submited":loading?"loading":"normal"}/>
 			<p className="mt-2">Don't have an account?<a href="#"> Sign up</a></p>
 
 				</form>

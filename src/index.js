@@ -5,7 +5,7 @@ import express from "express"
 dbConn
 .then(()=>{
   app.listen(process.env.PORT || 8000,()=>{
-    console.log(`app is running at port: ${process.env.PORT}`);
+    console.log(`app is running at: http://localhost:${process.env.PORT}`);
 });
   app.on("error",()=>{
    consoe.log("app failed to run !!");
