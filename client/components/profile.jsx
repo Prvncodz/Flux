@@ -15,7 +15,7 @@ export default function Profile(){
              <div className="img-container h-30 w-full flex justify-center items-center ">
                <img src={isSignedIn?user.avatar:profileIcon} className="h-15 w-15  rounded-xl"/>
              </div>
-             <a href='#'>Signin to your account</a>
+             <p><a href='#'>Sign in</a> to your account</p>
             </>
             )}
         </div>

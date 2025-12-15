@@ -1,12 +1,13 @@
 import {useState,useEvent,useRef} from 'react'
 import axios from "axios"
 import SubmitButton from "./submitButton.jsx"
-
+import {useNavigate} from "react-router-dom"
 export default function SignIn(){
 	 const [loading,SetLoading]=useState(false)
 	 const [error,SetError]=useState(false)
 	 const [isSubmmited,setIsSubmmited]=useState(false)
 	 const [firstInputField,setFirstInputField]=useState("")
+	 const navigate=new useNavigate()
 	async function handleFormSubmission(e){
 		
 		e.preventDefault()
@@ -57,7 +58,7 @@ export default function SignIn(){
 		</div>
  <SubmitButton
      currentSubmitStatus={isSubmmited?"submited":loading?"loading":"normal"}/>
-			<p className="mt-2">Don't have an account?<a href="#"> Sign up</a></p>
+				<p className="mt-2">Don't have an account?<span onClick={()=>{navigate('/signup')}} className="cursor-pointer text-blue-400 decoration-blue-400 underline"> Sign up</span></p>
 
 				</form>
 			</div>

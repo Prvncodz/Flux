@@ -4,6 +4,7 @@ import editIcon from "./assets/editimage.png"
 import {useState,useRef} from 'react'
 import SubmitButton from "./submitButton.jsx"
 import axios from "axios"
+import {useNavigate} from "react-router-dom"
 
 export default function SignUp(){
 	const [coverImagePreview,setCoverImagePreview]=useState(null)
@@ -16,6 +17,7 @@ export default function SignUp(){
 	 const [error,SetError]=useState(false)
 	 const [isSubmmited,setIsSubmmited]=useState(false)
 	 
+	 const navigate=new useNavigate()
 	async function handleFormSubmission(e){
 		SetLoading(true)
 		e.preventDefault()
@@ -89,8 +91,8 @@ export default function SignUp(){
 			 	 }}>
 			 		
 			 <div className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
-			 cursor-pointer top-0"></div>	
-			 <img src={editIcon} className="absolute h-15 w-15 z-3 -top-2 right-0" loading="lazy"/>
+			 cursor-pointer top-0 cursor-pointer"></div>	
+			 <img src={editIcon} className="absolute h-15 w-15 z-3 -top-2 right-0 cursor-pointer" loading="lazy"/>
 			 	</div>
 			 	<input type="file" ref={fileRefci} className="hidden" name="coverImage"
 			 	accept="image/*" onChange={handleCoverImage} />
@@ -112,11 +114,11 @@ export default function SignUp(){
 			 <div className={`absolute z-2 bg-black/50 h-15 w-15 rounded-full -left-1
 			 -bottom-3  cursor-pointer ${DisplayAvatarRequired?'border-2 border-red-600':''} `}></div>	
 			 
-			 <img src={editIcon} className="absolute h-12 w-13 -bottom-1 left-0 z-3"/>
+			 <img src={editIcon} className="absolute h-12 w-13 -bottom-1 left-0 z-3 cursor-pointer"/>
 			 	</div>
 			 
 			 	{ DisplayAvatarRequired?(<div className="bg-gray-100 rounded-sm h-5 w-auto
-			 	ml-7 mt-2 font-medium text-red-400">Avatar is required to register</div>):(<p></p>)}
+			 	ml-8 mt-2 font-medium text-red-400">Avatar is required to register</div>):(<p></p>)}
 			 	<input type="file" ref={fileRefav} className="hidden" name="avatar"
 			 	accept="image/*" onChange={handleAvatar}/>
 			 	</div>
@@ -139,7 +141,7 @@ export default function SignUp(){
 		</div>
      <SubmitButton
      currentSubmitStatus={isSubmmited?"submited":loading?"loading":"normal"}/>
-			<p className="mt-3">Already have an account?<a href="#"> Sign in</a></p>
+			<p className="mt-3">Already have an account?<span onClick={()=>{navigate('/signin')}} className="text-blue-400 decoration-blue-400 underline cursor-pointer"> Sign in</span></p>
 
 				</form>
 			</div>
