@@ -1,7 +1,7 @@
 import defaultPfp from "./assets/dpfp.jpg"
 import defaultBanner from "./assets/dbanner.jpg"
 import editIcon from "./assets/editimage.png"
-import {useState,useEvent,useRef} from 'react'
+import {useState,useRef} from 'react'
 import SubmitButton from "./submitButton.jsx"
 import axios from "axios"
 
@@ -82,7 +82,7 @@ export default function SignUp(){
 			 	 	fileRefci.current.click();
 			 	 }} 
 			 	className="h-33
-			 	w-full rounded-lg relative cursor-pointer"/>
+			 	w-full rounded-lg relative cursor-pointer" loading="lazy"/>
 			 	
 			 		<div onClick={()=>{
 			 	 	fileRefci.current.click();
@@ -90,10 +90,10 @@ export default function SignUp(){
 			 		
 			 <div className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
 			 cursor-pointer top-0"></div>	
-			 <img src={editIcon} className="absolute h-15 w-15 z-3 -top-2 right-0"/>
+			 <img src={editIcon} className="absolute h-15 w-15 z-3 -top-2 right-0" loading="lazy"/>
 			 	</div>
 			 	<input type="file" ref={fileRefci} className="hidden" name="coverImage"
-			 	accept="image/*" onChange={handleCoverImage}/>
+			 	accept="image/*" onChange={handleCoverImage} />
 			 
 			 </div>
 			 

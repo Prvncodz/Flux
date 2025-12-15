@@ -69,7 +69,8 @@ if(!avatarLocalPath){
       url:avatar?.secure_url
     },
     coverImage:coverImage?{
-      public_id:coverImage?.public_id,                url:coverImage?.secure_url
+      public_id:coverImage?.public_id,                
+      url:coverImage?.secure_url
     }:{},
     password
 })
@@ -77,7 +78,6 @@ if(!avatarLocalPath){
    if(!createdUser){
    throw new ApiError(500,"Unable to register user")
    }
-   console.log("new user",createdUser)
   return res.status(200).json( new ApiResponse(200,createdUser,"User registered successfully"));
 })
 
@@ -120,7 +120,6 @@ const  loginUser=asyncHandler(async (req,res)=>{
     httpOnly:true,
     secure:true
   }
-   console.log("logged user :",loggedUser)
     return res
     .status(200)
     .cookie("accessTokens",accessTokens,options)
