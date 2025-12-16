@@ -12,6 +12,7 @@ function App() {
          <Route path="/" element={<Nav/>}/>
          <Route path="/signin" element={<SignIn/>}/>
          <Route path="/signup" element={<SignUp/>}/>
+         <Route path="/userchannel" element={<Profile/>}/>
      </Routes>
      </BrowserRouter>
   )

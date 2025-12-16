@@ -8,6 +8,7 @@ export default function SignIn(){
 	 const [isSubmmited,setIsSubmmited]=useState(false)
 	 const [firstInputField,setFirstInputField]=useState("")
 	 const navigate=new useNavigate()
+
 	async function handleFormSubmission(e){
 		
 		e.preventDefault()
@@ -16,8 +17,17 @@ export default function SignIn(){
 	  SetLoading(true)
 	  try{
 		const res=await axios.post("http://localhost:8000/api/v1/user/login",Data)
-		setIsSubmmited(true)
-    e.target.reset();
+		console.log(res)
+       if(res.status==200){
+		navigate('/',{
+			state:{
+				user:res.data.data.user,
+			}
+		})
+        setIsSubmmited(true)
+        e.target.reset();
+	   }
+		
 	  }catch(error){
 	  	SetError(true)
 	  	alert(error.message)

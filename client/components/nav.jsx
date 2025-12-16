@@ -1,14 +1,24 @@
 import logo from "./assets/logo.png"
 import profileIcon from  "./assets/profile.png"
-import SignIn from "./signin.jsx"
-import SignUp from "./signup.jsx"
-import {useNavigate} from "react-router-dom"
+import {useNavigate,useLocation} from "react-router-dom"
 import {useState, useEffect} from "react"
 
 
 export default function Nav(){
 	const [isSignedIn,setIsSignedIn]=useState(false)
 	const navigate=new useNavigate()
+	const location=new useLocation()
+    const {user}=location.state || {}
+	
+	
+	useEffect(()=>{
+		if(user){
+			setIsSignedIn(true)
+		}else{
+			setIsSignedIn(false)
+		}
+	},[user,isSignedIn]);
+
 	return(
 	   <nav className="h-13 flex justify-between items-center bg-neutral-50 w-full">
 	   	  <div className=" ml-5">
@@ -17,8 +27,8 @@ export default function Nav(){
 		  {
 			isSignedIn?(
 				<>
-               <div className="m-2 w-12 h-9 flex justify-center items-center" onClick={handleProfile}>	
-        <img src={isSignedIn?user?.avatar:profileIcon} className="h-9 rounded-full"/>
+               <div className="m-2 w-12 h-9 flex justify-center items-center" onClick={()=>navigate('/userchannel')}>	
+        <img src={user?.avatar.url} className="h-9 rounded-full" loading="lazy"/>
        </div>
 				</>
 			):(<>

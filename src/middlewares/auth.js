@@ -14,10 +14,10 @@ const verifyJwt=asyncHandler(async (req,res,next)=>{
    throw new ApiError(401,"unauthorized request")
 
  }
-   const decodedjwt= await jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
+   const decodedjwt= jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
     const user=await User.findById(decodedjwt?._id)
     if (!user) {
-      throw new ApiError(402,"access tokens failed")
+      throw new ApiError(402,"access token expired")
   }
    req.user=user;
    next()
