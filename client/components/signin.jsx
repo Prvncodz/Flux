@@ -1,5 +1,5 @@
 import {useState,useEvent,useRef} from 'react'
-import axios from "axios"
+import axios from "../api/axios.js"
 import SubmitButton from "./submitButton.jsx"
 import {useNavigate} from "react-router-dom"
 export default function SignIn(){
@@ -16,7 +16,7 @@ export default function SignIn(){
 	const Data=Object.fromEntries(formData)
 	  SetLoading(true)
 	  try{
-		const res=await axios.post("http://localhost:8000/api/v1/user/login",Data)
+		const res=await axios.post("/user/login",Data)
 		console.log(res)
        if(res.status==200){
 		navigate('/',{
