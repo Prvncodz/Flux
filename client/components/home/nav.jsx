@@ -1,17 +1,22 @@
-import logo from "./assets/logo.png"
-import profileIcon from "./assets/profile.png"
+import logo from "../assets/logo.png"
+import profileIcon from "../assets/profile.png"
 import { useNavigate, useLocation } from "react-router-dom"
 import { useState, useEffect } from "react"
-import axios from "../api/axios.js"
+import axios from "../../api/axios.js"
 
-export default function Nav() {
+
+
+export default function Nav({user}) {
+	
 	const [isSignedIn, setIsSignedIn] = useState(false)
-	const navigate = new useNavigate()
-	const location = new useLocation()
-	const { user } = location.state || {}
+	const navigate = new useNavigate()	
 	const [isActive, setIsActive] = useState(false);
 	const [ChannelName, setChannelName] = useState("")
 	const [username, setUsername] = useState("")
+
+    if(Object.keys(user).length!==0){
+   console.log("user object passed to nav component:",user)
+	}
 
 
 	async function handleSignout() {
@@ -19,7 +24,7 @@ export default function Nav() {
 			const res = await axios.post("/user/logout")
 
 			if (res.status == 200) {
-				setIsActive(false)
+				setIsActive(false);
 				setIsSignedIn(false)
 			}
 		} catch (error) {
@@ -27,16 +32,17 @@ export default function Nav() {
 		}
 	}
 
-
-	useEffect(() => {
-		if (user) {
+       useEffect(()=>{
+       if (Object.keys(user).length!==0) {
 			setIsSignedIn(true)
 			setChannelName(user.fullName)
 			setUsername(user.userName)
 		} else {
 			setIsSignedIn(false)
 		}
-	}, [user, isSignedIn]);
+
+	   },[user])
+		
 
 	return (
 		<nav className="h-13 flex justify-between items-center bg-neutral-50 w-full">
@@ -47,7 +53,7 @@ export default function Nav() {
 				isSignedIn ? (
 					<>
 						<div className="m-2 w-12 h-9 flex justify-center items-center" onClick={() => { setIsActive(true) }}>
-							<img src={user?.avatar.url} className="h-9 rounded-full" loading="lazy" />
+							<img src={user.avatar.url} className="h-9 rounded-full" loading="lazy" />
 						</div>
 						{isActive && <>
 							<div className="popup absolute top-10 right-0 bg-gray-100 border border-1 border-gray-300 h-auto w-50 flex flex-col justify-center items-center">
