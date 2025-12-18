@@ -33,8 +33,10 @@ export default function SignUp(){
 				'Content-Type':'multipart/form-data'
 			}
 		})
+		if(res.status===200){
+		navigate('/signin')
 		setIsSubmmited(true)
-		
+	}
 	  }catch(error){
 	  	SetError(true)
  console.log(`Error name: ${error.name}`) 

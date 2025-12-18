@@ -3,36 +3,43 @@ import axios from "../../api/axios.js"
 import Cookies from "js-cookie"
 import Nav from "./nav.jsx"
 
-export default  function Home(){
-      const [user,setUser]=useState({});
-        
-        useEffect( ()=>{
-            async function loginUser() {
-            try {
-                 console.log("trying to req for current user with tokens")
-                const UserRes=await axios.get("/user/current-user");
-                console.log("done extracting current user")
-                 if(UserRes.status==401){
-                     const res=await axios.post("/user/refresh-tokens")
-                     if(res.status==200){
-                        console.log(res.cookies)
-                        console.log("refreshed access tokens successfully")
-                     }
-                 }
-                if(UserRes.status==200){
-                     setUser(UserRes.data.data)
-                }
-            } catch (error) {
-                console.error("error :",error.message)
-            }   
-            
-        }
-        loginUser();
-          },[]);
+export default function Home() {
+  const [user, setUser] = useState({})
+  const[isTokenReceived,setIsTokenReceived]=useState(false)
 
-    return(
+  useEffect(() => {
+    async function loginUser() {
+      try {
+        const response = await axios.get("/user/current-user")
+          if(response.status===200){
+            console.log("user object: ",response.data.data)
+            console.log("res of current-user:",response)
+            setUser(response.data.data)
+          }
+      } catch (error) {
+        console.log(error)
+        try {
+                if (error.status == 500) {
+                  const res = await axios.post("/user/refresh-tokens")
+                  if (res.status == 200) {
+                    setIsTokenReceived(true)
+                    console.log(res.cookies)
+                    console.log("refreshed access tokens successfully")
+                  }
+                }
+              } catch (error) {
+                console.log(error)
+                
+              }
+      }
+
+    }
+    loginUser();
+  }, [isTokenReceived]);
+
+  return (
     <>
-      <Nav user={user}/>
+      <Nav user={user} />
     </>
-    );
+  );
 }
