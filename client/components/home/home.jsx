@@ -6,25 +6,26 @@ import Nav from "./nav.jsx"
 export default function Home() {
   const [user, setUser] = useState({})
   const[isTokenReceived,setIsTokenReceived]=useState(false)
+  const [isUserLogged,setIsUserLogged]=useState(false)
+
 
   useEffect(() => {
     async function loginUser() {
       try {
         const response = await axios.get("/user/current-user")
           if(response.status===200){
-            console.log("user object: ",response.data.data)
-            console.log("res of current-user:",response)
             setUser(response.data.data)
+            setIsUserLogged(true)
           }
       } catch (error) {
+        setUser({})
+        setIsUserLogged(false)
         console.log(error)
         try {
-                if (error.status == 500) {
+                if (error.status === 500) {
                   const res = await axios.post("/user/refresh-tokens")
-                  if (res.status == 200) {
+                  if (res.status== 200) {
                     setIsTokenReceived(true)
-                    console.log(res.cookies)
-                    console.log("refreshed access tokens successfully")
                   }
                 }
               } catch (error) {
@@ -39,7 +40,7 @@ export default function Home() {
 
   return (
     <>
-      <Nav user={user} />
+      <Nav user={user} isLogged={isUserLogged} />
     </>
   );
 }
