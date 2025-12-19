@@ -5,6 +5,7 @@ import {uploadOnCloud,deleteFromCloud} from "../utils/cloudinary.js"
 import {ApiResponse}  from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import mongoose from "mongoose"
+import ms from "ms"
 
 // generate refresh and access tokens for the user
 const generateAccessAndRefreshTokens=async(userId)=>{
@@ -113,16 +114,25 @@ const  loginUser=asyncHandler(async (req,res)=>{
   
 
      const loggedUser=await User.findById(user._id).select("-password -refreshTokens")
+    
      
-  const options={
+  const AtOptions={
     httpOnly:true,
     secure:false,
+    maxAge:(60 * 60 * 1000)//cookie's max age is 1 hour
   }
+  const RtOptions={
+    httpOnly:true,
+    secure:false,
+    maxAge:(3 * 24 * 60 * 60 * 1000)//cookie's max age is 3 days
+  }
+
+
    console.log("Logged user :",loggedUser)
     return res
     .status(200)
-    .cookie("accessTokens",accessTokens,options)
-    .cookie("refreshTokens",refreshTokens,options)
+    .cookie("accessTokens",accessTokens,AtOptions)
+    .cookie("refreshTokens",refreshTokens,RtOptions)
     .json( new ApiResponse(
       200,
       {
@@ -145,15 +155,21 @@ const logoutUser=asyncHandler(async (req,res)=>{
       new:true
     }
   )
-   const options={                                
-     httpOnly:true,                                
-      secure:true                               
-   }
+   const AtOptions={
+    httpOnly:true,
+    secure:false,
+    maxAge:(60 * 60 * 1000)//cookie's max age is 1 hour
+  }
+  const RtOptions={
+    httpOnly:true,
+    secure:false,
+    maxAge:(3 * 24 * 60 * 60 * 1000)//cookie's max age is 3 days
+  }
   
   return res
     .status(200)
-    .clearCookie("accessTokens",options)
-    .clearCookie("refreshTokens",options)
+    .clearCookie("accessTokens",AtOptions)
+    .clearCookie("refreshTokens",RtOptions)
     .json( 
       new ApiResponse(200,{},"user loggedout successfully")
     )
@@ -179,14 +195,21 @@ const refreshAccessTokens=asyncHandler(async(req,res)=>{
   }
   const {accessTokens,refreshTokens}= await generateAccessAndRefreshTokens(user._id)
 
-  const options={                             
-    httpOnly:true,                              
-    secure:true                                     
-   }
+  const AtOptions={
+    httpOnly:true,
+    secure:false,
+    maxAge:(60 * 60 * 1000)//cookie's max age is 1 hour
+  }
+  const RtOptions={
+    httpOnly:true,
+    secure:false,
+    maxAge:(3 * 24 * 60 * 60 * 1000)//cookie's max age is 3 days
+  }
+
   return res
   .status(200)
-  .cookie("accessTokens",accessTokens,options)
-  .cookie("refreshTokens",refreshTokens,options)
+  .cookie("accessTokens",accessTokens,AtOptions)
+  .cookie("refreshTokens",refreshTokens,RtOptions)
   .json(new ApiResponse(
       200,
       {user:user,accessTokens,refreshTokens},
