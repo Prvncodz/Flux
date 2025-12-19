@@ -27,7 +27,6 @@ export default function SignIn(){
 		
 	  }catch(error){
 	  	SetError(true)
-	  	alert(error.message)
 	  	e.target.reset();
 	  }finally{
 	  	SetLoading(false)

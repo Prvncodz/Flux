@@ -66,8 +66,6 @@ userSchema.methods.isPasswordCorrect= async function(password){
 }
 
 userSchema.methods.generateAccessTokens=async function(){
-  console.log("access token secret:",process.env.ACCESS_TOKEN_SECRET)
-  console.log("access token expiry:",process.env.ACCESS_TOKEN_EXPIRY)
   return  jwt.sign(
       { _id:this._id,
        email:this.email,
@@ -82,8 +80,6 @@ userSchema.methods.generateAccessTokens=async function(){
 
 }
 userSchema.methods.generateRefreshTokens=async function(){
-    console.log("refresh token secret:", process.env.REFRESH_TOKEN_SECRET)
-  console.log("refresh token expiry:", process.env.REFRESH_TOKEN_EXPIRY)
        return jwt.sign(
       { _id:this._id,
        email:this.email,
