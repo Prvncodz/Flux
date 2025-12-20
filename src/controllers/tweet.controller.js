@@ -1,159 +1,133 @@
-import mongoose, { isValidObjectId } from "mongoose"
-import {Tweet} from "../models/tweet.model.js"
-import {User} from "../models/user.model.js"
-import {ApiError} from "../utils/ApiError.js"
-import {ApiResponse} from "../utils/ApiResponse.js"
-import {asyncHandler} from "../utils/asyncHandler.js"
+import mongoose, { isValidObjectId } from "mongoose";
+import { Tweet } from "../models/tweet.model.js";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createTweet = asyncHandler(async (req, res) => {
-      const {content}=req.body
-      if (!content) {
-        throw ApiError(400,"You forgot to add content for tweet :)")
-      }
-   const createdTweet=await Tweet.create({
+  const { content } = req.body;
+  if (!content) {
+    throw ApiError(400, "You forgot to add content for tweet :)");
+  }
+  const createdTweet = await Tweet.create({
     content,
-    owner:req.user._id,
-    isPublished:true
-  })
-   if (!createdTweet) {
-    throw new ApiError(500,"unable to create tweet")
-   }
+    owner: req.user._id,
+    isPublished: true,
+  });
+  if (!createdTweet) {
+    throw new ApiError(500, "unable to create tweet");
+  }
   return res
-  .status(200)
-  .json(
-      new ApiResponse(
-        200,
-        createdTweet,
-        "created a tweet"
-      )
-    );
-})
+    .status(200)
+    .json(new ApiResponse(200, createdTweet, "created a tweet"));
+});
 
-const getUserTweets=asyncHandler(async(req,res)=>{
-     const {userId}=req.params
-     const {page=1,limit=10} =req.query
-     const pageNum=parseInt(page)
-     const limitNum=parseInt(limit)
-     const skipNum=(pageNum-1)*limitNum
+const getUserTweets = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const skipNum = (pageNum - 1) * limitNum;
 
-     if(isNaN(pageNum)|| pageNum<1){
-    throw new ApiError(400,"page number invalid")
+  if (isNaN(pageNum) || pageNum < 1) {
+    throw new ApiError(400, "page number invalid");
   }
-   if(isNaN(limitNum)|| limitNum<1){
-      throw new ApiError(400,"limit is invalid")
+  if (isNaN(limitNum) || limitNum < 1) {
+    throw new ApiError(400, "limit is invalid");
   }
-    const allTweetDocsOfUser=await Tweet
-    .find({owner:userId})
+  const allTweetDocsOfUser = await Tweet.find({ owner: userId })
     .skip(skipNum)
-    .limit(limitNum)
-    
-  const allTweetsOfUser=allTweetDocsOfUser.map(Tweet => Tweet.content)
-   if(!allTweetsOfUser){
-    throw new ApiError(500,"unable to fetch all tweets of user")
+    .limit(limitNum);
+
+  const allTweetsOfUser = allTweetDocsOfUser.map((Tweet) => Tweet.content);
+  if (!allTweetsOfUser) {
+    throw new ApiError(500, "unable to fetch all tweets of user");
   }
   return res
-  .status(200)
-  .json(
+    .status(200)
+    .json(
       new ApiResponse(
         200,
         allTweetsOfUser,
-        "All tweets of user fetched successfully"
-      )
-    )
-})
+        "All tweets of user fetched successfully",
+      ),
+    );
+});
 
-const updateTweet=asyncHandler(async(req,res)=>{
-    const {tweetId}=req.params
-    const {content}=req.body
-   if(!content){
-    throw new ApiError(400,"Add content to update tweet")
+const updateTweet = asyncHandler(async (req, res) => {
+  const { tweetId } = req.params;
+  const { content } = req.body;
+  if (!content) {
+    throw new ApiError(400, "Add content to update tweet");
   }
-    if (!tweetId) {
-      throw new ApiError(400,"tweetId is expired or tweet is deleted by its user")
-    }
-    const updatedTweet=await Tweet.findByIdAndUpdate(
+  if (!tweetId) {
+    throw new ApiError(
+      400,
+      "tweetId is expired or tweet is deleted by its user",
+    );
+  }
+  const updatedTweet = await Tweet.findByIdAndUpdate(
     tweetId,
     {
-      $set:{
-        content:content
-      }
+      $set: {
+        content: content,
+      },
     },
-    {new:true}
-  )
+    { new: true },
+  );
   return res
-  .status(200)
-  .json(new ApiResponse(
-      200,
-      updatedTweet,
-      "updated tweet successfully"
-    ))
-
-  })
-const deleteTweet=asyncHandler(async(req,res)=>{
-          const {tweetId}=req.params
-        if(!tweetId){
-        throw new ApiError(400,"tweetId is expired or tweet is deleted by its user")
+    .status(200)
+    .json(new ApiResponse(200, updatedTweet, "updated tweet successfully"));
+});
+const deleteTweet = asyncHandler(async (req, res) => {
+  const { tweetId } = req.params;
+  if (!tweetId) {
+    throw new ApiError(
+      400,
+      "tweetId is expired or tweet is deleted by its user",
+    );
   }
-      const deletedTweet=await Tweet.findByIdAndDelete(tweetId)
-      if (!deletedTweet) {
-        throw new ApiError(500,"unable to deleted this tweet")
-      }
-     
-  return res
-  .status(200)
-  .json(new ApiResponse(
-      200,
-      deletedTweet,
-      "tweet deleted successfully"
-    ))
-})
-
-
-const getAllTweets= asyncHandler(async(req,res)=>{
-       const {page=1,limit=10,query,userId}=req.query
-
-          const pageNum=parseInt(page)
-          const limitNum=parseInt(limit)
-          const  skipNum=(pageNum-1)*limitNum 
-          if (pageNum<1|| isNaN(pageNum)) {
-            throw new ApiError(500,"Invalid page number")
-          }
-          if (limitNum<1|| isNaN(limitNum)) {
-            throw new ApiError(500,"Invalid limit is given to the page")
-          }
-  const filter={}
-  filter.isPublished=true
-  if(query){
-  filter.content={$regex:query,$options:"i"}
-  }
-  if(userId){
-   filter.owner=userId
-  }
-
-  const allTweets=await Tweet
-    .find(filter)
-    .skip(skipNum)
-    .limit(limitNum)
-
-  if(!allTweets){
-    throw new ApiError(500,"Unable to fetch records from database")
+  const deletedTweet = await Tweet.findByIdAndDelete(tweetId);
+  if (!deletedTweet) {
+    throw new ApiError(500, "unable to deleted this tweet");
   }
 
   return res
-  .status(200)
-  .json(new ApiResponse(
-      200,
-      allTweets,
-      "fetched tweets feed successfully"
-    ))
+    .status(200)
+    .json(new ApiResponse(200, deletedTweet, "tweet deleted successfully"));
+});
 
-})
+const getAllTweets = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10, query, userId } = req.query;
 
-           export {
-                 createTweet,
-                    getUserTweets,
-                         updateTweet,
-                           deleteTweet,
-                              getAllTweets
-                     }
-  
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const skipNum = (pageNum - 1) * limitNum;
+  if (pageNum < 1 || isNaN(pageNum)) {
+    throw new ApiError(500, "Invalid page number");
+  }
+  if (limitNum < 1 || isNaN(limitNum)) {
+    throw new ApiError(500, "Invalid limit is given to the page");
+  }
+  const filter = {};
+  filter.isPublished = true;
+  if (query) {
+    filter.content = { $regex: query, $options: "i" };
+  }
+  if (userId) {
+    filter.owner = userId;
+  }
+
+  const allTweets = await Tweet.find(filter).skip(skipNum).limit(limitNum);
+
+  if (!allTweets) {
+    throw new ApiError(500, "Unable to fetch records from database");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, allTweets, "fetched tweets feed successfully"));
+});
+
+export { createTweet, getUserTweets, updateTweet, deleteTweet, getAllTweets };

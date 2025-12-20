@@ -1,2 +1,1 @@
-export const DB_NAME="PINTUBE";
- 
+export const DB_NAME = "PINTUBE";

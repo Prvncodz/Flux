@@ -53,7 +53,7 @@ export default function Nav({user,isLogged}) {
 									</span>
 								</div>
 							
-									<a href="#" className="text-base font-normal  text-blue-600 text-left ">View your channel</a>
+									<a href="#" className="text-lg font-normal  text-blue-600 text-left ">View your channel</a>
 								</div>
 
 									<hr className="h-0.07  bg-gray-300"/>

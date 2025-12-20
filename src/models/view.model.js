@@ -1,14 +1,18 @@
-import mongoose,{ Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const viewSchema=new Schema({
-  videoId:{
-    type:Schema.Types.ObjectId,
-    ref:"Video",
-    required:true
+const viewSchema = new Schema(
+  {
+    videoId: {
+      type: Schema.Types.ObjectId,
+      ref: "Video",
+      required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  userId:{
-  type:Schema.Types.ObjectId,                     ref:"User"
-}
-},{timestamps:true})
+  { timestamps: true },
+);
 
-export const View=mongoose.model("View",viewSchema)
+export const View = mongoose.model("View", viewSchema);

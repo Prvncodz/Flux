@@ -111,7 +111,7 @@
   },
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
-    "format": "prettier --write."
+    "format": "prettier --write src/*/*"
   },
   "repository": {
     "type": "git",
