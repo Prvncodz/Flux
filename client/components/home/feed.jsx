@@ -6,35 +6,32 @@ export default function Feed(){
    const [areVideosFetched, SetAreVideosFetched] = useState(false)
   const [user, setuser] = useState({})
 
+      async function UserAvatar(userId){
+        try {
+  
+         const res = await axios.get(`user/c/${userId}`)
+          if(res.status===200){  
+           console.log(res.data.data.avatar.url)
+          return res.data.data.avatar.url
+      }
+        } catch (error) {
+           console.log(error)
+           console.log("backend message :",error?.response?.data?.message)
+        }
+    return null
+    }
+
   useEffect(()=>{
     function fetchAllVideos(){
     try{
       axios.get("/videos/all-videos")
-      .then(data =>{
-          setVideos(data.data.data)
+      .then(res =>{
+          setVideos(res.data.data)
           SetAreVideosFetched(true)
           })
       }catch(error){
       console.log(error)
     }
-    }
-       function UserAvatar(userId){
-        try {
-          const res = axios.get(`/c/:${userId}`)
-          console.log(res.data)
-       if(!res){
-        console.error("unable to fetch user")
-       }
-       else if(res.status===200){
-        console.log(res.data)
-       return res?.data?.avatar?.url
-}
-      return ""
-        
-        } catch (error) {
-           console.log(error)
-           console.log("backend message :",error?.response?.data?.message)
-        }
     }
       
 
@@ -49,11 +46,15 @@ export default function Feed(){
 
        <div key={idx} className="card">
           <div>
-            <img src={video.thumbnail.url} alt=""/>
+            <img src={video.thumbnail.url} className=" w-full " alt=""/>
           </div>
           <div>
-            <img src={(video)=>UserAvatar(video.owner)} alt=""/>
+            <img src={UserAvatar(video.owner)} className="rounded-full h-25 w-25" alt=""/>
           </div>
+          <span>
+              <h3>{video.title}</h3>
+              <h3>3 days ago . 199k views</h3>
+            </span>
        </div>
        )
        ) 
