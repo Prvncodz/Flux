@@ -59,7 +59,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
       throw new ApiError(400, "unable to fetch video file path");
     }
     if (!thumbnailFileToPath) {
-      throw new ApiError(400, "unable to fetch thumbsnail file path");
+      throw new ApiError(400, "unable to fetch thumbnail file path");
     }
 
     const videoResponse = await uploadOnCloud(videoFileToPath);

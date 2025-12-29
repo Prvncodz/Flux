@@ -263,16 +263,16 @@ const currentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "current user fetched successfully"));
 });
 
+//get user by id 
 const getUserById= asyncHandler(async (req,res)=>{
-      const {userId}=req.params
-      const user= await User.findById(userid)
+      const {userId}=req.params;
+      const user= await User.findById(userId);
       if(!user){
-      throw new ApiError(500,"Unable to find user")
+      throw new ApiError(500,"Unable to find user");
+  }
     return res
     .status(200)
-    .json(new ApiResponse(200,user,"user fetched successfully"))
-  }
-      
+    .json(new ApiResponse(200,user,"user fetched successfully"));      
 });
 
 //update account information
