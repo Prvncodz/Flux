@@ -11,6 +11,7 @@ import {
   updateUserCoverImage,
   showUserProfile,
   getWatchHistory,
+  getUserById
 } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { verifyJwt } from "../middlewares/auth.js";
@@ -24,7 +25,7 @@ router.post(
   ]),
   registerUser,
 );
-
+router.get("/c/:userId",getUserById)
 router.post("/login", loginUser);
 
 //secured routes
