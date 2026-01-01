@@ -44,7 +44,7 @@ export default function Nav({ user, isLogged }) {
           </div>
           {isActive && (
             <>
-              <div className="absolute top-15 right-3 bg-gray-50 border border-1 border-gray-600 border border-1 border-gray-200 h-auto w-50 rounded-xl flex flex-col overflow-hidden">
+    <div className="absolute top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-50 rounded-xl flex flex-col overflow-hidden">
                 <div className="p-3 h-auto">
                   <div className=" relative flex justify-left items-center w-full mb-3">
                     <img
@@ -56,7 +56,7 @@ export default function Nav({ user, isLogged }) {
                       <div className=" font-normal text-lg text-gray-700 w-auto text-left">
                         {user?.fullName}
                       </div>
-                      <div className="text-gray-600 font-normal text-lg text-gray-600 w-auto -mt-1 text-left">
+                      <div className="text-gray-600 font-normal text-lg  w-auto -mt-1 text-left">
                         {"@" + user?.userName}
                       </div>
                     </span>
@@ -116,7 +116,7 @@ export default function Nav({ user, isLogged }) {
       ) : (
         <>
           <div
-            className="m-2 w-auto h-9 flex justify-center items-center rounded-3xl border border-2 border-gray-200 pt-5 pb-5 pl-2 pr-2 cursor-pointer"
+            className="m-2 w-auto h-9 flex justify-center items-center rounded-3xl border-2 border-gray-200 pt-5 pb-5 pl-2 pr-2 cursor-pointer"
             onClick={() => {
               navigate("/signin");
             }}

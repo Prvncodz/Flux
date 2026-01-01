@@ -4,21 +4,22 @@ import axios from "../../api/axios.js";
 export default function Feed(){
    const [videos,setVideos]=useState([{}])
    const [areVideosFetched, SetAreVideosFetched] = useState(false)
-  const [user, setuser] = useState({})
-
+   const [user, setuser] = useState({})
       async function UserAvatar(userId){
         try {
   
          const res = await axios.get(`user/c/${userId}`)
           if(res.status===200){  
-           console.log(res.data.data.avatar.url)
-          return res.data.data.avatar.url
+          console.log("res data :",res.data.data.avatar.url)
+          const url= res.data.data.avatar.url
+          console.log("url :",url)
+        return url
       }
         } catch (error) {
            console.log(error)
            console.log("backend message :",error?.response?.data?.message)
+            return null
         }
-    return null
     }
 
   useEffect(()=>{
@@ -30,7 +31,7 @@ export default function Feed(){
           SetAreVideosFetched(true)
           })
       }catch(error){
-      console.log(error)
+       console.log(error)
     }
     }
       
@@ -49,7 +50,7 @@ export default function Feed(){
             <img src={video.thumbnail.url} className=" w-full " alt=""/>
           </div>
           <div>
-            <img src={UserAvatar(video.owner)} className="rounded-full h-25 w-25" alt=""/>
+            <img src={UserAvatar(video.owner)} className="rounded-full h-10 w-10" alt=""/>
           </div>
           <span>
               <h3>{video.title}</h3>
