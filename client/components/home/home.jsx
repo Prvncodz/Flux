@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "../../api/axios.js";
 import Cookies from "js-cookie";
 import Nav from "./nav.jsx";
-import Feed from "./feed.jsx"
+import Feed from "./feed.jsx";
 
 export default function Home() {
   const [user, setUser] = useState({});
@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <>
       <Nav user={user} isLogged={isUserLogged} />
-      <Feed/>
+      <Feed />
     </>
   );
 }
