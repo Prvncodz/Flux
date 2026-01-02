@@ -40,17 +40,17 @@ export default function Home() {
   }, [isTokenReceived]);
 
   return (
-    <>
+    <div>
       <TabContext.Provider value={values}>
       <Nav user={user} isLogged={isUserLogged} /> 
       {
         isHomeSelected?(
-          <Feed className="overflow-auto"/>
+          <Feed />
         ):(
-          <TweetFeed className="overflow-auto"/>
+          <TweetFeed/>
         ) 
         }
       </TabContext.Provider>
-      </>
+      </div>
   );
 }

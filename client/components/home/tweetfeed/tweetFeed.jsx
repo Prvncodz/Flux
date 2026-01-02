@@ -23,7 +23,7 @@ export default function Feed() {
 
   return (
     <>
-      <div className="h-auto p-3 flex flex-col gap-6 ">
+      <div className="h-screen overflow-y-auto overflow-x-hidden p-3 flex flex-col gap-6 ">
         {areTweetsFetched &&
           tweets.map((tweet, idx) =>  (
             <TweetComponent key={idx} tweet={tweet} idx={idx} />
