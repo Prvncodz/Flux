@@ -7,6 +7,5 @@ export default function VideoComponent({ tweet, idx }) {
     <div>
         tweetssssss
       </div>
-    </div>
-  );
+);
 }

@@ -4,7 +4,7 @@ export default function VideoComponent({ video, idx }) {
   const { avatarUrl } = useGetUserAvatar(video.owner);
 
   return (
-    <div>
+    <div className="mb-3">
       <div>
         <img src={video.thumbnail.url} className=" w-full " />
       </div>

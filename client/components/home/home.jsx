@@ -3,7 +3,7 @@ import axios from "../../api/axios.js";
 import Cookies from "js-cookie";
 import Nav from "./nav.jsx";
 import Feed from "./videofeed/feed.jsx";
-import { TabContext } from "../../contexts/TabContext.js";
+import TabContext  from "../../contexts/TabContext.js";
 import TweetFeed from "./tweetfeed/tweetFeed.jsx"
 
 export default function Home() {
@@ -41,12 +41,9 @@ export default function Home() {
 
   return (
     <>
-      <TabContext.Provider value={setIsHomeSelected}>
+      <TabContext.Provider value={{isHomeSelected,setIsHomeSelected}}>
       <Nav user={user} isLogged={isUserLogged} />
-      { isHomeSelected?
-      <Feed className="overflow-y-scroll overflow-x-hidden"/>:
-      <TweetFeed className="overflow-y-scroll overflow-x-hidden"/>
-    }
+      
       </TabContext.Provider>
       </>
   );

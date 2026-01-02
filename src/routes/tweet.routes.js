@@ -9,11 +9,12 @@ import {
 import { verifyJwt } from "../middlewares/auth.js";
 
 const router = Router();
-router.use(verifyJwt); // Apply verifyJwt middleware to all routes in this file
+ // Apply verifyJwt middleware to all routes in this file exept get all tweets
 router.get("/get-all-tweets", getAllTweets);
-router.post("/create-tweet", createTweet);
+router.post("/create-tweet",verifyJwt, createTweet);
 router.get("/:userId", getUserTweets);
-router.patch("/:tweetId/update-tweet", updateTweet);
-router.delete("/:tweetId/delete-tweet", deleteTweet);
+router.patch("/:tweetId/update-tweet",verifyJwt, updateTweet);
+
+router.delete("/:tweetId/delete-tweet",verifyJwt, deleteTweet);
 
 export default router;

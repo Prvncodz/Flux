@@ -3,13 +3,13 @@ import profileIcon from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useState,useContext } from "react";
 import axios from "../../api/axios.js";
-import { TabContext } from "../../contexts/TabContext.js";
+import TabContext  from "../../contexts/TabContext.js";
+
 export default function Nav({ user, isLogged }) {
   const navigate = new useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
-  const {setIsHomeSelected}=useContext(TabContext);
-
+  const {isHomeSelected,setIsHomeSelected}=useContext(TabContext);
   async function handleSignout() {
     try {
       const res = await axios.post("/user/logout");
@@ -23,12 +23,15 @@ export default function Nav({ user, isLogged }) {
       setIsActive(false);
     }
   }
+  function handleToggleTab(bool) {
+    setIsHomeSelected(bool);
+  }
 
   return (
-    <nav className="h-13 flex flex-col justify-between items-center bg-gray-50 w-full">
-      <div className="flex-row ">
-      <div className=" ml-5">
-        <img src={logo} className="h-8 w-full" loading="lazy" />
+    <nav className="h-30 bg-gray-50 w-full">
+    <div className="flex flex-row w-full justify-between items-center">
+      <div className="ml-5">
+        <img src={logo} className="h-8 w-auto" loading="lazy" />
       </div>
       {isLogged && notLoggedOut ? (
         <>
@@ -85,23 +88,23 @@ export default function Nav({ user, isLogged }) {
                       <path
                         d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54"
                         stroke="#171717"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M15 12H3.62"
                         stroke="#171717"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M5.85 8.64999L2.5 12L5.85 15.35"
                         stroke="#171717"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                     <span className="ml-2 text-medium font-medium">
@@ -126,10 +129,10 @@ export default function Nav({ user, isLogged }) {
           </div>
         </>
       )}
-      </div>
-      <div className="flex-row">
-        <span className="text-xl text-gray-800 font-semibold ">Home</span>
-        <span className="text-xl text-gray-800 font-semibold ">Posts</span>
+    </div>
+      <div className="flex flex-row w-full mt-6">
+        <span className={`text-xl font-semibold w-50 ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={handleToggleTab(true)}>Home</span>
+        <span className={`text-xl text-gray-800 font-semibold w-50  ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={handleToggleTab(false)}>Posts</span>
       </div>
     </nav>
   );

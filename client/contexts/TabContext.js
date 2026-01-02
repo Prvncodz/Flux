@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-export const TabContext=createContext();
+ const TabContext=createContext();
 
-
+export default TabContext;
