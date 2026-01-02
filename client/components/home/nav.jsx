@@ -3,13 +3,14 @@ import profileIcon from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useState,useContext } from "react";
 import axios from "../../api/axios.js";
-import TabContext  from "../../contexts/TabContext.js";
+import TabContext  from "../../contexts/TabContext.jsx";
 
 export default function Nav({ user, isLogged }) {
   const navigate = new useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
   const {isHomeSelected,setIsHomeSelected}=useContext(TabContext);
+
   async function handleSignout() {
     try {
       const res = await axios.post("/user/logout");
@@ -23,9 +24,7 @@ export default function Nav({ user, isLogged }) {
       setIsActive(false);
     }
   }
-  function handleToggleTab(bool) {
-    setIsHomeSelected(bool);
-  }
+  
 
   return (
     <nav className="h-30 bg-gray-50 w-full">
@@ -131,8 +130,8 @@ export default function Nav({ user, isLogged }) {
       )}
     </div>
       <div className="flex flex-row w-full mt-6">
-        <span className={`text-xl font-semibold w-50 ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={handleToggleTab(true)}>Home</span>
-        <span className={`text-xl text-gray-800 font-semibold w-50  ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={handleToggleTab(false)}>Posts</span>
+          <span className={`text-xl font-semibold w-50 ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setIsHomeSelected(true)}>Home</span>
+          <span className={`text-xl font-semibold w-50  ${isHomeSelected? `text-gray-800`:`text-blue-700 `}`} onClick={()=>setIsHomeSelected(false)}>Posts</span>
       </div>
     </nav>
   );

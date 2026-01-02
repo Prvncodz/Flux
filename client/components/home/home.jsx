@@ -3,7 +3,7 @@ import axios from "../../api/axios.js";
 import Cookies from "js-cookie";
 import Nav from "./nav.jsx";
 import Feed from "./videofeed/feed.jsx";
-import TabContext  from "../../contexts/TabContext.js";
+import TabContext  from "../../contexts/TabContext.jsx";
 import TweetFeed from "./tweetfeed/tweetFeed.jsx"
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
   const [isTokenReceived, setIsTokenReceived] = useState(false);
   const [isUserLogged, setIsUserLogged] = useState(false);
   const [isHomeSelected, setIsHomeSelected] = useState(true);
-
+  const values={isHomeSelected , setIsHomeSelected};
   useEffect(() => {
     async function loginUser() {
       try {
@@ -41,9 +41,15 @@ export default function Home() {
 
   return (
     <>
-      <TabContext.Provider value={{isHomeSelected,setIsHomeSelected}}>
-      <Nav user={user} isLogged={isUserLogged} />
-      
+      <TabContext.Provider value={values}>
+      <Nav user={user} isLogged={isUserLogged} /> 
+      {
+        isHomeSelected?(
+          <Feed className="overflow-auto"/>
+        ):(
+          <TweetFeed className="overflow-auto"/>
+        ) 
+        }
       </TabContext.Provider>
       </>
   );
