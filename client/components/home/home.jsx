@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import axios from "../../api/axios.js";
 import Cookies from "js-cookie";
 import Nav from "./nav.jsx";
-import Feed from "./feed.jsx";
+import Feed from "./videofeed/feed.jsx";
+import { TabContext } from "../../contexts/TabContext.js";
+import TweetFeed from "./tweetfeed/tweetFeed.jsx"
 
 export default function Home() {
   const [user, setUser] = useState({});
   const [isTokenReceived, setIsTokenReceived] = useState(false);
   const [isUserLogged, setIsUserLogged] = useState(false);
+  const [isHomeSelected, setIsHomeSelected] = useState(true);
 
   useEffect(() => {
     async function loginUser() {
@@ -38,8 +41,13 @@ export default function Home() {
 
   return (
     <>
+      <TabContext.Provider value={setIsHomeSelected}>
       <Nav user={user} isLogged={isUserLogged} />
-      <Feed />
-    </>
+      { isHomeSelected?
+      <Feed className="overflow-y-scroll overflow-x-hidden"/>:
+      <TweetFeed className="overflow-y-scroll overflow-x-hidden"/>
+    }
+      </TabContext.Provider>
+      </>
   );
 }

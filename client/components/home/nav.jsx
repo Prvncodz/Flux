@@ -1,13 +1,14 @@
 import logo from "../assets/logo.png";
 import profileIcon from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import axios from "../../api/axios.js";
-
+import { TabContext } from "../../contexts/TabContext.js";
 export default function Nav({ user, isLogged }) {
   const navigate = new useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
+  const {setIsHomeSelected}=useContext(TabContext);
 
   async function handleSignout() {
     try {
@@ -24,7 +25,8 @@ export default function Nav({ user, isLogged }) {
   }
 
   return (
-    <nav className="h-13 flex justify-between items-center bg-gray-50 w-full">
+    <nav className="h-13 flex flex-col justify-between items-center bg-gray-50 w-full">
+      <div className="flex-row ">
       <div className=" ml-5">
         <img src={logo} className="h-8 w-full" loading="lazy" />
       </div>
@@ -124,6 +126,11 @@ export default function Nav({ user, isLogged }) {
           </div>
         </>
       )}
+      </div>
+      <div className="flex-row">
+        <span className="text-xl text-gray-800 font-semibold ">Home</span>
+        <span className="text-xl text-gray-800 font-semibold ">Posts</span>
+      </div>
     </nav>
   );
 }

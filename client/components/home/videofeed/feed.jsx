@@ -23,7 +23,7 @@ export default function Feed() {
 
   return (
     <>
-      <div className="h-auto p-3 flex flex-col gap-6 overflow-y-auto">
+      <div className="h-auto p-3 fle x flex-col gap-6 ">
         {areVideosFetched &&
           videos.map((video, idx) =>  (
             <VideoComponent key={idx} video={video} idx={idx} />
