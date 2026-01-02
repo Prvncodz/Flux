@@ -130,8 +130,8 @@ export default function Nav({ user, isLogged }) {
       )}
     </div>
       <div className="flex flex-row w-full mt-6">
-          <span className={`text-xl font-semibold w-50 cursor-pointer ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setIsHomeSelected(true)}>Home</span>
-          <span className={`text-xl font-semibold w-50 cursor-pointer ${isHomeSelected? `text-gray-800`:`text-blue-700 `}`} onClick={()=>setIsHomeSelected(false)}>Posts</span>
+          <span className={`text-xl relative mt-3.5 font-semibold w-50 cursor-pointer ${isHomeSelected? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setIsHomeSelected(true)}>Home<div className={`absolute -bottom-2 w-full h-1 ${isHomeSelected?`bg-blue-800`:``}`}></div></span>
+          <span className={`text-xl relative mt-3.5 font-semibold w-50 cursor-pointer ${isHomeSelected? `text-gray-800`:`text-blue-700 `}`} onClick={()=>setIsHomeSelected(false)}>Posts<div className={`absolute -bottom-2 w-full h-1 ${isHomeSelected?``:`bg-blue-800`}`}></div></span>
       </div>
     </nav>
   );
