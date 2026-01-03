@@ -1,7 +1,7 @@
-import { useGetUserAvatar } from "../../../hooks/useGetUserAvatar.jsx";
+import { useGetUser } from "../../../hooks/useGetUser.jsx";
 
 export default function VideoComponent({ video, idx }) {
-  const { avatarUrl } = useGetUserAvatar(video.owner);
+  const { avatarUrl } = useGetUser(video.owner);
 
   return (
     <div className="mb-3">

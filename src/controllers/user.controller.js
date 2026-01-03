@@ -266,7 +266,9 @@ const currentUser = asyncHandler(async (req, res) => {
 //get user by id 
 const getUserById= asyncHandler(async (req,res)=>{
       const {userId}=req.params;
-      const user= await User.findById(userId);
+      const user= await User.findById(userId).select(
+    "-password -refreshTokens",
+  );
       if(!user){
       throw new ApiError(500,"Unable to find user");
   }
