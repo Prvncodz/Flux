@@ -1,5 +1,7 @@
-import { useEffect,useState } from "react";
+import { useEffect,useState,useCallback } from "react";
 import axios from "../api/axios.js";
+
+
 const useGetUser = (userId)=> {
 
   const [avatarUrl,setAvatarUrl] = useState(null);
@@ -13,16 +15,14 @@ const useGetUser = (userId)=> {
   if(!userId ){
     return null;
   }
-
-  useEffect(()=>{
-    useCallback(
-      () => {
-        async function GetUser(userId) {
+  
+  const fetchUserById = useCallback(
+    async (userId)=>{
 
           try {
             setLoading(true)
             const res = await axios.get(`user/c/${userId}`);
-            if(res.status===200){  
+            if(res.status===200){
               setAvatarUrl(res.data.data?.avatar?.url);
               setLoading(false);
               setCoverimageUrl(res.data.data?.coverImage?.url);
@@ -37,11 +37,18 @@ const useGetUser = (userId)=> {
             setLoading(false)
 
           }
-        }
-      [GetUser,userId],
-    )
-    GetUser(userId);
-  },[]);
+  }
+,[userId],
+  )
+
+  useEffect(()=>{
+    try {
+      fetchUserById(userId);
+    } catch (error) {
+     console.log(error); 
+    }
+      
+  },[fetchUserById]);
 
   return {avatarUrl,coverimgUrl,fullname,username,email,watchHistory};
 }

@@ -1,8 +1,11 @@
 import { useGetUser } from "../../../hooks/useGetUser.jsx";
+import Like from "../likeComponent/tweetlike.jsx"
+import Comment from "../commentComponent/tweetComment.jsx"
+
+
 
 export default function VideoComponent({ tweet, idx }) {
   const { avatarUrl,fullname,username } = useGetUser(tweet.owner);
-
   return (
     <>
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
@@ -19,8 +22,12 @@ export default function VideoComponent({ tweet, idx }) {
           </span>
 
         </div>
-        <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-lg font-medium text-left ">
+        <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left ">
           {tweet.content}
+        </div>
+        <div className="flex justify-start gap-3 mt-4 ml-5">
+          <span><Like/></span>
+          <span><Comment/></span>
         </div>
       </div>
     </>

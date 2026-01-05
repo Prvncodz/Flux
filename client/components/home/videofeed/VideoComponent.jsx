@@ -13,6 +13,7 @@ export default function VideoComponent({ video, idx }) {
         <img
           src={avatarUrl || "../assets/dpfp.jpg"}
           className="rounded-full h-10 w-10" 
+            loading="lazy"
         />
       </div>
       <span className="ml-4">
