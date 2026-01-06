@@ -21,12 +21,12 @@ function LikeButton() {
         borderRadius: "8px",
         border: "none",
         cursor: "pointer",
-        backgroundColor: liked ? "#ff4d4d" : "#e0e0e0,
+        backgroundColor: liked ? "#ff4d4d" : "#e0e0e0",
         color: liked ? "white" : "black",
         fontSize: "16px",
       }}
     >
-      {liked ? "❤️" : "🤍"} ({count})
+      {liked ? "❤️ Liked" : "🤍"} ({count}) 
     </button>
   );
 }

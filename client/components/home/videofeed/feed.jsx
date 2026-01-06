@@ -11,6 +11,7 @@ export default function Feed() {
       try {
         axios.get("/videos/all-videos").then((res) => {
           setVideos(res.data.data);
+          console.log(res.data.data);
           SetAreVideosFetched(true);
         });
       } catch (error) {
