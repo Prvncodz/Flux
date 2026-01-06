@@ -17,16 +17,12 @@ function LikeButton() {
     <button
       onClick={handleLike}
       style={{
-        padding: "10px 16px",
-        borderRadius: "8px",
-        border: "none",
         cursor: "pointer",
-        backgroundColor: liked ? "#ff4d4d" : "#e0e0e0",
-        color: liked ? "white" : "black",
-        fontSize: "16px",
+        color: "black",
+        fontSize: "14px",
       }}
     >
-      {liked ? "❤️ Liked" : "🤍"} ({count}) 
+      {liked ? `❤️ ${count}`: `🤍 ${count}`} 
     </button>
   );
 }

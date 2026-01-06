@@ -11,6 +11,7 @@ export default function Feed() {
       try {
         axios.get("/tweets/get-all-tweets").then((res) => {
           setTweets(res.data.data);
+          console.log(res.data.data);
           SetAreTweetsFetched(true);
         });
       } catch (error) {
