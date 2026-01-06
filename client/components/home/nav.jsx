@@ -48,7 +48,7 @@ export default function Nav({ user, isLogged }) {
           </div>
           {isActive && (
             <>
-              <div className="absolute top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-50 rounded-xl flex flex-col overflow-hidden">
+              <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-50 rounded-xl flex flex-col overflow-hidden">
                 <div className="p-3 h-auto">
                   <div className=" relative flex justify-left items-center w-full mb-3">
                     <img
@@ -67,7 +67,7 @@ export default function Nav({ user, isLogged }) {
                   </div>
 
                   <a
-                    href="#"
+                    href="/userchannel"
                     className="text-lg font-normal  text-blue-600 text-left "
                   >View your channel </a>
                 </div>

@@ -2,7 +2,7 @@ import { useEffect,useState,useCallback } from "react";
 import axios from "../api/axios.js";
 
 
-const useGetUser = (userId)=> {
+const useGetUserById = (userId)=> {
 
   const [avatarUrl,setAvatarUrl] = useState(null);
   const [coverimgUrl, setCoverimageUrl] = useState(null);
@@ -52,4 +52,4 @@ const useGetUser = (userId)=> {
 
   return {avatarUrl,coverimgUrl,fullname,username,email,watchHistory};
 }
-export {useGetUser}
+export {useGetUserById}

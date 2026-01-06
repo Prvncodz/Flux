@@ -1,8 +1,8 @@
-import { useGetUser } from "../../../hooks/useGetUser.jsx";
+import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import {useState,useEffect} from 'react';
 
 export default function VideoComponent({ video, idx }) {
-  const { avatarUrl } = useGetUser(video.owner);
+  const { avatarUrl } = useGetUserById(video.owner);
   const [duration,setDuration] =useState("00:00")
 
   useEffect(() => {

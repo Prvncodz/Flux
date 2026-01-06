@@ -37,7 +37,7 @@ function LikeButton({tweetId}) {
           console.log(res.data)
         }
       } catch (err) {
-        console.log(`Error while toggling tweet likes with id ${tweetId} likes`,err);
+        console.log(`Error while toggling tweet likes with id ${tweetId}`,err);
       }
 
     }, 800);
