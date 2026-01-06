@@ -26,7 +26,7 @@ export default function VideoComponent({ tweet, idx }) {
           {tweet.content}
         </div>
         <div className="flex justify-start gap-3 mt-4 ml-5">
-          <span><Like/></span>
+          <span><Like tweetId={tweet._id}/></span>
           <span><Comment/></span>
         </div>
       </div>
