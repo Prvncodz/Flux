@@ -106,6 +106,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 });
 
 const getLikedVideos = asyncHandler(async (req, res) => {
+
   const { page = 1, limit = 10 } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
@@ -137,5 +138,27 @@ const getLikedVideos = asyncHandler(async (req, res) => {
       ),
     );
 });
+const getTweetLikesCount= asyncHandler(async (req,res)=>{
+    let likesCount=0;
+    const {tweetId}=req.params;
+     if(!tweetId){
+     new ApiError(400,"Invalid tweet Id");
+     }
+    likesCount = await Like.countDocuments({tweet:tweetId});
+    if(!likesCount){
+    new ApiError(503,"cannot find the like docs for this tweet");
+    }
+    return res 
+    .status(200)
+    .json(
+      new ApiResponse(
+      200,
+      likesCount,
+      "like count successfully fetched"
+      )
+    )
+});
 
-export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos };
+
+
+export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos ,getTweetLikesCount};

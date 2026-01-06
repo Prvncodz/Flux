@@ -4,6 +4,7 @@ import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Like } from "../models/like.model.js";
 
 const createTweet = asyncHandler(async (req, res) => {
   const { content } = req.body;
@@ -100,7 +101,6 @@ const deleteTweet = asyncHandler(async (req, res) => {
 
 const getAllTweets = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, userId } = req.query;
-
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
   const skipNum = (pageNum - 1) * limitNum;
