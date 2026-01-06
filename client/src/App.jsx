@@ -11,7 +11,7 @@ import UserContext from "../contexts/UserContext.jsx"
 import Home from "../components/home/home.jsx";
 import SignUp from "../components/signup.jsx";
 import SignIn from "../components/signin.jsx";
-import Profile from "../components/userProfile//profile.jsx";
+import Profile from "../components/userProfile/profile.jsx";
 import axios from "../api/axios.js"
 
 

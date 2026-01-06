@@ -48,7 +48,7 @@ router.patch(
   updateUserCoverImage,
 );
 
-router.get("/c/:username", verifyJwt, showUserProfile);
+router.get("/p/:username", verifyJwt, showUserProfile);
 router.get("/user-watch-history", verifyJwt, getWatchHistory);
 
 export default router;
