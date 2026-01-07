@@ -105,7 +105,7 @@ export default function SignUp() {
               >
                 <div
                   className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
-			 cursor-pointer top-0 cursor-pointer"
+			 cursor-pointer top-0 "
                 ></div>
                 <img
                   src={editIcon}
