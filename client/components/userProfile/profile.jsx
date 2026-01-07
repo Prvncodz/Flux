@@ -3,6 +3,8 @@ import { useState,useEffect,useContext,useCallback } from "react";
 import UserContext from "../../contexts/UserContext.jsx";
 import axios from "../../api/axios.js";
 import ArrowLeft from "../assets/arrowLeft.jsx"
+import UserTick from "../assets/usertick.jsx"
+import UserAddIcon from "../assets/useradd.jsx"
 
 export default function Profile(){
 
@@ -39,6 +41,9 @@ export default function Profile(){
         <img src={coverImageUrl || "../assets/dbanner.jpg" } className="h-full w-full relative" loading="lazy" />
         <img src={avatarUrl || "../assets/dpfp.jpg" } className="h-20 rounded-full absolute left-1 -bottom-10 w-20 border-2 border-white" loading="lazy" />
       </div>
+        <div className="flex justify-between ">
+          <button className="w-35 h-8 bg-blue-900  text-neutral-200 text-lg flex items-center justify-between fixed right-0 p-4"><UserAddIcon/><span>Subscribe</span></button>
+        </div>
     </>
   );
 }
