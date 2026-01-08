@@ -16,7 +16,7 @@ export default function Home() {
       <Nav /> 
       {
         isHomeSelected?(
-          <Feed className="relative z-0"/>
+          <Feed className="relative z-0" fetchType="all"/>
         ):(
           <TweetFeed className="relative z-0"/>
         ) 

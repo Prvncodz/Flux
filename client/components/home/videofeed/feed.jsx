@@ -1,15 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
+import UserContext from "../../../contexts/UserContext.jsx"
 
-export default function Feed() {
+export default function Feed({fetchType}) {
   const [videos, setVideos] = useState([{}]);
   const [areVideosFetched, SetAreVideosFetched] = useState(false);
+  const {user}=useContext(UserContext);
 
   useEffect(() => {
-    function fetchAllVideos() {
+    async function fetchAllVideos() {
       try {
-        axios.get("/videos/all-videos").then((res) => {
+        await axios.get("/videos/all-videos")
+        .then((res) => {
+          setVideos(res.data.data);
+          SetAreVideosFetched(true);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function fetchVideosByUser() {
+      if(!user?._id)return;
+      try {
+        await axios.get(`/videos/all-videos?userId=${user?._id}`)
+        .then((res) => {
           setVideos(res.data.data);
           SetAreVideosFetched(true);
         });
@@ -18,8 +33,12 @@ export default function Feed() {
       }
     }
 
-    fetchAllVideos();
-  }, []);
+   if (fetchType==="user") {
+      fetchVideosByUser();
+    } else {
+      fetchAllVideos();
+    } 
+  }, [user]);
 
   return (
     <>

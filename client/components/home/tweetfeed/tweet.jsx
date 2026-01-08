@@ -1,18 +1,20 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import Like from "../likeComponent/tweetlike.jsx"
+import dpfp from "../../assets/dpfp.jpg"
 
 
-
-export default function VideoComponent({ tweet, idx }) {
-  const { avatarUrl,fullname,username } = useGetUserById(tweet.owner);
+export default function TweetComponent({ tweet, idx }) {
+  const { avatarUrl,fullname,username } = useGetUserById(tweet?.owner);
+  
   return (
     <>
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
             <img
-              src={avatarUrl || "../assets/dpfp.jpg"}
-              className="rounded-full h-10 w-10" 
+              src={avatarUrl || dpfp}
+              className="rounded-full h-10 w-10"
+              onError={(e)=>e.target.src=dpfp}
             />
           </div>
           <span className="ml-4 h-7">

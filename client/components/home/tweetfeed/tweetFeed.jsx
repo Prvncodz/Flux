@@ -1,15 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
+import UserContext from "../../../contexts/UserContext.jsx"
 
-export default function Feed() {
+export default function Feed({fetchType}) {
   const [tweets, setTweets] = useState([{}]);
   const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
 
+  const {user}=useContext(UserContext);
   useEffect(() => {
-    function fetchAllTweets() {
+    async function fetchAllTweets() {
       try {
-        axios.get("/tweets/get-all-tweets").then((res) => {
+       await axios.get("/tweets/get-all-tweets").then((res) => {
+          setTweets(res.data.data);
+          SetAreTweetsFetched(true);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function fetchAllTweetsByUser() {
+      if(!user?._id)return;
+      try {
+       await axios.get(`/tweets/${user?._id}`).then((res) => {
           setTweets(res.data.data);
           SetAreTweetsFetched(true);
         });
@@ -18,8 +31,12 @@ export default function Feed() {
       }
     }
 
+    if (fetchType==="user") {
+      fetchAllTweetsByUser();
+    }else{
     fetchAllTweets();
-  }, []);
+    }
+  }, [user]);
 
   return (
     <>

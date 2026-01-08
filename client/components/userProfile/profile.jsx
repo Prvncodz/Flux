@@ -19,8 +19,8 @@ export default function Profile(){
   const [UserProfile,setUserProfile]=useState({});
   const [tabOpened,setTabOpened]=useState("videos");
   const tabs={
-    "videos":<VideoFeed/>,
-    "posts":<PostFeed/>,
+    "videos":<VideoFeed fetchType="user"/>,
+    "posts":<PostFeed fetchType="user"/>,
     "playlists":<PlaylistFeed/>
   }
   useEffect(() => {

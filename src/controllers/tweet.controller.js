@@ -41,16 +41,13 @@ const getUserTweets = asyncHandler(async (req, res) => {
     .skip(skipNum)
     .limit(limitNum);
 
-  const allTweetsOfUser = allTweetDocsOfUser.map((Tweet) => Tweet.content);
-  if (!allTweetsOfUser) {
-    throw new ApiError(500, "unable to fetch all tweets of user");
-  }
+  
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        allTweetsOfUser,
+        allTweetDocsOfUser,
         "All tweets of user fetched successfully",
       ),
     );
