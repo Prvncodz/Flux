@@ -24,7 +24,7 @@ export default function Nav() {
     }else{
      return 
     }
- }, [user])
+ }, [user,user?.fullName,user?.userName,user?.avatar?.url]);
  
   async function handleSignout() {
     try {
