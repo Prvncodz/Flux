@@ -1,16 +1,31 @@
 import logo from "../assets/logo.png";
 import profileIcon from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
-import { useState,useContext } from "react";
+import { useState,useContext,useEffect } from "react";
 import axios from "../../api/axios.js";
 import TabContext  from "../../contexts/TabContext.jsx";
+import UserContext from "../../contexts/UserContext.jsx";
+import dpfp from "../assets/dpfp.jpg";
 
-export default function Nav({ user, isLogged }) {
+export default function Nav() {
   const navigate = new useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
   const {isHomeSelected,setIsHomeSelected}=useContext(TabContext);
-
+  const {user,isUserLogged}= useContext(UserContext);
+  const [avatar,setAvatar]=useState(null);
+  const [fullname, setFullname] = useState("Jhon Doe");
+  const [username, setUsername] = useState("jdoejr");
+ useEffect(() => {
+   if(isUserLogged){
+   setFullname(user?.fullName);
+   setUsername(user?.userName);
+   setAvatar(user?.avatar?.url);
+    }else{
+     return 
+    }
+ }, [user])
+ 
   async function handleSignout() {
     try {
       const res = await axios.post("/user/logout");
@@ -32,7 +47,7 @@ export default function Nav({ user, isLogged }) {
       <div className="ml-5">
         <img src={logo} className="h-8 w-auto" loading="lazy" />
       </div>
-      {isLogged && notLoggedOut ? (
+      {isUserLogged && notLoggedOut ? (
         <>
           <div
             className="m-2 w-12 h-9 flex justify-center relative items-center"
@@ -41,7 +56,8 @@ export default function Nav({ user, isLogged }) {
             }}
           >
             <img
-              src={user?.avatar?.url}
+              src={avatar || dpfp}
+              onError={(e)=>e.target.src=dpfp}
               className="h-10 w-10 rounded-full"
               loading="lazy"
             />
@@ -52,16 +68,17 @@ export default function Nav({ user, isLogged }) {
                 <div className="p-3 h-auto">
                   <div className=" relative flex justify-left items-center w-full mb-3">
                     <img
-                      src={user?.avatar?.url}
+                      src={avatar||dpfp}
+                      onError={(e)=>e.target.src=dpfp}
                       className="h-11 w-11 rounded-full relative mr-3 ml-2 left-0"
                       loading="lazy"
                     />
                     <span>
                       <div className=" font-normal text-lg text-gray-700 w-auto text-left">
-                        {user?.fullName}
+                        {fullname}
                       </div>
                       <div className="text-gray-600 font-normal text-lg  w-auto -mt-1 text-left">
-                        {"@" + user?.userName}
+                        {"@" + username}
                       </div>
                     </span>
                   </div>
