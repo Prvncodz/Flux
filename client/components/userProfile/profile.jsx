@@ -7,13 +7,22 @@ import UserAddIcon from "../assets/useradd.jsx"
 import dbanner from "../assets/dbanner.jpg"
 import dpfp from "../assets/dpfp.jpg"
 import Button from "../button.jsx";
+import VideoFeed from "../home/videofeed/feed.jsx";
+import PostFeed from "../home/tweetfeed/tweetFeed.jsx";
+import PlaylistFeed from "../home/playlistfeed/playlistFeed.jsx";
+
+
 
 export default function Profile(){
 
   const {user,isUserLogged}=useContext(UserContext);
   const [UserProfile,setUserProfile]=useState({});
   const [tabOpened,setTabOpened]=useState("videos");
-  
+  const tabs={
+    "videos":<VideoFeed/>,
+    "posts":<PostFeed/>,
+    "playlists":<PlaylistFeed/>
+  }
   useEffect(() => {
     if(!user?.userName)return;
     async function getUserProfile(username) {
@@ -60,6 +69,11 @@ export default function Profile(){
           <span name="videos" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="videos"? `text-blue-700`:`text-gray-800 `}`} onClick={()=> setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="videos"?`bg-blue-800`:``}`}></div></span>
           <span name ="posts" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="posts"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="posts"?`bg-blue-800`:``}`}></div></span>
           <span name="playlists" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="playlists"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="playlists"?`bg-blue-800`:``}`}></div></span>
+      </div>
+      <div className="relative overflow-y-auto">
+       {
+         tabs[tabOpened] 
+        } 
       </div>
     </>
   );

@@ -309,17 +309,14 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   if (!avatarLocalPath) {
     throw new ApiError(400, "uploaded avatar file path unaccessable");
   }
-  const avatar = uploadOnCloud(avatarLocalPath);
+  const avatar =await uploadOnCloud(avatarLocalPath);
 
   if (!avatar) {
     throw new ApiError(401, "clodinary upload of avatar failed");
   }
   const user = req.user;
-  const fileToBeDeleted = user.avatar.public_id;
+  const fileToBeDeleted = user.avatar?.public_id;
 
-  if (!fileToBeDeleted) {
-    throw new ApiError(500, "unable to find old avatar file");
-  }
 
   const updateAvatar = await User.findByIdAndUpdate(
     user?._id,
@@ -334,13 +331,16 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     { new: true },
   ).select("-password");
 
-  const fileDeleted = await deleteFromCloud(fileToBeDeleted);
-  if (!fileDeleted) {
-    throw new ApiError(500, "unable to delete old avatar file");
+  if (fileToBeDeleted) {
+    try {
+      const fileDeleted = await deleteFromCloud(fileToBeDeleted);
+    } catch (err) {
+      throw new ApiError(504,"error while deleting file From Cloud")
+    }
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, updateAvatar, "avatar uploaded successfully"));
+    .json(new ApiResponse(200, updateAvatar, "avatar updated successfully"));
 });
 
 //updare cover image
@@ -357,9 +357,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
   const user = req.user;
   const public_id = user.coverImage.public_id;
   const fileToBeDeleted = public_id;
-  if (!fileToBeDeleted) {
-    throw new ApiError(500, "unable to find cover image file");
-  }
+  
   const updateCoverImage = await User.findByIdAndUpdate(
     user?._id,
     {
@@ -373,10 +371,14 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     { new: true },
   ).select("-password");
 
-  const fileDeleted = await deleteFromCloud(fileToBeDeleted);
-  if (!fileDeleted) {
-    throw new ApiError(500, "unable to delete       old cover image file");
+ if(fileToBeDeleted){
+    try {
+    const fileDeleted = await deleteFromCloud(fileToBeDeleted);
+    } catch (err) {
+      throw new ApiError(504,"error while deleting file From Cloud")
+    }
   }
+  
 
   return res
     .status(200)
