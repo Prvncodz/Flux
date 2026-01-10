@@ -15,6 +15,7 @@ export default function Feed() {
       try {
         await axios.get(`/playlists/user/${userId}`)
         .then((res) => {
+          console.log(res.data.data)
           setPlaylists(res.data.data);
           SetArePlaylistsFetched(true);
         });

@@ -7,13 +7,14 @@ export default function PlaylistComponents({ playlist, idx }) {
   const { avatarUrl } = useGetUserById(playlist.owner);
   const [videos, setVideos] = useState([]);
   useEffect(() => {
+    console.log("Playlist :",playlist);
     setVideos(playlist.videos);
   }, [playlist]);
 
   return (
     <div className="mb-3">
       <div className="relative ">
-        <img src={videos[0].thumbnail.url || dbanner } className=" w-full " />
+        <img src={videos[0].thumbnail.url || dbanner } className=" w-full " onError={(e)=>e.target.src=dbanner}/>
         <div className=""></div>
       </div>
       <div className="flex mt-3">
