@@ -34,7 +34,7 @@ export default function Profile(){
         }
       } catch (error) {
         console.log("Error while fetching user's profile. err message",error);
-      }  
+      }
     }
     getUserProfile(user?.userName);
   }, [user?.userName])
