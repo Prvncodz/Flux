@@ -27,7 +27,7 @@ export default function VideoComponent({ video, idx }) {
   return (
     <div className="mb-3">
       <div className="relative ">
-        <img src={video.thumbnail.url} className=" w-full " />
+        <img src={video.thumbnail.url} className=" w-full h-60" />
         <div className="absolute right-2 bottom-2 p-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium">{duration}</div>
       </div>
       <div className="flex mt-3">
