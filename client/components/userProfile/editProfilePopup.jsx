@@ -1,17 +1,19 @@
-import defaultPfp from "./assets/dpfp.jpg";
-import defaultBanner from "./assets/dbanner.jpg";
-import editIcon from "./assets/editimage.png";
-import { useState, useRef } from "react";
-import SubmitButton from "./submitButton.jsx";
-import axios from "../api/axios.js";
+import defaultPfp from "../assets/dpfp.jpg";
+import defaultBanner from "../assets/dbanner.jpg";
+import editIcon from "../assets/editimage.png";
+import { useState, useRef ,useContext} from "react";
+import SubmitButton from "../submitButton.jsx";
+import axios from "../../api/axios.js";
+import UserContext from "../../contexts/UserContext.jsx";
 
 export default function editProfilePopup() {
+
   const [coverImagePreview, setCoverImagePreview] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [DisplayAvatarRequired, setDisplayAvatarRequired] = useState(false);
   const fileRefci = useRef(null);
   const fileRefav = useRef(null);
-
+  const {user}=useContext(UserContext);
   const [loading, SetLoading] = useState(false);
   const [error, SetError] = useState(false);
   const [isSubmmited, setIsSubmmited] = useState(false);
@@ -26,15 +28,11 @@ export default function editProfilePopup() {
       return;
     }
     try {
-      const res = await axios.post("/user/register", formData, {
+      const res = await axios.patch("/user/update-user-info", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        },  
+        },
       });
-      if (res.status === 200) {
-        navigate("/signin");
-        setIsSubmmited(true);
-      }
     } catch (error) {
       SetError(true);
       console.log(`Error name: ${error.name}`);
@@ -70,29 +68,30 @@ export default function editProfilePopup() {
 
   return (
     <div
-      id="signup-bg"
-      className="h-screen w-screen flex flex-col justify-center
-		items-center bg-gray-200"
+      className="h-full w-full flex flex-col justify-center
+      items-center bg-none top-0 z-20 absolute"
     >
+      <div className="absolute top-0 right-0 bottom-0 left-0 h-full w-full blur-xs opacity-90  z-21 bg-gray-300">
+      </div>
       <div
-        id="signup-card"
         className="h-auto w-87 bg-gray-100 flex flex-col
-			justify-center overflow-hidden rounded-xl"
+        justify-center overflow-hidden rounded-lg absolute z-22"
       >
-        <h1 className="mt-5 text-3xl font-bold text-blue-400 relative">
-          Sign Up
+        <h1 className="mt-5 text-xl font-medium text-blue-400 relative">
+          Update Profile
         </h1>
 
         <form className="p-7" onSubmit={handleFormSubmission}>
           <div className="wrapper relative transition-all ease">
             <div className="relative z-1">
               <img
-                src={coverImagePreview ? coverImagePreview : defaultBanner}
+                src={coverImagePreview ? coverImagePreview : user.coverImage? user.coverImage.url: defaultBanner}
                 onClick={() => {
                   fileRefci.current.click();
                 }}
+                onError={(e)=>e.target.src=dbanner}
                 className="h-33
-			 	w-full rounded-lg relative cursor-pointer"
+                w-full rounded-lg relative cursor-pointer"
                 loading="lazy"
               />
 
@@ -103,7 +102,7 @@ export default function editProfilePopup() {
               >
                 <div
                   className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
-			 cursor-pointer top-0 "
+                  cursor-pointer top-0 "
                 ></div>
                 <img
                   src={editIcon}
@@ -123,40 +122,27 @@ export default function editProfilePopup() {
 
             <div className="relative">
               <img
-                src={avatarPreview ? avatarPreview : defaultPfp}
+                src={avatarPreview ? avatarPreview : user.avatar? user.avatar.url :defaultPfp}
+                onError={(e)=>e.target.src=dbanner}
                 onClick={() => {
                   fileRefav.current.click();
                 }}
                 className="h-15
-			 	w-15 rounded-full absolute -left-1 -bottom-3 cursor-pointer
-			  z-1"
+                w-15 rounded-full absolute -left-1 -bottom-3 cursor-pointer
+                z-1"
               />
               <div
                 onClick={() => {
                   fileRefav.current.click();
                 }}
               >
-                <div
-                  className={`absolute z-2 bg-black/50 h-15 w-15 rounded-full -left-1
-			 -bottom-3  cursor-pointer ${DisplayAvatarRequired ? "border-2 border-red-600" : ""} `}
-                ></div>
-
+                
                 <img
                   src={editIcon}
                   className="absolute h-12 w-13 -bottom-1 left-0 z-3 cursor-pointer"
                 />
               </div>
 
-              {DisplayAvatarRequired ? (
-                <div
-                  className="bg-gray-100 rounded-sm h-5 w-auto
-			 	ml-8 mt-2 font-medium text-red-400"
-                >
-                  Avatar is required to register
-                </div>
-              ) : (
-                <p></p>
-              )}
               <input
                 type="file"
                 ref={fileRefav}
@@ -170,7 +156,7 @@ export default function editProfilePopup() {
 
           <div
             className="form-inputs mt-10 mb-5  h-auto w-full relative
-			text-left"
+            text-left"
           >
             <label className="text-md font-medium text-gray-700">
               Fullname
@@ -178,8 +164,9 @@ export default function editProfilePopup() {
                 name="fullName"
                 type="text"
                 className="bg-gray-100
-		 w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs"
-                required
+                w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs"
+                value={user.fullName?user.fullName : ""}
+                onError={(e)=>e.target.value=""}
               />
             </label>
             <label className="text-md font-medium text-gray-700">
@@ -188,8 +175,9 @@ export default function editProfilePopup() {
                 name="userName"
                 type="text"
                 className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
-			border-gray-200 shadow-xs mt-1"
-                required
+                border-gray-200 shadow-xs mt-1"
+                value={user.userName?user.userName : ""}
+                onError={(e)=>e.target.value=""}
               />
             </label>
             <label className="text-md font-medium text-gray-700">
@@ -198,18 +186,10 @@ export default function editProfilePopup() {
                 name="email"
                 type="email"
                 className="bg-gray-100 w-full mb-4 rounded-md p-1 border border-gray-200
-			shadow-xs mt-1"
-                required
-              />
-            </label>
-            <label className="text-md font-medium text-gray-700">
-              Password
-              <input
-                name="password"
-                type="password"
-                className="bg-gray-100 w-full mb-4 rounded-md p-1 border
-			border-gray-200 shadow-xs mt-1 "
-                required
+                shadow-xs mt-1"
+                value={user.email?user.email: ""}
+                onError={(e)=>e.target.value=""}
+
               />
             </label>
           </div>
@@ -218,18 +198,6 @@ export default function editProfilePopup() {
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }
           />
-          <p className="mt-3">
-            Already have an account?
-            <span
-              onClick={() => {
-                navigate("/signin");
-              }}
-              className="text-blue-400 decoration-blue-400 underline cursor-pointer"
-            >
-              {" "}
-              Sign in
-            </span>
-          </p>
         </form>
       </div>
     </div>
