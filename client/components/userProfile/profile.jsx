@@ -10,7 +10,7 @@ import Button from "../button.jsx";
 import VideoFeed from "../home/videofeed/feed.jsx";
 import PostFeed from "../home/tweetfeed/tweetFeed.jsx";
 import PlaylistFeed from "../home/playlistfeed/playlistFeed.jsx";
-
+import ThreeDotsIcon from "../assets/moreDotsIcon.jsx";
 
 
 export default function Profile(){
@@ -45,7 +45,9 @@ export default function Profile(){
         <a href="/" className="relative left-8/100 text-gray-800 font flex items-center justify-left">
           <ArrowLeft/>
         </a>
-
+        <button type="" className="mr-3">
+          <ThreeDotsIcon size={30}/>
+        </button>
       </nav> 
       <div className="relative h-45">
         <img src={UserProfile?.coverImage?.url || dbanner } onError={(e)=>e.target.src=dbanner} className="h-full w-full relative" loading="lazy" />
@@ -74,7 +76,7 @@ export default function Profile(){
       <div className="relative overflow-y-auto">
        {
          tabs[tabOpened] 
-        } 
+        }
       </div>
     </>
   );
