@@ -17,16 +17,62 @@ export default function editProfilePopup() {
   const [loading, SetLoading] = useState(false);
   const [error, SetError] = useState(false);
   const [isSubmmited, setIsSubmmited] = useState(false);
+  const [fullNameInput,setFullNameInput]=useState(user.fullName? user.fullName:"");
+  const [usernameInput,setUsernameInput]=useState( user.userName? user.userName:"");
+  const [emailInput,setEmailInput]=useState(user.email?user.email:"");
+
 
   async function handleFormSubmission(e) {
     SetLoading(true);
     e.preventDefault();
     const formData = new FormData(e.target);
     const avatar = formData.get("avatar");
-    if (!avatar || avatar.size == 0) {
-      setDisplayAvatarRequired(true);
-      return;
+    const coverImage = formDate.get("coverImage");
+
+
+    for (let [k, v] of formData.entries()) {
+      console.log(k, v);
     }
+
+    //if we have a coverImage update it with this endpoint below
+    if(coverImage && coverImage.size!==0){
+      try {
+        const res = await axios.patch("/user/update-user-coverimage", coverImage, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } catch (error) {
+        SetError(true);
+        console.log(`Error name: ${error.name}`);
+        console.log(`Backend message: ${error.response?.data?.message}`);
+        e.target.reset();
+      } finally {
+        SetError(false);
+        SetLoading(false);
+      }
+    }
+
+    if (avatar && avatar.size !== 0) {
+      try {
+        const res = await axios.patch("/user/update-user-avatar", {"avatar":avatar}, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } catch (error) {
+        SetError(true);
+        console.log(`Error name: ${error.name}`);
+        console.log(`Backend message: ${error.response?.data?.message}`);
+
+        e.target.reset();
+      } finally {
+        SetError(false);
+        SetLoading(false);
+      }
+
+    }
+
     try {
       const res = await axios.patch("/user/update-user-info", formData, {
         headers: {
@@ -136,7 +182,6 @@ export default function editProfilePopup() {
                   fileRefav.current.click();
                 }}
               >
-                
                 <img
                   src={editIcon}
                   className="absolute h-12 w-13 -bottom-1 left-0 z-3 cursor-pointer"
@@ -165,8 +210,9 @@ export default function editProfilePopup() {
                 type="text"
                 className="bg-gray-100
                 w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs"
-                value={user.fullName?user.fullName : ""}
-                onError={(e)=>e.target.value=""}
+                value={ fullNameInput}
+                onChange={(e)=>setFullNameInput(e.target.value)}
+                onError={(e)=>e.target.value=user.fullName}
               />
             </label>
             <label className="text-md font-medium text-gray-700">
@@ -176,8 +222,9 @@ export default function editProfilePopup() {
                 type="text"
                 className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
                 border-gray-200 shadow-xs mt-1"
-                value={user.userName?user.userName : ""}
-                onError={(e)=>e.target.value=""}
+                value={ usernameInput}
+                onChange={(e)=>setUsernameInput(e.target.value)}
+                onError={(e)=>e.target.value=user.userName}
               />
             </label>
             <label className="text-md font-medium text-gray-700">
@@ -187,9 +234,9 @@ export default function editProfilePopup() {
                 type="email"
                 className="bg-gray-100 w-full mb-4 rounded-md p-1 border border-gray-200
                 shadow-xs mt-1"
-                value={user.email?user.email: ""}
-                onError={(e)=>e.target.value=""}
-
+                value={emailInput}
+                onError={(e)=>e.target.value=user.email}
+                onChange={(e)=>setEmailInput(e.target.value)}
               />
             </label>
           </div>
