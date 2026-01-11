@@ -95,6 +95,7 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
     }
     setCoverImagePreview(null);
     setAvatarPreview(null);
+    setIsSubmmited(true);
     e.target.reset();
     setTimeout(() => {
       setIsSubmmited(false);
