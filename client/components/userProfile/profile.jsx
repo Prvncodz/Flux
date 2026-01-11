@@ -18,11 +18,14 @@ export default function Profile(){
   const {user,isUserLogged}=useContext(UserContext);
   const [UserProfile,setUserProfile]=useState({});
   const [tabOpened,setTabOpened]=useState("videos");
+  const [isPopupActive,setisPopupActive]= useState(false);
+
   const tabs={
     "videos":<VideoFeed fetchType="user"/>,
     "posts":<PostFeed fetchType="user"/>,
     "playlists":<PlaylistFeed/>
   }
+
   useEffect(() => {
     if(!user?.userName)return;
     async function getUserProfile(username) {
@@ -45,15 +48,23 @@ export default function Profile(){
         <a href="/" className="relative left-8/100 text-gray-800 font flex items-center justify-left">
           <ArrowLeft/>
         </a>
-        <button type="" className="mr-3">
+        <button type="" className="mr-3 relative" onClick={()=>setisPopupActive(prev=>!prev)}>
           <ThreeDotsIcon size={30}/>
         </button>
-      </nav> 
-      <div className="relative h-45">
+        {
+          isPopupActive && (<>
+              <ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-100 shadow-xs z-10">
+                <li className="text-gray-800 font-normal text-base p-2 border-b  border-neutral-400">Edit Profile</li>
+                <li className="text-gray-800 font-normal text-base p-2 border-b  border-neutral-400">Change Password</li>
+              </ul>
+          </>)
+        }
+    </nav> 
+      <div className="relative h-45  z-0">
         <img src={UserProfile?.coverImage?.url || dbanner } onError={(e)=>e.target.src=dbanner} className="h-full w-full relative" loading="lazy" />
         <img src={UserProfile?.avatar?.url || dpfp } onError={(e)=>e.target.src=dpfp} className="h-20 rounded-full absolute left-1 -bottom-15 w-20 border-2 border-white" loading="lazy" />
       </div>
-      <div className="flex justify-between h-auto w-full ">
+      <div className="flex justify-between h-auto w-full relative z-0">
 
         <span className="ml-24 h-6">
           <h3 className="text-left text-neutral-700 font-medium text-lg">{UserProfile?.fullName|| "Jhon doe"}</h3>
@@ -69,9 +80,9 @@ export default function Profile(){
         <Button children={<><UserAddIcon/><span>Subscribe</span></>} classes="mt-2"/>
      </div>
       <div className="flex flex-row w-full mt-6">
-          <span name="videos" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="videos"? `text-blue-700`:`text-gray-800 `}`} onClick={()=> setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="videos"?`bg-blue-800`:``}`}></div></span>
-          <span name ="posts" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="posts"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="posts"?`bg-blue-800`:``}`}></div></span>
-          <span name="playlists" className={`text-lg relative mt-3.5 font-semibold w-50 cursor-pointer ${tabOpened==="playlists"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="playlists"?`bg-blue-800`:``}`}></div></span>
+          <span name="videos" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened==="videos"? `text-blue-700`:`text-gray-800 `}`} onClick={()=> setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="videos"?`bg-blue-800`:``}`}></div></span>
+          <span name ="posts" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened==="posts"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="posts"?`bg-blue-800`:``}`}></div></span>
+          <span name="playlists" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened==="playlists"? `text-blue-700`:`text-gray-800 `}`} onClick={()=>setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened==="playlists"?`bg-blue-800`:``}`}></div></span>
       </div>
       <div className="relative overflow-y-auto">
        {
