@@ -45,6 +45,7 @@ export default function Profile(){
         <a href="/" className="relative left-8/100 text-gray-800 font flex items-center justify-left">
           <ArrowLeft/>
         </a>
+
       </nav> 
       <div className="relative h-45">
         <img src={UserProfile?.coverImage?.url || dbanner } onError={(e)=>e.target.src=dbanner} className="h-full w-full relative" loading="lazy" />
