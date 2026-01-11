@@ -10,7 +10,6 @@ function LikeButton({tweetId}) {
       try {
         const res=await axios.get(`/likes/${Id}`);
         if(res.status==200){
-          console.log(res.data)
           setCount(res.data.data)
       }
       } catch (err) {
@@ -33,9 +32,6 @@ function LikeButton({tweetId}) {
     timeoutId = setTimeout(async () => {
       try {
         const res= await axios.post(`/likes/toggle/t/${tweetId}`);
-        if(res.status==200){
-          console.log(res.data)
-        }
       } catch (err) {
         console.log(`Error while toggling tweet likes with id ${tweetId}`,err);
       }

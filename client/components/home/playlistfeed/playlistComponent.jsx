@@ -5,7 +5,7 @@ import dbanner from "../../assets/dbanner.jpg";
 import PlaylistIcon from "../../assets/playlistIcon.jsx"
 
 export default function PlaylistComponents({ playlist, idx }) {
-  const { avatarUrl } = useGetUserById(playlist.owner);
+  const { avatarUrl,fullname} = useGetUserById(playlist.owner);
   const [videos, setVideos] = useState([]);
   useEffect(() => {
     setVideos(playlist.videos);
@@ -28,7 +28,7 @@ export default function PlaylistComponents({ playlist, idx }) {
         </div>
         <span className="ml-4">
           <h3 className="text-left text-neutral-700 font-medium text-sm">{playlist.name}</h3>
-          <h3 className="text-left text-neutral-600 font-medium text-xs">3 days ago . 199k views</h3>
+          <h3 className="text-left text-neutral-600 font-medium text-xs">{fullname}.Playlist</h3>
         </span>
 
       </div>

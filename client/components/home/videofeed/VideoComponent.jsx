@@ -5,9 +5,11 @@ import dpfp from "../../assets/dpfp.jpg"
 export default function VideoComponent({ video, idx }) {
   const { avatarUrl } = useGetUserById(video.owner);
   const [duration,setDuration] =useState("00:00");
+  const [timeOfUpload, setTimeOfUpload] = useState("1 day");
 
   useEffect(() => {
     function calcDuration(dur) {
+      if(!dur)return;
       const hours=Math.trunc(dur/3600);
       const minutes=Math.trunc((dur%3600)/60);
       const seconds=Math.trunc((dur%3600)%60);
@@ -20,7 +22,29 @@ export default function VideoComponent({ video, idx }) {
         setDuration(`00:${String(seconds).padStart(2,"0")}`);
       }
     }
+    function calcTimeOfUpload(t) {
+      if(!t)return;
+      const now=new Date();
+      const dif=now.getTime() - new Date(t).getTime();
+      const hours=Math.floor(dif/(1000*60*60));
+      const minutes =Math.floor(dif/1000*60);
+      const days=Math.floor(dif/(1000*60*60*24));
+      const months=Math.floor(days/30);
+      const years=Math.floor(days/365);
 
+      if(years>0){
+        setTimeOfUpload(`${years} ${years>1?'years':'year'}`);
+      }else if(months>0){
+        setTimeOfUpload(`${months} ${months>1?'months':'month'}`);
+      }else if(days > 0){
+        setTimeOfUpload(`${days} ${days>1?'days':'day'}`);
+      }else if(hours>0){
+        setTimeOfUpload(`${hours} ${hours>1?'hours':'hour'}`);
+      }else{
+        setTimeOfUpload(`${minutes} ${minutes>1?'minutes':'minute'}`);
+      }
+    }
+    calcTimeOfUpload(video.createdAt);
     calcDuration(Math.trunc(video.duration));
   }, [])
 
@@ -41,7 +65,7 @@ export default function VideoComponent({ video, idx }) {
         </div>
         <span className="ml-4">
           <h3 className="text-left text-neutral-700 font-medium text-sm">{video.title}</h3>
-          <h3 className="text-left text-neutral-600 font-medium text-xs">3 days ago . 199k views</h3>
+          <h3 className="text-left text-neutral-600 font-medium text-xs">{timeOfUpload} ago . {video?.views} views</h3>
         </span>
 
       </div>
