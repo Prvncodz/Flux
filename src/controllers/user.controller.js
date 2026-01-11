@@ -332,7 +332,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
       },
     },
     { new: true },
-  ).select("-password");
+  ).select("-password -refreshTokens");
 
   if (fileToBeDeleted) {
     try {
@@ -358,13 +358,13 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     throw new ApiError(401, "clodinary upload of cover image failed ");
   }
   const user = req.user;
-  const public_id = user.coverImage.public_id;
+  const public_id = user.coverImage?.public_id;
   const fileToBeDeleted = public_id;
   
   const updateCoverImage = await User.findByIdAndUpdate(
     user?._id,
     {
-      set: {
+      $set: {
         coverImage: {
           public_id: coverImage?.public_id,
           url: coverImage?.secure_url,
@@ -372,8 +372,11 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
       },
     },
     { new: true },
-  ).select("-password");
+  ).select("-password -refreshTokens");
 
+  if(!updateCoverImage){
+    throw new ApiError(404,"Could'nt update the coverImage")
+  }
  if(fileToBeDeleted){
     try {
     const fileDeleted = await deleteFromCloud(fileToBeDeleted);

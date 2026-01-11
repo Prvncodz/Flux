@@ -20,7 +20,7 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
   const [fullNameInput,setFullNameInput]=useState(user.fullName? user.fullName:"");
   const [usernameInput,setUsernameInput]=useState( user.userName? user.userName:"");
   const [emailInput,setEmailInput]=useState(user.email?user.email:"");
-
+  const [isInfoModified,setIsInfoModified]=useState(false);
 
   async function handleFormSubmission(e) {
     SetLoading(true);
@@ -75,7 +75,7 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
       }
 
     }
-
+   if(isInfoModified){
     try {
       const res = await axios.patch("/user/update-user-info",{
         "fullname": fullName,
@@ -91,6 +91,7 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
     } finally {
       SetError(false);
       SetLoading(false);
+    }
     }
     setCoverImagePreview(null);
     setAvatarPreview(null);
@@ -214,7 +215,11 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
                 className="bg-gray-100
                 w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs"
                 value={ fullNameInput}
-                onChange={(e)=>setFullNameInput(e.target.value)}
+                onChange={(e)=>{
+                  setFullNameInput(e.target.value);
+                  setIsInfoModified(true);
+                }
+                }
                 onError={(e)=>e.target.value=user.fullName}
               />
             </label>
@@ -226,7 +231,10 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
                 className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
                 border-gray-200 shadow-xs mt-1"
                 value={ usernameInput}
-                onChange={(e)=>setUsernameInput(e.target.value)}
+                onChange={(e)=>{
+                  setUsernameInput(e.target.value);
+                  setIsInfoModified(true);
+                }}
                 onError={(e)=>e.target.value=user.userName}
               />
             </label>
@@ -239,7 +247,10 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
                 shadow-xs mt-1"
                 value={emailInput}
                 onError={(e)=>e.target.value=user.email}
-                onChange={(e)=>setEmailInput(e.target.value)}
+                onChange={(e)=>{
+                setEmailInput(e.target.value);
+                setIsInfoModified(true);
+                }}
               />
             </label>
           </div>
