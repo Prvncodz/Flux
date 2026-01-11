@@ -67,7 +67,7 @@ export default function Profile(){
         }
     </nav>
       {
-        isEditPopUpActive && <EditProfilePopUp/>
+        isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive}/>
       }
       <div className="relative h-45  z-0">
         <img src={UserProfile?.coverImage?.url || dbanner } onError={(e)=>e.target.src=dbanner} className="h-full w-full relative" loading="lazy" />

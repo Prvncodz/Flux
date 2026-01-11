@@ -6,7 +6,7 @@ import SubmitButton from "../submitButton.jsx";
 import axios from "../../api/axios.js";
 import UserContext from "../../contexts/UserContext.jsx";
 
-export default function editProfilePopup() {
+export default function editProfilePopup({setIsEditPopUpActive}) {
 
   const [coverImagePreview, setCoverImagePreview] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -27,8 +27,10 @@ export default function editProfilePopup() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const avatar = formData.get("avatar");
-    const coverImage = formDate.get("coverImage");
-
+    const coverImage = formData.get("coverImage");
+    const fullName= formData.get("fullName");
+    const userName= formData.get("userName");
+    const email= formData.get("email");
 
     for (let [k, v] of formData.entries()) {
       console.log(k, v);
@@ -37,13 +39,14 @@ export default function editProfilePopup() {
     //if we have a coverImage update it with this endpoint below
     if(coverImage && coverImage.size!==0){
       try {
-        const res = await axios.patch("/user/update-user-coverimage", coverImage, {
+        const res = await axios.patch("/user/update-user-coverimage",{coverImage}, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
       } catch (error) {
         SetError(true);
+        console.log(error)
         console.log(`Error name: ${error.name}`);
         console.log(`Backend message: ${error.response?.data?.message}`);
         e.target.reset();
@@ -55,7 +58,7 @@ export default function editProfilePopup() {
 
     if (avatar && avatar.size !== 0) {
       try {
-        const res = await axios.patch("/user/update-user-avatar", {"avatar":avatar}, {
+        const res = await axios.patch("/user/update-user-avatar", {avatar}, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -74,16 +77,16 @@ export default function editProfilePopup() {
     }
 
     try {
-      const res = await axios.patch("/user/update-user-info", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const res = await axios.patch("/user/update-user-info",{
+        "fullname": fullName,
+        "username": userName,
+        "email":email
       });
     } catch (error) {
       SetError(true);
+      console.log(error);
       console.log(`Error name: ${error.name}`);
       console.log(`Backend message: ${error.response?.data?.message}`);
-
       e.target.reset();
     } finally {
       SetError(false);
@@ -94,7 +97,8 @@ export default function editProfilePopup() {
     e.target.reset();
     setTimeout(() => {
       setIsSubmmited(false);
-    }, 2000);
+      setIsEditPopUpActive(false);
+    }, 1000);
   }
 
   function handleCoverImage(e) {
@@ -107,7 +111,6 @@ export default function editProfilePopup() {
   function handleAvatar(e) {
     const file = e.target.files[0];
     if (file) {
-      setDisplayAvatarRequired(false);
       setAvatarPreview(URL.createObjectURL(file));
     }
   }
