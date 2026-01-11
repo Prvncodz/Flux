@@ -279,20 +279,23 @@ const getUserById= asyncHandler(async (req,res)=>{
 
 //update account information
 const updateAccountInfo = asyncHandler(async (req, res) => {
-  const { fullName, email } = req.body;
-  if (!(fullName || email)) {
-    throw new ApiError(
-      400,
-      "fullname and email are required to update the account information ",
-    );
+  const { fullname, email ,username} = req.body;
+  const UpdatedFields={};
+  if(fullname){
+  UpdatedFields.fullName=fullname;
   }
+  if(username){
+  UpdatedFields.userName=username;
+  }
+  if(email){
+  UpdatedFields.email=email;
+  }
+
+
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
-      $set: {
-        fullName: fullName,
-        email: email,
-      },
+      $set: UpdatedFields
     },
     {
       new: true,

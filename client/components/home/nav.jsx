@@ -65,7 +65,7 @@ export default function Nav() {
           </div>
           {isActive && (
             <>
-              <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-58 rounded-sm flex flex-col overflow-hidden">
+              <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-55 rounded-sm flex flex-col overflow-hidden">
                 <div className="p-3 h-auto">
                   <div className=" relative flex justify-left items-center w-full mb-3">
                     <img
