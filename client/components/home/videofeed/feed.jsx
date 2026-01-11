@@ -39,7 +39,13 @@ export default function Feed({fetchType}) {
       fetchAllVideos();
     } 
   }, [user]);
-
+  if(areVideosFetched && videos.length===0){
+    return(
+    <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
+      No Videos has been published by this user
+    </div>
+    );
+  }
   return (
     <>
       <div className="h-screen p-3 mt-4 overflow-y-auto overflow-x-hidden flex flex-col gap-6 mb-2">

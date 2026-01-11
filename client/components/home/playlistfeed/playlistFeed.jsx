@@ -15,7 +15,6 @@ export default function Feed() {
       try {
         await axios.get(`/playlists/user/${userId}`)
         .then((res) => {
-          console.log(res.data.data)
           setPlaylists(res.data.data);
           SetArePlaylistsFetched(true);
         });
@@ -26,7 +25,15 @@ export default function Feed() {
       fetchAllPlaylists(user._id);
   }, [user]);
 
-  return (
+  if(arePlaylistsFetched && playlists.length===0){
+    return(
+    <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
+      No Playlist has been published by this user
+    </div>
+    );
+  }
+
+    return (
     <>
       <div className="h-screen p-3 mt-4 overflow-y-auto overflow-x-hidden flex flex-col gap-6 mb-2">
         {arePlaylistsFetched &&

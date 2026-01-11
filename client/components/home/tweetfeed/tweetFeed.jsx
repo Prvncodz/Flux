@@ -37,7 +37,14 @@ export default function Feed({fetchType}) {
     fetchAllTweets();
     }
   }, [user]);
-
+  
+  if(areTweetsFetched && tweets.length===0){
+    return(
+    <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
+      No Tweets has been published by this user
+    </div>
+    );
+  }
   return (
     <>
       <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
