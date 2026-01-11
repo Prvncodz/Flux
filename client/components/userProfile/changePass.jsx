@@ -45,7 +45,7 @@ export default function ChangePassPopup({setIsPassPopupActive}) {
       items-center bg-none top-0 z-20 absolute"
     >
       <div className="absolute top-0 right-0 bottom-0 left-0 h-full w-full blur-xs opacity-90  z-21 bg-gray-300"></div>
-      <div className="text-gray-800 rotate-45 bg-neutral-50  rounded-full text-3xl h-10 w-10 absolute z-22 top-3 right-3" onClick={()=>setIsEditPopUpActive(false)}>
+      <div className="text-gray-800 rotate-45 bg-neutral-50  rounded-full text-3xl h-10 w-10 absolute z-22 top-3 right-3" onClick={()=>setIsPassPopupActive(false)}>
         +
       </div>
       <div
