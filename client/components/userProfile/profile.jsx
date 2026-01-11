@@ -12,7 +12,7 @@ import PostFeed from "../home/tweetfeed/tweetFeed.jsx";
 import PlaylistFeed from "../home/playlistfeed/playlistFeed.jsx";
 import ThreeDotsIcon from "../assets/moreDotsIcon.jsx";
 import EditProfilePopUp from "./editProfilePopup.jsx";
-
+import ChangePassPopup from "./changePass.jsx";
 
 export default function Profile(){
 
@@ -21,6 +21,8 @@ export default function Profile(){
   const [tabOpened,setTabOpened]=useState("videos");
   const [isPopupActive,setisPopupActive]= useState(false);
   const [isEditPopUpActive,setIsEditPopUpActive]=useState(false);
+  const [isPassPopupActive,setIsPassPopupActive]=useState(false);
+
 
   const tabs={
     "videos":<VideoFeed fetchType="user"/>,
@@ -61,13 +63,17 @@ export default function Profile(){
                 setisPopupActive(false);
 
               }}>Edit Profile</li>
-                <li className="text-gray-800 font-normal text-base p-2 border-b  border-neutral-400">Change Password</li>
+                <li className="text-gray-800 font-normal text-base p-2 border-b  border-neutral-400" onClick={()=>{
+                setIsPassPopupActive(true);
+                setisPopupActive(false);
+              }}>Change Password</li>
               </ul>
           </>)
         }
     </nav>
       {
-        isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive}/>
+        isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive}/> ||
+        isPassPopupActive && <ChangePassPopup setIsPassPopupActive={setIsPassPopupActive}/>
       }
       <div className="relative h-45  z-0">
         <img src={UserProfile?.coverImage?.url || dbanner } onError={(e)=>e.target.src=dbanner} className="h-full w-full relative" loading="lazy" />

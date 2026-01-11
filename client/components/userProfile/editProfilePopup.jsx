@@ -32,10 +32,6 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
     const userName= formData.get("userName");
     const email= formData.get("email");
 
-    for (let [k, v] of formData.entries()) {
-      console.log(k, v);
-    }
-
     //if we have a coverImage update it with this endpoint below
     if(coverImage && coverImage.size!==0){
       try {
@@ -75,23 +71,23 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
       }
 
     }
-   if(isInfoModified){
-    try {
-      const res = await axios.patch("/user/update-user-info",{
-        "fullname": fullName,
-        "username": userName,
-        "email":email
-      });
-    } catch (error) {
-      SetError(true);
-      console.log(error);
-      console.log(`Error name: ${error.name}`);
-      console.log(`Backend message: ${error.response?.data?.message}`);
-      e.target.reset();
-    } finally {
-      SetError(false);
-      SetLoading(false);
-    }
+    if(isInfoModified){
+      try {
+        const res = await axios.patch("/user/update-user-info",{
+          "fullname": fullName,
+          "username": userName,
+          "email":email
+        });
+      } catch (error) {
+        SetError(true);
+        console.log(error);
+        console.log(`Error name: ${error.name}`);
+        console.log(`Backend message: ${error.response?.data?.message}`);
+        e.target.reset();
+      } finally {
+        SetError(false);
+        SetLoading(false);
+      }
     }
     setCoverImagePreview(null);
     setAvatarPreview(null);
@@ -123,9 +119,9 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
       items-center bg-none top-0 z-20 absolute"
     >
       <div className="absolute top-0 right-0 bottom-0 left-0 h-full w-full blur-xs opacity-90  z-21 bg-gray-300"></div>
-        <div className="text-gray-800 rotate-45 bg-neutral-50  rounded-full text-3xl h-10 w-10 absolute z-22 top-3 right-3" onClick={()=>setIsEditPopUpActive(false)}>
-          +
-        </div>
+      <div className="text-gray-800 rotate-45 bg-neutral-50  rounded-full text-3xl h-10 w-10 absolute z-22 top-3 right-3" onClick={()=>setIsEditPopUpActive(false)}>
+        +
+      </div>
       <div
         className="h-auto w-87 bg-gray-100 flex flex-col
         justify-center overflow-hidden rounded-lg absolute z-22"
@@ -251,8 +247,8 @@ export default function editProfilePopup({setIsEditPopUpActive}) {
                 value={emailInput}
                 onError={(e)=>e.target.value=user.email}
                 onChange={(e)=>{
-                setEmailInput(e.target.value);
-                setIsInfoModified(true);
+                  setEmailInput(e.target.value);
+                  setIsInfoModified(true);
                 }}
               />
             </label>
