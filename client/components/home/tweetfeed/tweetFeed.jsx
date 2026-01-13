@@ -1,17 +1,17 @@
-import { useState, useEffect,useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx"
 
-export default function Feed({fetchType}) {
+export default function Feed({ fetchType, userId }) {
   const [tweets, setTweets] = useState([{}]);
   const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
 
-  const {user}=useContext(UserContext);
+  const { user } = useContext(UserContext);
   useEffect(() => {
     async function fetchAllTweets() {
       try {
-       await axios.get("/tweets/get-all-tweets").then((res) => {
+        await axios.get("/tweets/get-all-tweets").then((res) => {
           setTweets(res.data.data);
           SetAreTweetsFetched(true);
         });
@@ -20,9 +20,9 @@ export default function Feed({fetchType}) {
       }
     }
     async function fetchAllTweetsByUser() {
-      if(!user?._id)return;
+      if (!userId) return;
       try {
-       await axios.get(`/tweets/${user?._id}`).then((res) => {
+        await axios.get(`/tweets/${userId}`).then((res) => {
           setTweets(res.data.data);
           SetAreTweetsFetched(true);
         });
@@ -31,25 +31,25 @@ export default function Feed({fetchType}) {
       }
     }
 
-    if (fetchType==="user") {
+    if (fetchType === "user") {
       fetchAllTweetsByUser();
-    }else{
-    fetchAllTweets();
+    } else {
+      fetchAllTweets();
     }
   }, [user]);
-  
-  if(areTweetsFetched && tweets.length===0){
-    return(
-    <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
-      No Tweets has been published by this user
-    </div>
+
+  if (areTweetsFetched && tweets.length === 0) {
+    return (
+      <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
+        No Tweets has been published by this user
+      </div>
     );
   }
   return (
     <>
       <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
         {areTweetsFetched &&
-          tweets.map((tweet, idx) =>  (
+          tweets.map((tweet, idx) => (
             <TweetComponent key={idx} tweet={tweet} idx={idx} />
           ))}
       </div>

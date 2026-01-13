@@ -27,9 +27,9 @@ export default function Profile() {
   const location = useLocation();
   const { otherUserName } = location.state || {};
   const tabs = {
-    "videos": <VideoFeed fetchType="user" />,
-    "posts": <PostFeed fetchType="user" />,
-    "playlists": <PlaylistFeed />
+    "videos": <VideoFeed fetchType="user" userId={UserProfile?._id} />,
+    "posts": <PostFeed fetchType="user" userId={UserProfile?._id} />,
+    "playlists": <PlaylistFeed userId={UserProfile?._id} />
   }
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function Profile() {
       }
       getUserProfile(user?.userName);
     }
-  }, [user?.userName, otherUserName])
+  }, [])
 
   return (
     <>
