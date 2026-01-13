@@ -1,47 +1,57 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import dpfp from "../../assets/dpfp.jpg"
+import { useNavigate } from "react-router-dom";
 
-export default function VideoComponent({ video, idx }) {
-  const { avatarUrl } = useGetUserById(video.owner);
-  const [duration,setDuration] =useState("00:00");
+export default function VideoComponent({ video }) {
+  const { avatarUrl, username } = useGetUserById(video.owner);
+  const [duration, setDuration] = useState("00:00");
   const [timeOfUpload, setTimeOfUpload] = useState("1 day");
+  const navigate = useNavigate();
+
+  function handleShowUserProfile() {
+    navigate("/userchannel", {
+      state: {
+        otherUserName: username
+      }
+    });
+  }
 
   useEffect(() => {
     function calcDuration(dur) {
-      if(!dur)return;
-      const hours=Math.trunc(dur/3600);
-      const minutes=Math.trunc((dur%3600)/60);
-      const seconds=Math.trunc((dur%3600)%60);
+      if (!dur) return;
+      const hours = Math.trunc(dur / 3600);
+      const minutes = Math.trunc((dur % 3600) / 60);
+      const seconds = Math.trunc((dur % 3600) % 60);
 
-      if(hours>=1){
-        setDuration(`${String(hours).padStart(2,"0")}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`);
-      } else if(minutes>=1){
-        setDuration(`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`);
-      }else{
-        setDuration(`00:${String(seconds).padStart(2,"0")}`);
+      if (hours >= 1) {
+        setDuration(`${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
+      } else if (minutes >= 1) {
+        setDuration(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
+      } else {
+        setDuration(`00:${String(seconds).padStart(2, "0")}`);
       }
     }
     function calcTimeOfUpload(t) {
-      if(!t)return;
-      const now=new Date();
-      const dif=now.getTime() - new Date(t).getTime();
-      const hours=Math.floor(dif/(1000*60*60));
-      const minutes =Math.floor(dif/1000*60);
-      const days=Math.floor(dif/(1000*60*60*24));
-      const months=Math.floor(days/30);
-      const years=Math.floor(days/365);
+      if (!t) return;
+      const now = new Date();
+      const dif = now.getTime() - new Date(t).getTime();
+      const hours = Math.floor(dif / (1000 * 60 * 60));
+      const minutes = Math.floor(dif / 1000 * 60);
+      const days = Math.floor(dif / (1000 * 60 * 60 * 24));
+      const months = Math.floor(days / 30);
+      const years = Math.floor(days / 365);
 
-      if(years>0){
-        setTimeOfUpload(`${years} ${years>1?'years':'year'}`);
-      }else if(months>0){
-        setTimeOfUpload(`${months} ${months>1?'months':'month'}`);
-      }else if(days > 0){
-        setTimeOfUpload(`${days} ${days>1?'days':'day'}`);
-      }else if(hours>0){
-        setTimeOfUpload(`${hours} ${hours>1?'hours':'hour'}`);
-      }else{
-        setTimeOfUpload(`${minutes} ${minutes>1?'minutes':'minute'}`);
+      if (years > 0) {
+        setTimeOfUpload(`${years} ${years > 1 ? 'years' : 'year'}`);
+      } else if (months > 0) {
+        setTimeOfUpload(`${months} ${months > 1 ? 'months' : 'month'}`);
+      } else if (days > 0) {
+        setTimeOfUpload(`${days} ${days > 1 ? 'days' : 'day'}`);
+      } else if (hours > 0) {
+        setTimeOfUpload(`${hours} ${hours > 1 ? 'hours' : 'hour'}`);
+      } else {
+        setTimeOfUpload(`${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`);
       }
     }
     calcTimeOfUpload(video.createdAt);
@@ -58,9 +68,10 @@ export default function VideoComponent({ video, idx }) {
         <div className="h-10 w-10">
           <img
             src={avatarUrl || dpfp}
-            className="rounded-full h-10 w-10" 
+            className="rounded-full h-10 w-10"
             loading="lazy"
-            onError={(e)=>e.target.src=dpfp}
+            onClick={handleShowUserProfile}
+            onError={(e) => e.target.src = dpfp}
           />
         </div>
         <span className="ml-4">

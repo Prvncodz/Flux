@@ -13,8 +13,9 @@ import PlaylistFeed from "../home/playlistfeed/playlistFeed.jsx";
 import ThreeDotsIcon from "../assets/moreDotsIcon.jsx";
 import EditProfilePopUp from "./editProfilePopup.jsx";
 import ChangePassPopup from "./changePass.jsx";
+import { useLocation } from "react-router-dom";
 
-export default function Profile({ otherUser }) {
+export default function Profile() {
 
   const { user } = useContext(UserContext);
   const [UserProfile, setUserProfile] = useState({});
@@ -22,8 +23,9 @@ export default function Profile({ otherUser }) {
   const [isPopupActive, setisPopupActive] = useState(false);
   const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
   const [isPassPopupActive, setIsPassPopupActive] = useState(false);
-  const [isCurrentUserP, setIsCurrentUserP] = useState(false);
-
+  const [isOtherUserP, setIsOtherUserP] = useState(false);
+  const location = useLocation();
+  const { otherUserName } = location.state || {};
   const tabs = {
     "videos": <VideoFeed fetchType="user" />,
     "posts": <PostFeed fetchType="user" />,
@@ -31,21 +33,22 @@ export default function Profile({ otherUser }) {
   }
 
   useEffect(() => {
-    if (otherUser?.userName) {
+    if (otherUserName) {
 
-      if (otherUser?.userName) return;
+      if (!otherUserName) return;
       async function getUserProfile(username) {
         if (!username) return;
         try {
           const res = await axios.get(`/user/p/${username}`);
           if (res.status) {
             setUserProfile(res.data?.data);
+            setIsOtherUserP(true);
           }
         } catch (error) {
           console.log("Error while fetching user's profile. err message", error);
         }
       }
-      getUserProfile(otherUser?.userName);
+      getUserProfile(otherUserName);
 
     } else {
       if (!user?.userName) return;
@@ -55,7 +58,6 @@ export default function Profile({ otherUser }) {
           const res = await axios.get(`/user/p/${username}`);
           if (res.status) {
             setUserProfile(res.data?.data);
-            setIsCurrentUserP(true)
           }
         } catch (error) {
           console.log("Error while fetching user's profile. err message", error);
@@ -63,7 +65,7 @@ export default function Profile({ otherUser }) {
       }
       getUserProfile(user?.userName);
     }
-  }, [user?.userName, otherUser?.userName])
+  }, [user?.userName, otherUserName])
 
   return (
     <>
@@ -111,11 +113,11 @@ export default function Profile({ otherUser }) {
           </div>
         </span>
         {
-          !isCurrentUserP &&
+          isOtherUserP &&
           <Button children={<><UserAddIcon /><span>Subscribe</span></>} classes="mt-2" />
         }
       </div>
-      <div className="flex flex-row w-full mt-6">
+      <div className="flex flex-row w-full mt-9">
         <span name="videos" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "videos" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "videos" ? `bg-blue-800` : ``}`}></div></span>
         <span name="posts" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "posts" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "posts" ? `bg-blue-800` : ``}`}></div></span>
         <span name="playlists" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "playlists" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "playlists" ? `bg-blue-800` : ``}`}></div></span>
