@@ -69,9 +69,9 @@ const registerUser = asyncHandler(async (req, res) => {
     },
     coverImage: coverImage
       ? {
-          public_id: coverImage?.public_id,
-          url: coverImage?.secure_url,
-        }
+        public_id: coverImage?.public_id,
+        url: coverImage?.secure_url,
+      }
       : {},
     password,
   });
@@ -264,31 +264,31 @@ const currentUser = asyncHandler(async (req, res) => {
 });
 
 //get user by id 
-const getUserById= asyncHandler(async (req,res)=>{
-      const {userId}=req.params;
-      const user= await User.findById(userId).select(
+const getUserById = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const user = await User.findById(userId).select(
     "-password -refreshTokens",
   );
-      if(!user){
-      throw new ApiError(500,"Unable to find user");
+  if (!user) {
+    throw new ApiError(500, "Unable to find user");
   }
-    return res
+  return res
     .status(200)
-    .json(new ApiResponse(200,user,"user fetched successfully"));      
+    .json(new ApiResponse(200, user, "user fetched successfully"));
 });
 
 //update account information
 const updateAccountInfo = asyncHandler(async (req, res) => {
-  const { fullname, email ,username} = req.body;
-  const UpdatedFields={};
-  if(fullname){
-  UpdatedFields.fullName=fullname;
+  const { fullname, email, username } = req.body;
+  const UpdatedFields = {};
+  if (fullname) {
+    UpdatedFields.fullName = fullname;
   }
-  if(username){
-  UpdatedFields.userName=username;
+  if (username) {
+    UpdatedFields.userName = username;
   }
-  if(email){
-  UpdatedFields.email=email;
+  if (email) {
+    UpdatedFields.email = email;
   }
 
 
@@ -312,7 +312,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   if (!avatarLocalPath) {
     throw new ApiError(400, "uploaded avatar file path unaccessable");
   }
-  const avatar =await uploadOnCloud(avatarLocalPath);
+  const avatar = await uploadOnCloud(avatarLocalPath);
 
   if (!avatar) {
     throw new ApiError(401, "clodinary upload of avatar failed");
@@ -338,7 +338,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     try {
       const fileDeleted = await deleteFromCloud(fileToBeDeleted);
     } catch (err) {
-      throw new ApiError(504,"error while deleting file From Cloud")
+      throw new ApiError(504, "error while deleting file From Cloud")
     }
   }
   return res
@@ -360,7 +360,7 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
   const user = req.user;
   const public_id = user.coverImage?.public_id;
   const fileToBeDeleted = public_id;
-  
+
   const updateCoverImage = await User.findByIdAndUpdate(
     user?._id,
     {
@@ -374,17 +374,17 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     { new: true },
   ).select("-password -refreshTokens");
 
-  if(!updateCoverImage){
-    throw new ApiError(404,"Could'nt update the coverImage")
+  if (!updateCoverImage) {
+    throw new ApiError(404, "Could'nt update the coverImage")
   }
- if(fileToBeDeleted){
+  if (fileToBeDeleted) {
     try {
-    const fileDeleted = await deleteFromCloud(fileToBeDeleted);
+      const fileDeleted = await deleteFromCloud(fileToBeDeleted);
     } catch (err) {
-      throw new ApiError(504,"error while deleting file From Cloud")
+      throw new ApiError(504, "error while deleting file From Cloud")
     }
   }
-  
+
 
   return res
     .status(200)
@@ -435,7 +435,7 @@ const showUserProfile = asyncHandler(async (req, res) => {
         },
         isSubscribed: {
           $cond: {
-            if: { $in: [req.user?._id, "$subscribed.subscriber"] },
+            if: { $in: [req.user?._id, "$subscribers.subscriber"] },
             then: true,
             else: false,
           },

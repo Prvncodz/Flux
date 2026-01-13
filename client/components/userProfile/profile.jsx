@@ -32,6 +32,18 @@ export default function Profile() {
     "playlists": <PlaylistFeed userId={UserProfile?._id} />
   }
 
+
+  async function handleSubscription() {
+    try {
+      const res = await axios.post(`/subscriptions/c/${UserProfile?._id}`)
+      if (res.status === 200) {
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(error.response?.data?.message);
+    }
+  }
   useEffect(() => {
     if (otherUserName) {
       if (otherUserName !== user?.userName) {
@@ -42,8 +54,9 @@ export default function Profile() {
         if (!username) return;
         try {
           const res = await axios.get(`/user/p/${username}`);
-          if (res.status) {
+          if (res.status === 200) {
             setUserProfile(res.data?.data);
+            console.log(res.data?.data)
           }
         } catch (error) {
           console.log("Error while fetching user's profile. err message", error);
@@ -115,7 +128,20 @@ export default function Profile() {
         </span>
         {
           isOtherUserP &&
-          <Button children={<><UserAddIcon /><span>Subscribe</span></>} classes="mt-2" />
+          <Button children={UserProfile?.isSubscribed ?
+            (
+              <>
+                <UserTick />
+                <span>Subscribed</span>
+              </>
+            )
+            :
+            (
+              <>
+                <UserAddIcon />
+                <span>Subscribe</span>
+              </>
+            )} classes="mt-2" onClick={handleSubscription} />
         }
       </div>
       <div className="flex flex-row w-full mt-9">

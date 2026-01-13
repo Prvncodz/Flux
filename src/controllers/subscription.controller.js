@@ -53,7 +53,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   const allSubscribedUsersDocs = await Subscription.find({
     channel: channelId,
   });
-  const allSubscribedUsers = await allSubscribedUsersDocs.map(
+  const allSubscribedUsers = allSubscribedUsersDocs.map(
     (Subscription) => Subscription.subscriber,
   );
   if (!allSubscribedUsers) {
