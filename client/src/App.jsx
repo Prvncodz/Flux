@@ -1,11 +1,9 @@
-import { useState,useEffect} from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import {
   BrowserRouter,
   Routes,
-  Route,
-  Link,
-  useNavigate,
+  Route
 } from "react-router-dom";
 import UserContext from "../contexts/UserContext.jsx"
 import Home from "../components/home/home.jsx";
@@ -13,8 +11,7 @@ import SignUp from "../components/signup.jsx";
 import SignIn from "../components/signin.jsx";
 import Profile from "../components/userProfile/profile.jsx";
 import axios from "../api/axios.js"
-
-
+import WatchVideoPage from "../components/watch/watchVideoPage.jsx";
 
 function App() {
 
@@ -52,16 +49,18 @@ function App() {
   }, [isTokenReceived]);
 
   return (
-    <UserContext.Provider value={{user,isUserLogged}}>
+    <UserContext.Provider value={{ user, isUserLogged }}>
 
       <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/userchannel" element={<Profile />} />
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+
+          <Route path="/" element={<Home />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/userchannel" element={<Profile />} />
+          <Route path="/watch/video" element={<WatchVideoPage />} />
+        </Routes>
+      </BrowserRouter>
 
     </UserContext.Provider>
   );
