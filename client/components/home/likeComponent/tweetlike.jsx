@@ -1,27 +1,27 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
 
-function LikeButton({tweetId}) {
+function LikeButton({ tweetId }) {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(0);
-  
+
   useEffect(() => {
-      async function getLikeCount(Id){
+    async function getLikeCount(Id) {
       try {
-        const res=await axios.get(`/likes/${Id}`);
-        if(res.status==200){
+        const res = await axios.get(`/likes/${Id}`);
+        if (res.status == 200) {
           setCount(res.data.data)
-      }
+        }
       } catch (err) {
-        console.log(`Error while fetching tweet likes with id ${tweetId} `,err);
+        console.log(`Error while fetching tweet likes with id ${tweetId} `, err);
       }
     }
     getLikeCount(tweetId)
   }, [])
-  
-   let timeoutId;
+
+  let timeoutId;
   const handleLike = () => {
-     clearTimeout(timeoutId);
+    clearTimeout(timeoutId);
     if (liked) {
       setCount(count - 1);
 
@@ -31,9 +31,12 @@ function LikeButton({tweetId}) {
     setLiked(!liked);
     timeoutId = setTimeout(async () => {
       try {
-        const res= await axios.post(`/likes/toggle/t/${tweetId}`);
+        const res = await axios.post(`/likes/toggle/t/${tweetId}`);
+        if (res.status == 200) {
+          console.log(res.data)
+        }
       } catch (err) {
-        console.log(`Error while toggling tweet likes with id ${tweetId}`,err);
+        console.log(`Error while toggling tweet likes with id ${tweetId}`, err);
       }
 
     }, 800);
@@ -48,7 +51,7 @@ function LikeButton({tweetId}) {
         fontSize: "14px",
       }}
     >
-      {liked ? `❤️ ${count}`: `🤍 ${count}`} 
+      {liked ? `❤️ ${count}` : `🤍 ${count}`}
     </button>
   );
 }

@@ -26,23 +26,26 @@ export default function Profile() {
   const [isOtherUserP, setIsOtherUserP] = useState(false);
   const location = useLocation();
   const { otherUserName } = location.state || {};
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const tabs = {
     "videos": <VideoFeed fetchType="user" userId={UserProfile?._id} />,
     "posts": <PostFeed fetchType="user" userId={UserProfile?._id} />,
     "playlists": <PlaylistFeed userId={UserProfile?._id} />
   }
 
-
+  let timeoutId;
   async function handleSubscription() {
-    try {
-      const res = await axios.post(`/subscriptions/c/${UserProfile?._id}`)
-      if (res.status === 200) {
-        console.log(res.data);
+    clearTimeout(timeoutId);
+    setIsSubscribed(!isSubscribed);
+    timeoutId = setTimeout(async () => {
+
+      try {
+        await axios.post(`/subscriptions/c/${UserProfile?._id}`)
+      } catch (error) {
+        console.log(error);
+        console.log(error.response?.data?.message);
       }
-    } catch (error) {
-      console.log(error);
-      console.log(error.response?.data?.message);
-    }
+    }, 800);
   }
   useEffect(() => {
     if (otherUserName) {
@@ -56,6 +59,7 @@ export default function Profile() {
           const res = await axios.get(`/user/p/${username}`);
           if (res.status === 200) {
             setUserProfile(res.data?.data);
+            setIsSubscribed(res.data?.data?.isSubscribed);
             console.log(res.data?.data)
           }
         } catch (error) {
@@ -79,7 +83,7 @@ export default function Profile() {
       }
       getUserProfile(user?.userName);
     }
-  }, [])
+  }, [user?.userName, otherUserName])
 
   return (
     <>
@@ -128,7 +132,7 @@ export default function Profile() {
         </span>
         {
           isOtherUserP &&
-          <Button children={UserProfile?.isSubscribed ?
+          <Button children={isSubscribed ?
             (
               <>
                 <UserTick />
