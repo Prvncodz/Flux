@@ -18,10 +18,10 @@ export default function Feed({ fetchType, userId }) {
         console.log(error);
       }
     }
-    async function fetchVideosByUser() {
-      if (!userId) return;
+    async function fetchVideosByUser(Id) {
+      if (!Id) return;
       try {
-        await axios.get(`/videos/all-videos?userId=${userId}`)
+        await axios.get(`/videos/all-videos?userId=${Id}`)
           .then((res) => {
             setVideos(res.data.data);
             SetAreVideosFetched(true);
@@ -32,7 +32,7 @@ export default function Feed({ fetchType, userId }) {
     }
 
     if (fetchType === "user") {
-      fetchVideosByUser();
+      fetchVideosByUser(userId);
     } else {
       fetchAllVideos();
     }

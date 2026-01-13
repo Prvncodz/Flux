@@ -27,12 +27,7 @@ export default function Profile() {
   const location = useLocation();
   const { otherUserName } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const tabs = {
-    "videos": <VideoFeed fetchType="user" userId={UserProfile?._id} />,
-    "posts": <PostFeed fetchType="user" userId={UserProfile?._id} />,
-    "playlists": <PlaylistFeed userId={UserProfile?._id} />
-  }
-
+  const [isProfileFetched, setIsProfileFetched] = useState(false);
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -60,6 +55,7 @@ export default function Profile() {
           if (res.status === 200) {
             setUserProfile(res.data?.data);
             setIsSubscribed(res.data?.data?.isSubscribed);
+            setIsProfileFetched(true);
             console.log(res.data?.data)
           }
         } catch (error) {
@@ -74,8 +70,9 @@ export default function Profile() {
         if (!username) return;
         try {
           const res = await axios.get(`/user/p/${username}`);
-          if (res.status) {
+          if (res.status === 200) {
             setUserProfile(res.data?.data);
+            setIsProfileFetched(true);
           }
         } catch (error) {
           console.log("Error while fetching user's profile. err message", error);
@@ -83,7 +80,14 @@ export default function Profile() {
       }
       getUserProfile(user?.userName);
     }
-  }, [user?.userName, otherUserName])
+  }, [user?.userName, otherUserName]);
+
+
+  const tabs = {
+    "videos": <VideoFeed fetchType={"user"} userId={UserProfile?._id} />,
+    "posts": <PostFeed fetchType={"user"} userId={UserProfile?._id} />,
+    "playlists": <PlaylistFeed userId={UserProfile?._id} />
+  }
 
   return (
     <>
@@ -153,10 +157,8 @@ export default function Profile() {
         <span name="posts" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "posts" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "posts" ? `bg-blue-800` : ``}`}></div></span>
         <span name="playlists" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "playlists" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "playlists" ? `bg-blue-800` : ``}`}></div></span>
       </div>
-      <div className="relative overflow-y-auto">
-        {
-          tabs[tabOpened]
-        }
+      <div>
+        {isProfileFetched && tabs[tabOpened]}
       </div>
     </>
   );

@@ -1,22 +1,19 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
 import PlaylistComponent from "./playlistComponent.jsx"
-import UserContext from "../../../contexts/UserContext.jsx"
 
 export default function PlaylistFeed({ userId }) {
 
   const [playlists, setPlaylists] = useState([{}]);
   const [arePlaylistsFetched, SetArePlaylistsFetched] = useState(false);
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if (!userId) return;
-    async function fetchAllPlaylists(userId) {
-      if (!userId) return;
+    async function fetchAllPlaylists(Id) {
+      if (!Id) return;
       try {
-        await axios.get(`/playlists/user/${userId}`)
+        await axios.get(`/playlists/user/${Id}`)
           .then((res) => {
-            setPlaylists(res.data.data);
+            setPlaylists(res.data?.data);
             SetArePlaylistsFetched(true);
           });
       } catch (error) {
