@@ -34,7 +34,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (otherUserName) {
-
+      if (otherUserName !== user?.userName) {
+        setIsOtherUserP(true);
+      }
       if (!otherUserName) return;
       async function getUserProfile(username) {
         if (!username) return;
@@ -42,7 +44,6 @@ export default function Profile() {
           const res = await axios.get(`/user/p/${username}`);
           if (res.status) {
             setUserProfile(res.data?.data);
-            setIsOtherUserP(true);
           }
         } catch (error) {
           console.log("Error while fetching user's profile. err message", error);
