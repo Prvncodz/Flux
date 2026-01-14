@@ -19,7 +19,9 @@ export default function VideoComponent({ video }) {
   function handleShowWatchVideo() {
     navigate("/watch/video", {
       state: {
-        video: video
+        video: video,
+        ownerAvatar: avatarUrl,
+        username: username,
       }
     })
   }

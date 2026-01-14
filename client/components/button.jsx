@@ -3,7 +3,7 @@ export default function Button({ children, classes, onClick }) {
     <button
       className={`bg-blue-500 hover:bg-blue-600 
 		  focus:outline-offset-2 active:bg-blue-800
-		  text-gray-100 w-32 h-11 p-3 ml-auto mr-auto
+		  text-gray-100 w-32 h-11 p-3 
 		 flex justify-center items-center rounded-4xl 
 		  font-semibold text-center text-md transition-bg ease cursor-pointer ${classes}`} onClick={onClick}
     >
