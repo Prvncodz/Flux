@@ -17,7 +17,11 @@ export default function VideoComponent({ video }) {
     });
   }
   function handleShowWatchVideo() {
-    navigate("/watch/video")
+    navigate("/watch/video", {
+      state: {
+        video: video
+      }
+    })
   }
   useEffect(() => {
     function calcDuration(dur) {

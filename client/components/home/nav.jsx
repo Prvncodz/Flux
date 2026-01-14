@@ -44,8 +44,8 @@ export default function Nav({ wantTabs }) {
 
 
   return (
-    <nav className="h-auto bg-gray-50 w-full">
-      <div className="flex flex-row w-full justify-between items-center">
+    <nav className="h-auto w-full ring-b shadow-sm pb-1.5">
+      <div className="flex flex-row w-full justify-between items-center p-1">
         <div className="ml-5">
           <img src={logo} className="h-8 w-auto" loading="lazy" onClick={() => navigate("/")} />
         </div>
