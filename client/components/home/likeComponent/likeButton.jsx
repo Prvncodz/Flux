@@ -3,7 +3,7 @@ import axios from "../../../api/axios.js";
 
 function LikeButton({ fetchType, Id }) {
   const [liked, setLiked] = useState(false);
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     async function getVideoLikeCount(videoId) {
@@ -58,15 +58,35 @@ function LikeButton({ fetchType, Id }) {
     }
     setLiked(!liked);
     timeoutId = setTimeout(async () => {
-      try {
-        const res = await axios.post(`/likes/toggle/t/${tweetId}`);
-        if (res.status == 200) {
-          console.log(res.data)
+      if (fetchType === "tweet") {
+        try {
+          const res = await axios.post(`/likes/toggle/t/${Id}`);
+          if (res.status == 200) {
+            console.log(res.data)
+          }
+        } catch (err) {
+          console.log(`Error while toggling tweet likes with id ${Id}`, err);
         }
-      } catch (err) {
-        console.log(`Error while toggling tweet likes with id ${tweetId}`, err);
+      } else if (fetchType === "video") {
+        try {
+          const res = await axios.post(`/likes/toggle/v/${Id}`);
+          if (res.status == 200) {
+            console.log(res.data)
+          }
+        } catch (err) {
+          console.log(`Error while toggling video likes with id ${Id}`, err);
+        }
       }
-
+      else {
+        try {
+          const res = await axios.post(`/likes/toggle/c/${Id}`);
+          if (res.status == 200) {
+            console.log(res.data)
+          }
+        } catch (err) {
+          console.log(`Error while toggling comment likes with id ${Id}`, err);
+        }
+      }
     }, 800);
   };
 
