@@ -1,4 +1,4 @@
-import mongoose, { isValidObjectId } from "mongoose";
+import { isValidObjectId } from "mongoose";
 import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -40,6 +40,76 @@ const getVideoComments = asyncHandler(async (req, res) => {
     );
 });
 
+const getTweetComments = asyncHandler(async (req, res) => {
+  //TODO: get all comments for a tweetId
+  const { tweetId } = req.params;
+  if (!isValidObjectId(tweetId)) {
+    throw new ApiError(400, "This tweet is invalid or removed by the user");
+  }
+  const { page = 1, limit = 10 } = req.query;
+
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const skipNum = (pageNum - 1) * limitNum;
+
+  if (isNaN(pageNum) || pageNum < 1) {
+    throw new ApiError(403, "page number is invalid");
+  }
+  if (isNaN(limitNum) || limitNum < 1) {
+    throw new ApiError(403, "limit number is invalid");
+  }
+  const comments = await Comment.find({ tweet: tweetId })
+    .skip(skipNum)
+    .limit(limitNum);
+
+  if (!comments) {
+    throw new ApiError(501, "Unable to fetch Comments");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        comments,
+        "Fetched all comments on this tweet successfully",
+      ),
+    );
+});
+const getCommentComments = asyncHandler(async (req, res) => {
+  //TODO: get all comments for a videoId
+  const { commentId } = req.params;
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "This comment is invalid or removed by the user");
+  }
+  const { page = 1, limit = 10 } = req.query;
+
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const skipNum = (pageNum - 1) * limitNum;
+
+  if (isNaN(pageNum) || pageNum < 1) {
+    throw new ApiError(403, "page number is invalid");
+  }
+  if (isNaN(limitNum) || limitNum < 1) {
+    throw new ApiError(403, "limit number is invalid");
+  }
+  const comments = await Comment.find({ comment: commentId })
+    .skip(skipNum)
+    .limit(limitNum);
+
+  if (!comments) {
+    throw new ApiError(501, "Unable to fetch Comments");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        comments,
+        "Fetched all comments on this comment successfully",
+      ),
+    );
+});
 const addComment = asyncHandler(async (req, res) => {
   // TODO: add a comment to a video
   const { videoId } = req.params;
@@ -105,4 +175,4 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, deletedComment, "Deleted comment successfully"));
 });
 
-export { getVideoComments, addComment, updateComment, deleteComment };
+export { getVideoComments, addComment, updateComment, deleteComment, getTweetComments, getCommentComments };

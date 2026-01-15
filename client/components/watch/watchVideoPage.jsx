@@ -6,13 +6,12 @@ import UserTick from "../assets/usertick.jsx";
 import UserAddIcon from "../assets/useradd.jsx";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios.js";
+import CommentFeed from "../commentFeed/commentFeed.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
   const { video, username, ownerAvatar } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isWatchVideoFetched, setIsWatchVideoFetched] = useState(false);
-  const [isCommentsFetched, setIsCommentsFetched] = useState(false);
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -30,18 +29,6 @@ export default function WatchVideoPage() {
 
 
   useEffect(() => {
-    async function getVideoComments(Id) {
-      try {
-        const res = await axios.get(`/comments/${Id}/get-video-comments`);
-        if (res.status === 200) {
-          setIsCommentsFetched(true);
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    getVideoComments(video?._id);
-    setIsWatchVideoFetched(true);
   }, [])
 
   return (
@@ -80,6 +67,9 @@ export default function WatchVideoPage() {
               </>
             )} classes="mt-2 ml-4" onClick={handleSubscription} />
         </div>
+      </div>
+      <div>
+        <CommentFeed fetchType={"video"} Id={video?.Id} />
       </div>
 
     </>

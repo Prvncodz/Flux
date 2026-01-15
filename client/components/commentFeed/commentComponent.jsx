@@ -3,7 +3,7 @@ import Like from "../home/likeComponent/likeButton.jsx"
 import dpfp from "../assets/dpfp.jpg"
 
 
-export default function CommentComponent({ comment, idx }) {
+export default function CommentComponent({ comment }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
 
   return (

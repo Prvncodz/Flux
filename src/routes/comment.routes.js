@@ -4,19 +4,24 @@ import {
   deleteComment,
   getVideoComments,
   updateComment,
+  getTweetComments,
+  getCommentComments
 } from "../controllers/comment.controller.js";
 import { verifyJwt } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.use(verifyJwt); // Apply verifyJWT middleware to all routes in this file
 
 router.get("/:videoId/get-video-comments", getVideoComments);
 
-router.post("/:videoId/add-comment", addComment);
+router.get("/:tweetId/get-tweet-comments", getTweetComments);
 
-router.patch("/:commentId/update-comment", updateComment);
+router.get("/:commentId/get-comment-comments", getCommentComments);
 
-router.delete("/:commentId/delete-comment", deleteComment);
+router.post("/:videoId/add-comment", verifyJwt, addComment);
+
+router.patch("/:commentId/update-comment", verifyJwt, updateComment);
+
+router.delete("/:commentId/delete-comment", verifyJwt, deleteComment);
 
 export default router;

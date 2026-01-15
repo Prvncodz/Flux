@@ -1,13 +1,11 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "../../api/axios.js";
 import CommentComponent from "./commentComponent.jsx";
-import UserContext from "../../contexts/UserContext.jsx";
 
 export default function CommentFeed({ fetchType, Id }) {
   const [comments, setComments] = useState([{}]);
   const [areCommentsFetched, SetAreCommentsFetched] = useState(false);
 
-  const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchAllCommentsOnVideo(id) {
