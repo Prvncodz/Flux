@@ -69,7 +69,7 @@ export default function WatchVideoPage() {
         </div>
       </div>
       <div>
-        <CommentFeed fetchType={"video"} Id={video?.Id} />
+        <CommentFeed fetchType={"video"} Id={video?._id} />
       </div>
 
     </>
