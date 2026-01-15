@@ -1,14 +1,24 @@
 import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
 
-function LikeButton({ tweetId }) {
+function LikeButton({ fetchType, Id }) {
   const [liked, setLiked] = useState(false);
   const [count, setCount] = useState(null);
 
   useEffect(() => {
-    async function getVideoLikeCount(Id) {
+    async function getVideoLikeCount(videoId) {
       try {
-        const res = await axios.get(`/likes/${Id}`);
+        const res = await axios.get(`/likes/v/${videoId}`);
+        if (res.status == 200) {
+          setCount(res.data.data);
+        }
+      } catch (err) {
+        console.log(`Error while fetching video likes with id ${videoId} `, err);
+      }
+    }
+    async function getTweetLikeCount(tweetId) {
+      try {
+        const res = await axios.get(`/likes/t/${tweetId}`);
         if (res.status == 200) {
           setCount(res.data.data);
         }
@@ -16,8 +26,26 @@ function LikeButton({ tweetId }) {
         console.log(`Error while fetching tweet likes with id ${tweetId} `, err);
       }
     }
-    getLikeCount(tweetId)
-  }, [])
+    async function getCommentLikeCount(commentId) {
+      try {
+        const res = await axios.get(`/likes/c/${commentId}`);
+        if (res.status == 200) {
+          setCount(res.data.data);
+        }
+      } catch (err) {
+        console.log(`Error while fetching comment likes with id ${commentId} `, err);
+      }
+    }
+    if (fetchType === "video") {
+      getVideoLikeCount(Id);
+    }
+    else if (fetchType === "comment") {
+      getCommentLikeCount(Id);
+    }
+    else {
+      getTweetLikeCount(Id);
+    }
+  }, [fetchType, Id]);
 
   let timeoutId;
   const handleLike = () => {
@@ -51,7 +79,7 @@ function LikeButton({ tweetId }) {
         fontSize: "14px",
       }}
     >
-      {liked ? `❤️ ${count ? count : ""}` : `🤍 ${count ? count : ""}`}
+      {liked ? `❤️ ${count}` : `🤍 ${count}`}
     </button>
   );
 }
