@@ -4,14 +4,15 @@ import dpfp from "../assets/dpfp.jpg"
 import Button from "../button.jsx";
 import UserTick from "../assets/usertick.jsx";
 import UserAddIcon from "../assets/useradd.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../api/axios.js";
 
 export default function WatchVideoPage() {
   const location = useLocation();
   const { video, username, ownerAvatar } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
-
+  const [isWatchVideoFetched, setIsWatchVideoFetched] = useState(false);
+  const [isCommentsFetched, setIsCommentsFetched] = useState(false);
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -26,6 +27,22 @@ export default function WatchVideoPage() {
       }
     }, 800);
   }
+
+
+  useEffect(() => {
+    async function getVideoComments(Id) {
+      try {
+        const res = await axios.get(`/comments/${Id}/get-video-comments`);
+        if (res.status === 200) {
+          setIsCommentsFetched(true);
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getVideoComments(video?._id);
+    setIsWatchVideoFetched(true);
+  }, [])
 
   return (
     <>
@@ -64,6 +81,7 @@ export default function WatchVideoPage() {
             )} classes="mt-2 ml-4" onClick={handleSubscription} />
         </div>
       </div>
+
     </>
   );
 }
