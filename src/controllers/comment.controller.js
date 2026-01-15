@@ -110,7 +110,7 @@ const getCommentComments = asyncHandler(async (req, res) => {
       ),
     );
 });
-const addComment = asyncHandler(async (req, res) => {
+const addCommentOnVideo = asyncHandler(async (req, res) => {
   // TODO: add a comment to a video
   const { videoId } = req.params;
 
@@ -124,6 +124,54 @@ const addComment = asyncHandler(async (req, res) => {
   const addedComment = await Comment.create({
     content,
     video: videoId,
+    owner: req.user?._id,
+  });
+  if (!addedComment) {
+    throw new ApiError(501, "Unable to add comment");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, addedComment, "Comment added successfully!"));
+});
+
+const addCommentOnTweet = asyncHandler(async (req, res) => {
+  // TODO: add a comment to a tweet
+  const { tweetId } = req.params;
+
+  if (!isValidObjectId(tweetId)) {
+    throw new ApiError(400, "This tweet is invalid or removed by the user");
+  }
+  const { content } = req.body;
+  if (!content) {
+    throw new ApiError(400, "Add content to add to a comment in this tweet!");
+  }
+  const addedComment = await Comment.create({
+    content,
+    tweet: tweetId,
+    owner: req.user?._id,
+  });
+  if (!addedComment) {
+    throw new ApiError(501, "Unable to add comment");
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, addedComment, "Comment added successfully!"));
+});
+
+const addCommentOnComment = asyncHandler(async (req, res) => {
+  // TODO: add a comment to another comment
+  const { commentId } = req.params;
+
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "This comment is invalid or removed by the user");
+  }
+  const { content } = req.body;
+  if (!content) {
+    throw new ApiError(400, "Add content to add a reply to this comment!");
+  }
+  const addedComment = await Comment.create({
+    content,
+    comment: commentId,
     owner: req.user?._id,
   });
   if (!addedComment) {
@@ -175,4 +223,4 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, deletedComment, "Deleted comment successfully"));
 });
 
-export { getVideoComments, addComment, updateComment, deleteComment, getTweetComments, getCommentComments };
+export { getVideoComments, addCommentOnVideo, updateComment, deleteComment, getTweetComments, getCommentComments, addCommentOnTweet, addCommentOnComment };

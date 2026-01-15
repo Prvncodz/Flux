@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {
-  addComment,
+  addCommentOnVideo,
   deleteComment,
   getVideoComments,
   updateComment,
@@ -18,7 +18,7 @@ router.get("/:tweetId/get-tweet-comments", getTweetComments);
 
 router.get("/:commentId/get-comment-comments", getCommentComments);
 
-router.post("/:videoId/add-comment", verifyJwt, addComment);
+router.post("/:videoId/add-comment", verifyJwt, addCommentOnVideo);
 
 router.patch("/:commentId/update-comment", verifyJwt, updateComment);
 
