@@ -1,5 +1,5 @@
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
-import Like from "../home/likeComponent/tweetlike.jsx"
+import Like from "../home/likeComponent/likeButton.jsx"
 import dpfp from "../assets/dpfp.jpg"
 
 
@@ -26,7 +26,7 @@ export default function CommentComponent({ comment, idx }) {
           {comment?.content || ""}
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
-          <span><Like commentId={comment?._id} /></span>
+          <span><Like fetchType={"comment"} commentId={comment?._id} /></span>
         </div>
       </div>
     </>

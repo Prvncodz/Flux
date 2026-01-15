@@ -138,27 +138,68 @@ const getLikedVideos = asyncHandler(async (req, res) => {
       ),
     );
 });
-const getTweetLikesCount= asyncHandler(async (req,res)=>{
-    let likesCount=0;
-    const {tweetId}=req.params;
-     if(!tweetId){
-     new ApiError(400,"Invalid tweet Id");
-     }
-    likesCount = await Like.countDocuments({tweet:tweetId});
-    if(!likesCount){
-    new ApiError(503,"cannot find the like docs for this tweet");
-    }
-    return res 
+const getTweetLikesCount = asyncHandler(async (req, res) => {
+  let likesCount = 0;
+  const { tweetId } = req.params;
+  if (!tweetId) {
+    new ApiError(400, "Invalid tweet Id");
+  }
+  likesCount = await Like.countDocuments({ tweet: tweetId });
+  if (!likesCount) {
+    new ApiError(503, "cannot find the like docs for this tweet");
+  }
+  return res
     .status(200)
     .json(
       new ApiResponse(
-      200,
-      likesCount,
-      "like count successfully fetched"
+        200,
+        likesCount,
+        "Tweet's like count successfully fetched"
+      )
+    )
+});
+
+const getVideoLikesCount = asyncHandler(async (req, res) => {
+  let likesCount = 0;
+  const { videoId } = req.params;
+  if (!videoId) {
+    new ApiError(400, "Invalid video Id");
+  }
+
+  likesCount = await Like.countDocuments({ video: videoId });
+  if (!likesCount) {
+    new ApiError(503, "cannot find the like docs for this video");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        likesCount,
+        "Video's like count successfully fetched"
+      )
+    )
+});
+const getCommentLikesCount = asyncHandler(async (req, res) => {
+  let likesCount = 0;
+  const { commentId } = req.params;
+  if (!commentId) {
+    new ApiError(400, "Invalid comment Id");
+  }
+  likesCount = await Like.countDocuments({ comment: commentId });
+  if (!likesCount) {
+    new ApiError(503, "cannot find the like docs for this comment");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        likesCount,
+        "Comment's like count successfully fetched"
       )
     )
 });
 
 
-
-export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos ,getTweetLikesCount};
+export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos, getTweetLikesCount, getVideoLikesCount, getCommentLikesCount };
