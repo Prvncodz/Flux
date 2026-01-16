@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "../../api/axios.js";
 import CommentComponent from "./commentComponent.jsx";
+import dpfp from "../assets/dpfp.jpg";
+import { useGetUserById } from "../../hooks/useGetUserById.jsx";
 
-export default function CommentFeed({ fetchType, Id }) {
+export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   const [comments, setComments] = useState([{}]);
   const [areCommentsFetched, SetAreCommentsFetched] = useState(false);
-
-
   useEffect(() => {
     if (!Id) return;
     async function fetchAllCommentsOnVideo(id) {
@@ -57,18 +57,21 @@ export default function CommentFeed({ fetchType, Id }) {
 
   if (areCommentsFetched && comments.length === 0) {
     return (
-      <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
-        No Comments has been published on this yet
+      <div className="my-3 h-20 flex p-3 rounded-2xl bg-gray-200 mx-2">
+        No comments on this content yet
       </div>
     );
   }
   return (
     <>
-      <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
-        {areCommentsFetched &&
-          comments.map((comment, idx) => (
+      <div className="my-3 h-auto flex flex-col p-3 rounded-2xl bg-gray-200 mx-2 ease-in-out" onClick={() => setIsOpen(prev => !prev)}>
+        <h1 className="text-gray-900 text-left text-lg text-medium">Comments {areCommentsFetched && comments.length}</h1>
+        {areCommentsFetched && isOpen ?
+          (comments.map((comment, idx) => (
             <CommentComponent key={idx} comment={comment} />
-          ))}
+          ))) : (
+            areCommentsFetched && <CommentComponent comment={comments[0]} onlyContent={true} />
+          )}
       </div>
     </>
   );

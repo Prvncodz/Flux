@@ -4,13 +4,21 @@ import dpfp from "../assets/dpfp.jpg"
 import { useEffect } from "react";
 
 
-export default function CommentComponent({ comment }) {
+export default function CommentComponent({ comment, onlyContent }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
   useEffect(() => {
   }, [])
+  if (onlyContent) {
+    return (
+      <div className="flex my-3">
+        <img src={avatarUrl || dpfp} className="rounded-full h-10 w-10" />
+        <h1 className="text-neutral-700 text-lg font-normal text-left wrap mx-2">{comment?.content || "cnkallllllllifowefefuer8er lorjdidjwjdw djid wid wdijwijdwji wewe ewiehwei we"}</h1>
+      </div>
+    );
+  }
   return (
     <>
-      <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
+      <div className=" h-auto w-full p-3 border-b border-gray-200 mt-0 mb-0 ">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
             <img
@@ -24,7 +32,7 @@ export default function CommentComponent({ comment }) {
           </span>
 
         </div>
-        <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left ">
+        <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left wrap">
           {comment?.content || ""}
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">

@@ -12,6 +12,8 @@ export default function WatchVideoPage() {
   const location = useLocation();
   const { video, username, ownerAvatar } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
+
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -43,7 +45,7 @@ export default function WatchVideoPage() {
         </video>
       </div>
       <div className="relative flex flex-col">
-        <h1 className="text-xl text-gray-800 mx-3 my-1 text-left  text-bold">{video?.title || ""}</h1>
+        <h1 className="text-xl text-gray-800 mx-2 my-1 text-left p-3  text-bold">{video?.title || ""}</h1>
         <div className="flex mx-1 mt-2 justify-between">
           <div className="flex">
             <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
@@ -69,9 +71,8 @@ export default function WatchVideoPage() {
         </div>
       </div>
       <div>
-        <CommentFeed fetchType={"video"} Id={video?._id} />
+        <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
       </div>
-
     </>
   );
 }
