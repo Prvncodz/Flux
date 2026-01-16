@@ -14,7 +14,6 @@ export default function CommentFeed({ fetchType, Id }) {
       try {
         await axios.get(`/comments/${id}/get-video-comments`)
           .then((res) => {
-            console.log(res.data);
             setComments(res.data?.data);
             SetAreCommentsFetched(true);
           });
@@ -27,7 +26,7 @@ export default function CommentFeed({ fetchType, Id }) {
       try {
         await axios.get(`/comments/${id}/get-tweet-comments`)
           .then((res) => {
-            setComments(res.data.data);
+            setComments(res.data?.data);
             SetAreCommentsFetched(true);
           });
       } catch (error) {
@@ -39,7 +38,7 @@ export default function CommentFeed({ fetchType, Id }) {
       try {
         await axios.get(`/comments/${id}/get-comment-comments`)
           .then((res) => {
-            setComments(res.data.data);
+            setComments(res.data?.data);
             SetAreCommentsFetched(true);
           });
       } catch (error) {
@@ -67,9 +66,9 @@ export default function CommentFeed({ fetchType, Id }) {
     <>
       <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
         {areCommentsFetched &&
-          comments.map((comment, idx) => {
-            <CommentComponent key={idx} comment={comment} idx={idx} />
-          })}
+          comments.map((comment, idx) => (
+            <CommentComponent key={idx} comment={comment} />
+          ))}
       </div>
     </>
   );

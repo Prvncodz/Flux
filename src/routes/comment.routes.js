@@ -20,11 +20,11 @@ router.get("/:tweetId/get-tweet-comments", getTweetComments);
 
 router.get("/:commentId/get-comment-comments", getCommentComments);
 
-router.post("/:videoId/add-comment", verifyJwt, addCommentOnVideo);
+router.post("/v/:videoId/add-comment", verifyJwt, addCommentOnVideo);
 
-router.post("/:commentId/add-comment", verifyJwt, addCommentOnComment);
+router.post("/c/:commentId/add-comment", verifyJwt, addCommentOnComment);
 
-router.post("/:tweetId/add-comment", verifyJwt, addCommentOnTweet);
+router.post("/t/:tweetId/add-comment", verifyJwt, addCommentOnTweet);
 
 router.patch("/:commentId/update-comment", verifyJwt, updateComment);
 

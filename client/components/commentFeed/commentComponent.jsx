@@ -1,13 +1,17 @@
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
 import Like from "../home/likeComponent/likeButton.jsx"
 import dpfp from "../assets/dpfp.jpg"
+import { useEffect } from "react";
 
 
 export default function CommentComponent({ comment }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
-
+  useEffect(() => {
+    console.log(comment);
+  }, [])
   return (
     <>
+      yohoooooroorrroro
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
