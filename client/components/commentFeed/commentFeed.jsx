@@ -3,6 +3,7 @@ import axios from "../../api/axios.js";
 import CommentComponent from "./commentComponent.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
+import AddCommentsBox from "./AddCommentBox.jsx";
 
 export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   const [comments, setComments] = useState([{}]);
@@ -64,12 +65,18 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   }
   return (
     <>
-      <div className="my-3 h-auto flex flex-col p-3 rounded-2xl bg-gray-200 mx-2 ease-in-out" onClick={() => setIsOpen(prev => !prev)}>
+      <div className="my-2 h-auto overflow-auto flex flex-col p-3 rounded-2xl bg-gray-200 mx-2 ease-in-out" onClick={() => !isOpen && setIsOpen(true)}>
         <h1 className="text-gray-900 text-left text-lg text-medium">Comments {areCommentsFetched && comments.length}</h1>
         {areCommentsFetched && isOpen ?
-          (comments.map((comment, idx) => (
-            <CommentComponent key={idx} comment={comment} />
-          ))) : (
+
+          (
+            <div>
+              <AddCommentsBox Id={Id} fetchType={fetchType} />
+              {comments.map((comment, idx) => (
+                <CommentComponent key={idx} comment={comment} />
+              ))}
+            </div>
+          ) : (
             areCommentsFetched && <CommentComponent comment={comments[0]} onlyContent={true} />
           )}
       </div>

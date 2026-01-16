@@ -70,7 +70,7 @@ export default function WatchVideoPage() {
             )} classes="mt-2 ml-4" onClick={handleSubscription} />
         </div>
       </div>
-      <div>
+      <div className="overflow-auto">
         <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
       </div>
     </>

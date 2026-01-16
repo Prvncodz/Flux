@@ -10,9 +10,9 @@ export default function CommentComponent({ comment, onlyContent }) {
   }, [])
   if (onlyContent) {
     return (
-      <div className="flex my-3">
-        <img src={avatarUrl || dpfp} className="rounded-full h-10 w-10" />
-        <h1 className="text-neutral-700 text-lg font-normal text-left wrap mx-2">{comment?.content || "cnkallllllllifowefefuer8er lorjdidjwjdw djid wid wdijwijdwji wewe ewiehwei we"}</h1>
+      <div className="flex p-3">
+        <img src={avatarUrl || dpfp} className="rounded-full h-10 w-10" onError={(e => e.target.src = dpfp)} />
+        <h1 className="text-neutral-700 text-lg font-normal text-left wrap ml-3 my-1 w-full">{comment?.content || ""}</h1>
       </div>
     );
   }
