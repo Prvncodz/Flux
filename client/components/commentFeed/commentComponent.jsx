@@ -7,11 +7,9 @@ import { useEffect } from "react";
 export default function CommentComponent({ comment }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
   useEffect(() => {
-    console.log(comment);
   }, [])
   return (
     <>
-      yohoooooroorrroro
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
@@ -30,7 +28,7 @@ export default function CommentComponent({ comment }) {
           {comment?.content || ""}
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
-          <span><Like fetchType={"comment"} commentId={comment?._id} /></span>
+          <span><Like fetchType={"comment"} Id={comment?._id} /></span>
         </div>
       </div>
     </>

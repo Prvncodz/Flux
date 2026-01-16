@@ -7,6 +7,7 @@ function LikeButton({ fetchType, Id }) {
 
   useEffect(() => {
     async function getVideoLikeCount(videoId) {
+      if (!videoId) return;
       try {
         const res = await axios.get(`/likes/v/${videoId}`);
         if (res.status == 200) {
@@ -17,6 +18,7 @@ function LikeButton({ fetchType, Id }) {
       }
     }
     async function getTweetLikeCount(tweetId) {
+      if (!tweetId) return;
       try {
         const res = await axios.get(`/likes/t/${tweetId}`);
         if (res.status == 200) {
@@ -27,6 +29,7 @@ function LikeButton({ fetchType, Id }) {
       }
     }
     async function getCommentLikeCount(commentId) {
+      if (!commentId) return;
       try {
         const res = await axios.get(`/likes/c/${commentId}`);
         if (res.status == 200) {

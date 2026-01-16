@@ -67,12 +67,12 @@ export default function VideoComponent({ video }) {
   }, [])
 
   return (
-    <div className="mb-3">
+    <div className="">
       <div className="relative ">
         <img src={video.thumbnail.url} className=" w-full h-60" onClick={handleShowWatchVideo} />
         <div className="absolute right-2 bottom-2 p-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium">{duration}</div>
       </div>
-      <div className="flex mt-3">
+      <div className="flex mt-3 p-2">
         <div className="h-10 w-10">
           <img
             src={avatarUrl || dpfp}
