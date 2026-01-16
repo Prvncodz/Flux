@@ -4,6 +4,7 @@ import CommentComponent from "./commentComponent.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
 import AddCommentsBox from "./AddCommentBox.jsx";
+import CrossIcon from "../assets/crossIcon.jsx";
 
 export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   const [comments, setComments] = useState([{}]);
@@ -65,12 +66,12 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   }
   return (
     <>
-      <div className="my-2 h-auto overflow-auto flex flex-col p-3 rounded-2xl bg-gray-200 mx-2 ease-in-out" onClick={() => !isOpen && setIsOpen(true)}>
+      <div className="my-2 h-auto overflow-auto flex flex-col p-3 rounded-2xl bg-gray-200 mx-2 ease-in-out relative z-0" onClick={() => !isOpen && setIsOpen(true)}>
         <h1 className="text-gray-900 text-left text-lg text-medium">Comments {areCommentsFetched && comments.length}</h1>
         {areCommentsFetched && isOpen ?
-
           (
             <div>
+              <CrossIcon size={26} color={"#000000"} className={"absolute top-4 right-4 z-1"} onClick={() => isOpen && setIsOpen(false)} />
               <AddCommentsBox Id={Id} fetchType={fetchType} />
               {comments.map((comment, idx) => (
                 <CommentComponent key={idx} comment={comment} />
