@@ -76,9 +76,9 @@ const getTweetComments = asyncHandler(async (req, res) => {
     );
 });
 const getCommentComments = asyncHandler(async (req, res) => {
-  //TODO: get all comments for a videoId
+  //TODO: get all comments for a commentId
   const { commentId } = req.params;
-  if (!isValidObjectId(videoId)) {
+  if (!isValidObjectId(commentId)) {
     throw new ApiError(400, "This comment is invalid or removed by the user");
   }
   const { page = 1, limit = 10 } = req.query;

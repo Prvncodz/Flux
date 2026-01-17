@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import axios from "../../api/axios";
 import PlusIcon from "../assets/plusIcon"
 
-export default function AddCommentsBox({ Id, fetchType, className, setShowAddTweetBox }) {
+export default function AddCommentsBox({ Id, fetchType, className, setShowAddTweetBox, setShowAddReplyBox }) {
   const [content, setContent] = useState("");
   let addCommentRef = useRef(null);
 
@@ -40,7 +40,8 @@ export default function AddCommentsBox({ Id, fetchType, className, setShowAddTwe
         console.log("error occured while adding a new comment", err);
       }
     }
-    setShowAddTweetBox(false);
+    setShowAddReplyBox && setShowAddReplyBox(false);
+    setShowAddTweetBox && setShowAddTweetBox(false);
     setContent("");
   }
   return (

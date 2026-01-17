@@ -15,7 +15,7 @@ export default function TweetComponent({ tweet }) {
   const navigate = useNavigate();
 
   function handleShowTweetPage() {
-    navigate("/watch/tweet", {
+    navigate("/watch/post", {
       state: {
         tweet: tweet,
         comments: commentsPost
@@ -31,7 +31,6 @@ export default function TweetComponent({ tweet }) {
         const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments`)
         if (res.status === 200) {
           setCommentPosts(res.data?.data);
-          setAreCommentPostFetched(true);
         }
       } catch (err) {
         console.log(err);

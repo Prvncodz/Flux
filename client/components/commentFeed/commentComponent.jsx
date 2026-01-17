@@ -1,12 +1,41 @@
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
 import Like from "../home/likeComponent/likeButton.jsx"
 import dpfp from "../assets/dpfp.jpg"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "../../api/axios.js";
+import AddCommentsBox from "./AddCommentBox.jsx";
+import ChatBubbleIcon from "../assets/chatIcon.jsx";
+
 
 
 export default function CommentComponent({ comment, onlyContent }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
+  const [showAddReplyBox, setShowAddReplyBox] = useState(false);
+  const [commentsPost, setCommentPosts] = useState([{}]);
+  function HandleReplyToComment() {
+    setShowAddReplyBox(true);
+  }
+  function handleShowTweetPage() {
+    navigate("/watch/post", {
+      state: {
+        tweet: comment,
+        comments: commentsPost
+      }
+    })
+  }
+
   useEffect(() => {
+    async function getAllCommentPosts() {
+      try {
+        const res = await axios.get(`/comments/${comment?._id}/get-comment-comments`)
+        if (res.status === 200) {
+          setCommentPosts(res.data?.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getAllCommentPosts();
   }, [])
   if (onlyContent) {
     return (
@@ -18,7 +47,7 @@ export default function CommentComponent({ comment, onlyContent }) {
   }
   return (
     <>
-      <div className=" h-auto w-full  border-b border-gray-200 mt-0 mb-0 ">
+      <div className=" h-auto w-full  border-b border-gray-200 mt-0 mb-0 p-1">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
             <img
@@ -35,11 +64,14 @@ export default function CommentComponent({ comment, onlyContent }) {
         <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left wrap">
           {comment?.content || ""}
         </div>
-        <div className="flex justify-start gap-6 mt-4 ml-5">
-          <span><Like fetchType={"comment"} Id={comment?._id} /></span>
-          <span></span>
+        <div className="flex justify-start gap-6 mt-4 ml-5 mb-2">
+          <span><Like fetchType={"comment"} Id={comment._id} /></span>
+          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}>reply</span>
+          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{commentsPost.length !== 0 ? <span className="ml-2"> View {commentsPost.length} replies</span> : ""}</span>
         </div>
       </div>
+
+      {showAddReplyBox && <AddCommentsBox fetchType={"comment"} Id={comment?._id} setShowAddReplyBox={setShowAddReplyBox} />}
     </>
   );
 }

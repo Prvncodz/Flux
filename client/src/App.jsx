@@ -60,7 +60,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/userchannel" element={<Profile />} />
           <Route path="/watch/video" element={<WatchVideoPage />} />
-          <Route path="/watch/tweet" element={<WatchTweetPage />} />
+          <Route path="/watch/post" element={<WatchTweetPage />} />
         </Routes>
       </BrowserRouter>
 
