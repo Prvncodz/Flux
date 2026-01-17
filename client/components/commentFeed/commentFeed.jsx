@@ -57,7 +57,7 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
 
   return (
     <>
-      <div className="my-2 h-auto overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0" onClick={() => !isOpen && setIsOpen(true)}>
+      <div className="my-2 h-auto overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100" onClick={() => !isOpen && setIsOpen(true)}>
         <h1 className="text-gray-900 text-left text-lg text-medium">{areCommentsFetched && comments.length} Comments</h1>
         {areCommentsFetched && isOpen ?
           (
@@ -71,7 +71,7 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
           ) : (
             areCommentsFetched && comments.length !== 0 ?
               <CommentComponent comment={comments[0]} onlyContent={true} /> :
-              <div className="my-3 h-20 flex p-3 rounded-2xl bg-gray-100 mx-2" onClick={() => !isOpen && setIsOpen(true)}>
+              <div className="my-3 h-auto flex p-3 rounded-2xl bg-gray-100 mx-2" onClick={() => !isOpen && setIsOpen(true)}>
                 No comments on this content yet
               </div>
           )}

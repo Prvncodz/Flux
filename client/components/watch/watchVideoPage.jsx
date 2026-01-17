@@ -7,6 +7,8 @@ import UserAddIcon from "../assets/useradd.jsx";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios.js";
 import CommentFeed from "../commentFeed/commentFeed.jsx";
+import VideoDescription from "./videoDescription.jsx";
+import VideoFeed from "../home/videofeed/feed.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
@@ -34,7 +36,7 @@ export default function WatchVideoPage() {
   }, [])
 
   return (
-    <>
+    <div className="overflow-auto">
       <Nav wantTabs={false} />
       <div className="relative">
         <video width="640" height="360" controls loop>
@@ -45,8 +47,9 @@ export default function WatchVideoPage() {
         </video>
       </div>
       <div className="relative flex flex-col">
-        <h1 className="text-xl text-gray-800 mx-2 my-1 text-left p-3  text-bold">{video?.title || ""}</h1>
-        <div className="flex mx-1 mt-2 justify-between">
+        <h1 className="text-xl text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
+        <VideoDescription content={video?.description} />
+        <div className="flex mx-1 my-2 justify-between">
           <div className="flex">
             <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
             <div className="flex-col ml-1 justify-left">
@@ -70,9 +73,12 @@ export default function WatchVideoPage() {
             )} classes="mt-2 ml-4" onClick={handleSubscription} />
         </div>
       </div>
-      <div className="overflow-auto">
+      <div className="overflow-auto my-2">
         <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
       </div>
-    </>
+      <div>
+        <VideoFeed />
+      </div>
+    </div>
   );
 }

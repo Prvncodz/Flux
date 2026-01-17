@@ -43,7 +43,7 @@ export default function AddCommentsBox({ Id, fetchType, className }) {
     setContent("");
   }
   return (
-    <div className={`w-full rounded-3xl bg-gray-300 h-14 my-6 relative ${className}`}>
+    <div className={`w-full rounded-3xl bg-gray-100 h-14 my-6 relative ${className}`}>
       <input type="text" name="comment input" placeholder="Add a comment here" className="w-4/5 h-full rounded-3xl text-gray-600 relative z-0 focus:outline-none pr-4 wrap-anywhere" value={content} onChange={(e) => setContent(e.target.value)} onKeyDown={(e) => {
         if (e.key === "Enter") {
           addCommentRef.current.click();
