@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import axios from "../../../api/axios.js";
 import ChatIcon from "../../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
+import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
 
 export default function TweetComponent({ tweet }) {
   const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner);
   const [commentsPost, setCommentPosts] = useState([{}]);
-  const [areCommentPostFetched, setAreCommentPostFetched] = useState(false);
+  const [showAddTweetBox, setShowAddTweetBox] = useState(false);
+
   const navigate = useNavigate();
 
   function handleShowTweetPage() {
@@ -19,6 +21,9 @@ export default function TweetComponent({ tweet }) {
         comments: commentsPost
       }
     })
+  }
+  function HandleReplyToTweet() {
+    setShowAddTweetBox(true);
   }
   useEffect(() => {
     async function getAllCommentPosts() {
@@ -56,9 +61,11 @@ export default function TweetComponent({ tweet }) {
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
           <span><Like fetchType={"tweet"} Id={tweet._id} /></span>
+          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToTweet}>reply</span>
           <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{commentsPost.length !== 0 ? <span className="ml-2"> View {commentsPost.length} replies</span> : ""}</span>
         </div>
       </div>
+      {showAddTweetBox && <AddCommentsBox fetchType={"tweet"} Id={tweet?._id} setShowAddTweetBox={setShowAddTweetBox} />}
     </>
   );
 }
