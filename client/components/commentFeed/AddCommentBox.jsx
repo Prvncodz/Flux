@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import axios from "../../api/axios";
 import PlusIcon from "../assets/plusIcon"
 
-export default function AddCommentsBox({ Id, fetchType }) {
+export default function AddCommentsBox({ Id, fetchType, className }) {
   const [content, setContent] = useState("");
   let addCommentRef = useRef(null);
 
@@ -43,14 +43,14 @@ export default function AddCommentsBox({ Id, fetchType }) {
     setContent("");
   }
   return (
-    <div className="w-full rounded-3xl bg-gray-300 h-14 my-4 relative">
+    <div className={`w-full rounded-3xl bg-gray-300 h-14 my-6 relative ${className}`}>
       <input type="text" name="comment input" placeholder="Add a comment here" className="w-4/5 h-full rounded-3xl text-gray-600 relative z-0 focus:outline-none pr-4 wrap-anywhere" value={content} onChange={(e) => setContent(e.target.value)} onKeyDown={(e) => {
         if (e.key === "Enter") {
           addCommentRef.current.click();
           setContent("");
         }
       }} />
-      <button type="button" className="absolute rounded-full top-2 right-2 z-1" onClick={handleAddComment} ref={addCommentRef} ><PlusIcon size={40} color={"#000"} /></button>
+      <button type="button" className="absolute rounded-full top-2 right-2 z-1" onClick={handleAddComment} ref={addCommentRef} ><PlusIcon size={40} color={"gray"} /></button>
     </div >
   );
 }

@@ -16,7 +16,7 @@ export default function PlusIcon({ size, color }) {
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <g opacity="0.4">
+        <g opacity="0.9">
           <path
             d="M8 12H16"
             stroke={color}

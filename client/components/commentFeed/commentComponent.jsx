@@ -18,7 +18,7 @@ export default function CommentComponent({ comment, onlyContent }) {
   }
   return (
     <>
-      <div className=" h-auto w-full p-3 border-b border-gray-200 mt-0 mb-0 ">
+      <div className=" h-auto w-full  border-b border-gray-200 mt-0 mb-0 ">
         <div className="flex mt-3">
           <div className="h-10 w-10 ml-4">
             <img
