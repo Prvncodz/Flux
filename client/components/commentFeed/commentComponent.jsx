@@ -5,21 +5,26 @@ import { useEffect, useState } from "react";
 import axios from "../../api/axios.js";
 import AddCommentsBox from "./AddCommentBox.jsx";
 import ChatBubbleIcon from "../assets/chatIcon.jsx";
+import { useNavigate } from "react-router-dom";
 
 
 
-export default function CommentComponent({ comment, onlyContent }) {
+export default function CommentComponent({ comment, onlyContent, mainPost }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
   const [showAddReplyBox, setShowAddReplyBox] = useState(false);
   const [commentsPost, setCommentPosts] = useState([{}]);
+  const [areAnyComments, setAreAnyComments] = useState(false);
+  const navigate = useNavigate();
+
   function HandleReplyToComment() {
     setShowAddReplyBox(true);
   }
-  function handleShowTweetPage() {
+  function handleShowPostPage() {
     navigate("/watch/post", {
       state: {
-        tweet: comment,
-        comments: commentsPost
+        post: comment,
+        comments: commentsPost,
+        postType: "comment"
       }
     })
   }
@@ -30,13 +35,18 @@ export default function CommentComponent({ comment, onlyContent }) {
         const res = await axios.get(`/comments/${comment?._id}/get-comment-comments`)
         if (res.status === 200) {
           setCommentPosts(res.data?.data);
+          if (res.data.data.length !== 0) {
+            setAreAnyComments(true);
+          } else {
+            setAreAnyComments(false);
+          }
         }
       } catch (err) {
         console.log(err);
       }
     }
     getAllCommentPosts();
-  }, [])
+  }, [comment?._id])
   if (onlyContent) {
     return (
       <div className="flex p-3">
@@ -67,7 +77,7 @@ export default function CommentComponent({ comment, onlyContent }) {
         <div className="flex justify-start gap-6 mt-4 ml-5 mb-2">
           <span><Like fetchType={"comment"} Id={comment._id} /></span>
           <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}>reply</span>
-          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{commentsPost.length !== 0 ? <span className="ml-2"> View {commentsPost.length} replies</span> : ""}</span>
+          <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
         </div>
       </div>
 

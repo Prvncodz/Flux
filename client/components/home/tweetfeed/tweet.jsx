@@ -7,18 +7,19 @@ import ChatIcon from "../../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
 import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
 
-export default function TweetComponent({ tweet }) {
-  const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner);
+export default function TweetComponent({ tweet, mainPost }) {
+  const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
   const [commentsPost, setCommentPosts] = useState([{}]);
   const [showAddTweetBox, setShowAddTweetBox] = useState(false);
+  const [areAnyComments, setAreAnyComments] = useState(false);
 
   const navigate = useNavigate();
 
   function handleShowTweetPage() {
     navigate("/watch/post", {
       state: {
-        tweet: tweet,
-        comments: commentsPost
+        post: tweet,
+        comments: commentsPost,
       }
     })
   }
@@ -30,14 +31,19 @@ export default function TweetComponent({ tweet }) {
       try {
         const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments`)
         if (res.status === 200) {
-          setCommentPosts(res.data?.data);
+          setCommentPosts([...res.data?.data]);
+          if (res.data.data?.length !== 0) {
+            setAreAnyComments(true)
+          } else {
+            setAreAnyComments(false);
+          }
         }
       } catch (err) {
         console.log(err);
       }
     }
     getAllCommentPosts();
-  }, [])
+  }, [tweet?._id])
   return (
     <>
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
@@ -61,7 +67,7 @@ export default function TweetComponent({ tweet }) {
         <div className="flex justify-start gap-6 mt-4 ml-5">
           <span><Like fetchType={"tweet"} Id={tweet._id} /></span>
           <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToTweet}>reply</span>
-          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{commentsPost.length !== 0 ? <span className="ml-2"> View {commentsPost.length} replies</span> : ""}</span>
+          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
         </div>
       </div>
       {showAddTweetBox && <AddCommentsBox fetchType={"tweet"} Id={tweet?._id} setShowAddTweetBox={setShowAddTweetBox} />}

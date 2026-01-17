@@ -12,7 +12,7 @@ import SignIn from "../components/signin.jsx";
 import Profile from "../components/userProfile/profile.jsx";
 import axios from "../api/axios.js"
 import WatchVideoPage from "../components/watch/watchVideoPage.jsx";
-import WatchTweetPage from "../components/watch/watchTweetPage.jsx";
+import WatchPostPage from "../components/watch/watchPostPage.jsx";
 
 function App() {
 
@@ -60,7 +60,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/userchannel" element={<Profile />} />
           <Route path="/watch/video" element={<WatchVideoPage />} />
-          <Route path="/watch/post" element={<WatchTweetPage />} />
+          <Route path="/watch/post" element={<WatchPostPage />} />
         </Routes>
       </BrowserRouter>
 
