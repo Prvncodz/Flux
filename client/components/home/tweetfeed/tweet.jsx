@@ -56,7 +56,7 @@ export default function TweetComponent({ tweet }) {
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
           <span><Like fetchType={"tweet"} Id={tweet._id} /></span>
-          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{commentsPost.length === 0 ? "" : commentsPost.length}</span>
+          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{commentsPost.length !== 0 ? <span className="ml-2"> View {commentsPost.length} replies</span> : ""}</span>
         </div>
       </div>
     </>
