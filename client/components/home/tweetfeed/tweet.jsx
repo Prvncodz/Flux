@@ -1,11 +1,39 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import Like from "../likeComponent/likeButton.jsx"
 import dpfp from "../../assets/dpfp.jpg"
-
+import { useEffect, useState } from "react";
+import axios from "../../../api/axios.js";
+import ChatIcon from "../../assets/chatIcon.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function TweetComponent({ tweet }) {
   const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner);
+  const [commentsPost, setCommentPosts] = useState([{}]);
+  const [areCommentPostFetched, setAreCommentPostFetched] = useState(false);
+  const navigate = useNavigate();
 
+  function handleShowTweetPage() {
+    navigate("/watch/tweet", {
+      state: {
+        tweet: tweet,
+        comments: commentsPost
+      }
+    })
+  }
+  useEffect(() => {
+    async function getAllCommentPosts() {
+      try {
+        const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments`)
+        if (res.status === 200) {
+          setCommentPosts(res.data?.data);
+          setAreCommentPostFetched(true);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getAllCommentPosts();
+  }, [])
   return (
     <>
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
@@ -28,6 +56,7 @@ export default function TweetComponent({ tweet }) {
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
           <span><Like fetchType={"tweet"} Id={tweet._id} /></span>
+          <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{commentsPost.length === 0 ? "" : commentsPost.length}</span>
         </div>
       </div>
     </>

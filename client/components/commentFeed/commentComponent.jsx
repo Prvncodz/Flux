@@ -37,6 +37,7 @@ export default function CommentComponent({ comment, onlyContent }) {
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5">
           <span><Like fetchType={"comment"} Id={comment?._id} /></span>
+          <span></span>
         </div>
       </div>
     </>
