@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
+import LikeIcon from "../../assets/likeIcon.jsx";
+import LikeFilledIcon from "../../assets/likeFilledIcon.jsx";
 
 function LikeButton({ fetchType, Id }) {
   const [liked, setLiked] = useState(false);
@@ -100,10 +102,11 @@ function LikeButton({ fetchType, Id }) {
         cursor: "pointer",
         color: "black",
         fontSize: "14px",
+        display: "flex",
       }}
     >
-      {liked ? `❤️ ${count}` : `🤍 ${count}`}
-    </button>
+      {liked ? <><LikeFilledIcon size={20} /><span className="ml-1">{count}</span></> : <><LikeIcon size={20} /><span className="ml-1">{count}</span></>}
+    </button >
   );
 }
 

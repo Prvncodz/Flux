@@ -6,6 +6,7 @@ import axios from "../../../api/axios.js";
 import ChatIcon from "../../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
 import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
+import ReplyIcon from "../../assets/replyIcon.jsx";
 
 export default function TweetComponent({ tweet, mainPost }) {
   const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
@@ -16,12 +17,16 @@ export default function TweetComponent({ tweet, mainPost }) {
   const navigate = useNavigate();
 
   function handleShowTweetPage() {
-    navigate("/watch/post", {
-      state: {
-        post: tweet,
-        comments: commentsPost,
-      }
-    })
+    if (!mainPost) {
+      navigate("/watch/post", {
+        state: {
+          post: tweet,
+          comments: commentsPost,
+        }
+      })
+    } else {
+      return;
+    }
   }
   function HandleReplyToTweet() {
     setShowAddTweetBox(true);
@@ -64,9 +69,9 @@ export default function TweetComponent({ tweet, mainPost }) {
         <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left ">
           {tweet.content}
         </div>
-        <div className="flex justify-start gap-6 mt-4 ml-5">
+        <div className="flex justify-start gap-8 mt-4 ml-5">
           <span><Like fetchType={"tweet"} Id={tweet._id} /></span>
-          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToTweet}>reply</span>
+          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToTweet}><span className="mr-1"><ReplyIcon /></span>reply</span>
           <span onClick={handleShowTweetPage} className="flex text-sm text-black cursor-pointer "><ChatIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
         </div>
       </div>

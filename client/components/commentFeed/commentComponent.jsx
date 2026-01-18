@@ -6,6 +6,7 @@ import axios from "../../api/axios.js";
 import AddCommentsBox from "./AddCommentBox.jsx";
 import ChatBubbleIcon from "../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
+import ReplyIcon from "../assets/replyIcon.jsx";
 
 
 
@@ -20,13 +21,17 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
     setShowAddReplyBox(true);
   }
   function handleShowPostPage() {
-    navigate("/watch/post", {
-      state: {
-        post: comment,
-        comments: commentsPost,
-        postType: "comment"
-      }
-    })
+    if (!mainPost) {
+      navigate("/watch/post", {
+        state: {
+          post: comment,
+          comments: commentsPost,
+          postType: "comment"
+        }
+      })
+    } else {
+      return;
+    }
   }
 
   useEffect(() => {
@@ -76,7 +81,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5 mb-2">
           <span><Like fetchType={"comment"} Id={comment._id} /></span>
-          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}>reply</span>
+          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}><span className="mr-1"><ReplyIcon /></span>reply</span>
           <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
         </div>
       </div>
