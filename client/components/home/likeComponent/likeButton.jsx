@@ -3,8 +3,8 @@ import axios from "../../../api/axios.js";
 import LikeIcon from "../../assets/likeIcon.jsx";
 import LikeFilledIcon from "../../assets/likeFilledIcon.jsx";
 
-function LikeButton({ fetchType, Id }) {
-  const [liked, setLiked] = useState(false);
+function LikeButton({ fetchType, Id, likeStatus }) {
+  const [liked, setLiked] = useState(likeStatus);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
