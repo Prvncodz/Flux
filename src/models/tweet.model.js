@@ -10,10 +10,6 @@ const tweetSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    isPublished: {
-      type: Boolean,
-      default: true,
-    },
   },
   { timestamps: true },
 );

@@ -1,6 +1,4 @@
-import mongoose, { isValidObjectId } from "mongoose";
 import { Tweet } from "../models/tweet.model.js";
-import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -14,7 +12,6 @@ const createTweet = asyncHandler(async (req, res) => {
   const createdTweet = await Tweet.create({
     content,
     owner: req.user._id,
-    isPublished: true,
   });
   if (!createdTweet) {
     throw new ApiError(500, "unable to create tweet");
@@ -41,7 +38,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
     .skip(skipNum)
     .limit(limitNum);
 
-  
+
   return res
     .status(200)
     .json(
@@ -108,7 +105,6 @@ const getAllTweets = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Invalid limit is given to the page");
   }
   const filter = {};
-  filter.isPublished = true;
   if (query) {
     filter.content = { $regex: query, $options: "i" };
   }
@@ -121,10 +117,24 @@ const getAllTweets = asyncHandler(async (req, res) => {
   if (!allTweets) {
     throw new ApiError(500, "Unable to fetch records from database");
   }
+  const promises = allTweets.map(async (tweet) => {
+    const obj = tweet.toObject();
+    obj.isLiked = (await Like.countDocuments({ tweet: tweet?._id, owner: userId ?? null })) > 0;
+    return obj;
+  });
+
+
+  const allTweetWithLikeStatus = await Promise.all(promises);
+  if (allTweetWithLikeStatus.length === 0) {
+    throw new ApiError(500, "Error while adding like status on tweets");
+  }
+
+
+  console.log(allTweetWithLikeStatus);
 
   return res
     .status(200)
-    .json(new ApiResponse(200, allTweets, "fetched tweets feed successfully"));
+    .json(new ApiResponse(200, allTweetWithLikeStatus, "fetched tweets feed successfully"));
 });
 
 export { createTweet, getUserTweets, updateTweet, deleteTweet, getAllTweets };

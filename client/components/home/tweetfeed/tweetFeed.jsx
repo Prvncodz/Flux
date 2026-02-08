@@ -11,7 +11,7 @@ export default function Feed({ fetchType, userId }) {
   useEffect(() => {
     async function fetchAllTweets() {
       try {
-        await axios.get("/tweets/get-all-tweets").then((res) => {
+        await axios.get(`/tweets/get-all-tweets`).then((res) => {
           setTweets(res.data.data);
           SetAreTweetsFetched(true);
         });
@@ -47,7 +47,7 @@ export default function Feed({ fetchType, userId }) {
   }
   return (
     <>
-      <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
+      <div className="h-[82vh] overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
         {areTweetsFetched &&
           tweets.map((tweet, idx) => (
             <TweetComponent key={idx} tweet={tweet} idx={idx} />
