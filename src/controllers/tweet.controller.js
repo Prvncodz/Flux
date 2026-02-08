@@ -34,9 +34,26 @@ const getUserTweets = asyncHandler(async (req, res) => {
   if (isNaN(limitNum) || limitNum < 1) {
     throw new ApiError(400, "limit is invalid");
   }
-  const allTweetDocsOfUser = await Tweet.find({ owner: userId })
+  if (!userId) {
+    throw new ApiError(404, "userId is undefined");
+  }
+  const allTweets = await Tweet.find({ owner: userId })
     .skip(skipNum)
-    .limit(limitNum);
+    .limit(limitNum)
+  if (!allTweets) {
+    throw new ApiError(-501, "error finding tweets by this user");
+  }
+  const promises = allTweets.map(async (tweet) => {
+    const obj = tweet.toObject();
+    obj.isLiked = (await Like.countDocuments({ tweet: tweet?._id, owner: userId ?? null })) > 0;
+    return obj;
+  });
+
+
+  const allTweetWithLikeStatus = await Promise.all(promises);
+  if (allTweetWithLikeStatus.length === 0) {
+    throw new ApiError(500, "Error while adding like status on tweets");
+  }
 
 
   return res
@@ -44,7 +61,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        allTweetDocsOfUser,
+        allTweetWithLikeStatus,
         "All tweets of user fetched successfully",
       ),
     );
