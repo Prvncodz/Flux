@@ -125,33 +125,33 @@ const getAllTweets = asyncHandler(async (req, res) => {
   if (query) {
     filter.content = { $regex: query, $options: "i" };
   }
-  if (userId) {
-    filter.owner = userId;
-  }
 
   const allTweets = await Tweet.find(filter).skip(skipNum).limit(limitNum);
 
   if (!allTweets) {
     throw new ApiError(500, "Unable to fetch records from database");
   }
-  const promises = allTweets.map(async (tweet) => {
-    const obj = tweet.toObject();
-    obj.isLiked = (await Like.countDocuments({ tweet: tweet?._id, owner: userId ?? null })) > 0;
-    return obj;
-  });
 
+  try {
+    const promises = allTweets.map(async (tweet) => {
+      const obj = tweet.toObject();
+      obj.isLiked = userId ? !!(await Like.exists({ tweet: tweet?._id, likedBy: userId })) : false;
+      return obj;
+    });
+    const allTweetWithLikeStatus = await Promise.all(promises);
+    console.log(allTweetWithLikeStatus);
+    console.log("Tweets:", allTweets?.length);
 
-  const allTweetWithLikeStatus = await Promise.all(promises);
-  if (allTweetWithLikeStatus.length === 0) {
-    throw new ApiError(500, "Error while adding like status on tweets");
+    if (allTweetWithLikeStatus.length === 0) {
+      throw new ApiError(500, "Unable to fetch all tweets with Like status")
+    }
+    return res
+      .status(200)
+      .json(new ApiResponse(200, allTweetWithLikeStatus, "fetched tweets feed successfully"));
+  } catch (error) {
+    console.log("Error:", error)
   }
 
-
-  console.log(allTweetWithLikeStatus);
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, allTweetWithLikeStatus, "fetched tweets feed successfully"));
 });
 
 export { createTweet, getUserTweets, updateTweet, deleteTweet, getAllTweets };

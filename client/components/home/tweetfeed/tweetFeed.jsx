@@ -11,7 +11,7 @@ export default function Feed({ fetchType, userId }) {
   useEffect(() => {
     async function fetchAllTweets() {
       try {
-        await axios.get(`/tweets/get-all-tweets`).then((res) => {
+        await axios.get(`/tweets/get-all-tweets?userId=${user?._id}`).then((res) => {
           setTweets(res.data.data);
           SetAreTweetsFetched(true);
         });
