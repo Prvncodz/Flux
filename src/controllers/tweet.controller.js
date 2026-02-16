@@ -45,7 +45,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
   }
   const promises = allTweets.map(async (tweet) => {
     const obj = tweet.toObject();
-    obj.isLiked = (await Like.countDocuments({ tweet: tweet?._id, owner: userId ?? null })) > 0;
+    obj.isLiked = !!(await Like.exists({ tweet: tweet?._id, owner: userId }));
     return obj;
   });
 
@@ -139,8 +139,6 @@ const getAllTweets = asyncHandler(async (req, res) => {
       return obj;
     });
     const allTweetWithLikeStatus = await Promise.all(promises);
-    console.log(allTweetWithLikeStatus);
-    console.log("Tweets:", allTweets?.length);
 
     if (allTweetWithLikeStatus.length === 0) {
       throw new ApiError(500, "Unable to fetch all tweets with Like status")
