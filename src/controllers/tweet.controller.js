@@ -45,16 +45,12 @@ const getUserTweets = asyncHandler(async (req, res) => {
   }
   const promises = allTweets.map(async (tweet) => {
     const obj = tweet.toObject();
-    obj.isLiked = !!(await Like.exists({ tweet: tweet?._id, owner: userId }));
+    obj.isLiked = !!(await Like.exists({ tweet: tweet?._id, likedBy: userId }));
     return obj;
   });
 
 
   const allTweetWithLikeStatus = await Promise.all(promises);
-  if (allTweetWithLikeStatus.length === 0) {
-    throw new ApiError(500, "Error while adding like status on tweets");
-  }
-
 
   return res
     .status(200)

@@ -80,7 +80,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
           {comment?.content || ""}
         </div>
         <div className="flex justify-start gap-6 mt-4 ml-5 mb-2">
-          <span><Like fetchType={"comment"} Id={comment._id} /></span>
+          <span><Like fetchType={"comment"} Id={comment._id} likeStatus={comment?.isLiked} /></span>
           <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}><span className="mr-1"><ReplyIcon /></span>reply</span>
           <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
         </div>

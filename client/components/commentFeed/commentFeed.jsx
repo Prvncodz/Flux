@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "../../api/axios.js";
 import CommentComponent from "./commentComponent.jsx";
 import AddCommentsBox from "./AddCommentBox.jsx";
 import CrossIcon from "../assets/crossIcon.jsx";
+import UserContext from "../../contexts/UserContext.jsx";
 
 export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
   const [comments, setComments] = useState([{}]);
   const [areCommentsFetched, SetAreCommentsFetched] = useState(false);
+  const { user } = useContext(UserContext);
+  console.log("user obj:", user);
   useEffect(() => {
     if (!Id) return;
     async function fetchAllCommentsOnVideo(id) {
@@ -24,7 +27,7 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
     async function fetchAllCommentsOnTweet(id) {
       if (!id) return;
       try {
-        await axios.get(`/comments/${id}/get-tweet-comments`)
+        await axios.get(`/comments/${id}/get-tweet-comments?userId=${user?._id}`)
           .then((res) => {
             setComments(res.data?.data);
             SetAreCommentsFetched(true);
@@ -53,7 +56,7 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
     } else {
       fetchAllCommentsOnVideo(Id);
     }
-  }, [fetchType, Id]);
+  }, [fetchType, Id, user?.id]);
 
   return (
     <>
@@ -79,3 +82,4 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
     </>
   );
 }
+

@@ -3,6 +3,7 @@ import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Like } from "../models/like.model.js";
 
 const getVideoComments = asyncHandler(async (req, res) => {
   //TODO: get all comments for a videoId
@@ -43,9 +44,15 @@ const getVideoComments = asyncHandler(async (req, res) => {
 const getTweetComments = asyncHandler(async (req, res) => {
   //TODO: get all comments for a tweetId
   const { tweetId } = req.params;
+  const { userId } = req.query;
+
   if (!isValidObjectId(tweetId)) {
     throw new ApiError(400, "This tweet is invalid or removed by the user");
   }
+  if (!tweetId) {
+    throw new ApiError(404, "undefined tweet id");
+  }
+
   const { page = 1, limit = 10 } = req.query;
 
   const pageNum = parseInt(page);
@@ -65,13 +72,22 @@ const getTweetComments = asyncHandler(async (req, res) => {
   if (!comments) {
     throw new ApiError(501, "Unable to fetch Comments");
   }
+  const promises = comments.map(async (comment) => {
+    const obj = comment.toObject();
+    obj.isLiked = userId ? !!(await Like.exists({ comment: comment?._id, likedBy: userId })) : false;
+    return obj;
+  });
+
+
+  const allCommentsWithLikeStatus = await Promise.all(promises);
+  console.log(allCommentsWithLikeStatus)
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        comments,
-        "Fetched all comments on this tweet successfully",
+        allCommentsWithLikeStatus,
+        "Fetched all comments on this tweet with like status successfully",
       ),
     );
 });

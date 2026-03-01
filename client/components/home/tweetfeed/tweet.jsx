@@ -1,18 +1,20 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import Like from "../likeComponent/likeButton.jsx"
 import dpfp from "../../assets/dpfp.jpg"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "../../../api/axios.js";
 import ChatIcon from "../../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
 import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
 import ReplyIcon from "../../assets/replyIcon.jsx";
+import UserContext from "../../../contexts/UserContext.jsx";
 
 export default function TweetComponent({ tweet, mainPost }) {
   const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
   const [commentsPost, setCommentPosts] = useState([{}]);
   const [showAddTweetBox, setShowAddTweetBox] = useState(false);
   const [areAnyComments, setAreAnyComments] = useState(false);
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -33,8 +35,9 @@ export default function TweetComponent({ tweet, mainPost }) {
   }
   useEffect(() => {
     async function getAllCommentPosts() {
+
       try {
-        const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments`)
+        const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments?userId=${user?._id}`)
         if (res.status === 200) {
           setCommentPosts([...res.data?.data]);
           if (res.data.data?.length !== 0) {
@@ -48,7 +51,7 @@ export default function TweetComponent({ tweet, mainPost }) {
       }
     }
     getAllCommentPosts();
-  }, [tweet?._id])
+  }, [tweet?._id, user?._id])
   return (
     <>
       <div className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 ">
