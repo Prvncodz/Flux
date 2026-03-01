@@ -85,15 +85,12 @@ const getTweetComments = asyncHandler(async (req, res) => {
   }
   const promises = comments.map(async (comment) => {
     const obj = comment.toObject();
-    console.log(userId);
     obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
-    console.log("like docs", await Like.exists({ comment: obj._id, likedBy: userId }))
     return obj;
   });
 
 
   const allCommentsWithLikeStatus = await Promise.all(promises);
-  console.log(allCommentsWithLikeStatus)
   return res
     .status(200)
     .json(
@@ -107,6 +104,10 @@ const getTweetComments = asyncHandler(async (req, res) => {
 const getCommentComments = asyncHandler(async (req, res) => {
   //TODO: get all comments for a commentId
   const { commentId } = req.params;
+  const { userId } = req.query;
+  if (!commentId) {
+    throw new ApiError(404, "undefined comment Id")
+  }
   if (!isValidObjectId(commentId)) {
     throw new ApiError(400, "This comment is invalid or removed by the user");
   }
@@ -129,16 +130,37 @@ const getCommentComments = asyncHandler(async (req, res) => {
   if (!comments) {
     throw new ApiError(501, "Unable to fetch Comments");
   }
+  if (!userId) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          comments,
+          "Fetched all comments on this comment successfully",
+        ),
+      );
+  }
+
+  const promises = comments.map(async (comment) => {
+    const obj = comment.toObject();
+    obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
+    return obj;
+  });
+
+
+  const allCommentsWithLikeStatus = await Promise.all(promises);
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        comments,
-        "Fetched all comments on this comment successfully",
+        allCommentsWithLikeStatus,
+        "Fetched all comments on this tweet with like status successfully",
       ),
     );
 });
+
 const addCommentOnVideo = asyncHandler(async (req, res) => {
   // TODO: add a comment to a video
   const { videoId } = req.params;

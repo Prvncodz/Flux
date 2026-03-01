@@ -10,7 +10,7 @@ export default function WatchPostPage() {
   return (
     <div>
       {
-        postType === "comment" ?
+        postType === "comment" ?//if posttype is comment we will show a main comment commentComponent comment box and its comments else we will show main tweet and comment box for tweet and its comments 
           (
             <>
               <Nav wantTabs={false} />
