@@ -31,7 +31,9 @@ export default function TweetComponent({ tweet, mainPost }) {
     }
   }
   function HandleReplyToTweet() {
-    setShowAddTweetBox(true);
+    if (!mainPost) {
+      setShowAddTweetBox(prev => !prev);
+    }
   }
   useEffect(() => {
     async function getAllCommentPosts() {
