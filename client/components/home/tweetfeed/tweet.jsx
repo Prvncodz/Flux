@@ -37,7 +37,7 @@ export default function TweetComponent({ tweet, mainPost }) {
     async function getAllCommentPosts() {
 
       try {
-        const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments?userId=${user?._id}`)
+        const res = await axios.get(`/comments/${tweet?._id}/get-tweet-comments${user?._id ? `?userId=${user._id}` : ``}`)//if userid is there it will be sent as query else no query will be sent
         if (res.status === 200) {
           setCommentPosts([...res.data?.data]);
           if (res.data.data?.length !== 0) {

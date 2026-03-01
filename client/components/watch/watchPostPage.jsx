@@ -31,7 +31,7 @@ export default function WatchPostPage() {
               <div className="h-screen overflow-y-auto overflow-x-hidden mt-5 flex flex-col border-t border-gray-300">
                 {comments.length !== 0 &&
                   comments.map((comment, idx) => (
-                    <TweetComponent key={idx} tweet={comment} />
+                    <CommentComponent key={idx} comment={comment} />
                   ))}
               </div>
             </>

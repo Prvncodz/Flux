@@ -13,7 +13,7 @@ import ReplyIcon from "../assets/replyIcon.jsx";
 export default function CommentComponent({ comment, onlyContent, mainPost }) {
   const { avatarUrl, fullname } = useGetUserById(comment?.owner);
   const [showAddReplyBox, setShowAddReplyBox] = useState(false);
-  const [commentsPost, setCommentPosts] = useState([{}]);
+  const [commentsPosts, setCommentPosts] = useState([{}]);
   const [areAnyComments, setAreAnyComments] = useState(false);
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
       navigate("/watch/post", {
         state: {
           post: comment,
-          comments: commentsPost,
+          comments: commentsPosts,
           postType: "comment"
         }
       })
@@ -82,7 +82,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
         <div className="flex justify-start gap-6 mt-4 ml-5 mb-2">
           <span><Like fetchType={"comment"} Id={comment._id} likeStatus={comment?.isLiked} /></span>
           <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}><span className="mr-1"><ReplyIcon /></span>reply</span>
-          <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPost.length} replies</span>}</span>
+          <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPosts.length} replies</span>}</span>
         </div>
       </div>
 

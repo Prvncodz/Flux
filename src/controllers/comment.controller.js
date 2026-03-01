@@ -72,9 +72,22 @@ const getTweetComments = asyncHandler(async (req, res) => {
   if (!comments) {
     throw new ApiError(501, "Unable to fetch Comments");
   }
+  if (!userId) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          comments,
+          "Fetched all comments on this tweet successfully",
+        ),
+      );
+  }
   const promises = comments.map(async (comment) => {
     const obj = comment.toObject();
-    obj.isLiked = userId ? !!(await Like.exists({ comment: comment?._id, likedBy: userId })) : false;
+    console.log(userId);
+    obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
+    console.log("like docs", await Like.exists({ comment: obj._id, likedBy: userId }))
     return obj;
   });
 
