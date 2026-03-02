@@ -7,6 +7,8 @@ import TabContext from "../../contexts/TabContext.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import SignoutIcon from "../assets/signoutIcon.jsx";
+import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
+import PostUploadPopup from "../uploadPopup/postUpload.jsx";
 
 export default function Nav({ wantTabs }) {
   const navigate = new useNavigate();
@@ -18,6 +20,13 @@ export default function Nav({ wantTabs }) {
   const [fullname, setFullname] = useState("Jhon Doe");
   const [username, setUsername] = useState("jdoejr");
   const [isCrtBtnActive, setIsCrtBtnActive] = useState(false);
+  const [popupType, setPopupType] = useState("video");
+  const [showPopup, setShowPopup] = useState(false);
+
+  const popup = {
+    "video": <VideoUploadPopup />,
+    "post": <PostUploadPopup />,
+  }
 
   useEffect(() => {
     if (isUserLogged) {
@@ -43,12 +52,14 @@ export default function Nav({ wantTabs }) {
     }
   }
 
-  function handleVideoUpload() {
-
-  }
-
-  function handlePostUpload() {
-
+  function handleUpload(fetchtype) {
+    setIsCrtBtnActive(false);
+    setShowPopup(true);
+    if (fetchtype === "video") {
+      setPopupType("video")
+    } else {
+      setPopupType("post")
+    }
   }
 
 
@@ -76,7 +87,7 @@ export default function Nav({ wantTabs }) {
           </button>
           {isCrtBtnActive &&
             <div className="absolute bg-gray-100 shadow-sm rounded-xl h-auto w-auto top-12 z-10 right-0 p-3 transition-all pop-in delay-75 flex gap-2">
-              <div className="flex flex-col items-center gap-3 w-35 border-2 border-dotted p-3 rounded-lg border-gray-300" onClick={handleVideoUpload}>
+              <div className="flex flex-col items-center gap-3 w-35 border-2 border-dotted p-3 rounded-lg border-gray-300" onClick={() => handleUpload("video")}>
                 <svg
                   width="30" height="30" viewBox="0 0 24 24"
                   fill="none" stroke="#111" strokeWidth="1.5"
@@ -87,7 +98,7 @@ export default function Nav({ wantTabs }) {
                 </svg>
                 <h3>Publish video</h3>
               </div>
-              <div className="flex flex-col items-center gap-3 w-35 border-2 border-dotted p-3 rounded-lg border-gray-300" onClick={handlePostUpload}>
+              <div className="flex flex-col items-center gap-3 w-35 border-2 border-dotted p-3 rounded-lg border-gray-300" onClick={() => handleUpload("post")}>
                 <svg
                   width="30" height="30" viewBox="0 0 24 24"
                   fill="none" stroke="#111" strokeWidth="1.5"
@@ -101,6 +112,9 @@ export default function Nav({ wantTabs }) {
             </div>
           }
         </div>
+        {
+          showPopup && popup[popupType]
+        }
         {isUserLogged && notLoggedOut /*if user is logged in do this else show empty profileIcon*/
           ? (
             <>

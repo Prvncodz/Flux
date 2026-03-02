@@ -35,7 +35,6 @@ const getVideoComments = asyncHandler(async (req, res) => {
   if (!comments) {
     throw new ApiError(501, "Unable to fetch Comments");
   }
-  console.log("UserId :", userId)
 
   if (!userId) {
     return res
@@ -57,7 +56,6 @@ const getVideoComments = asyncHandler(async (req, res) => {
 
 
   const allCommentsWithLikeStatus = await Promise.all(promises);
-  console.log(allCommentsWithLikeStatus)
   return res
     .status(200)
     .json(
