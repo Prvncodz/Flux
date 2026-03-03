@@ -133,9 +133,9 @@ export default function Nav({ wantTabs }) {
               </div>
               {isActive && (
                 <>
-                  <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-55 rounded-sm flex flex-col overflow-hidden">
+                  <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-55 rounded flex flex-col overflow-hidden">
                     <div className="p-3 h-auto">
-                      <div className=" relative flex justify-left items-center w-full mb-3">
+                      <div className=" relative flex justify-left items-center w-full mb-2">
                         <img
                           src={avatar || dpfp}
                           onError={(e) => e.target.src = dpfp}
@@ -158,9 +158,9 @@ export default function Nav({ wantTabs }) {
                       >View your channel </a>
                     </div>
 
-                    <hr className="h-0.07  bg-gray-300" />
+                    <hr className="h-0.07  bg-gray-200" />
 
-                    <div className="p-3">
+                    <div className="p-2.5">
                       <div onClick={handleSignout} className=" flex justify-center">
                         <SignoutIcon />
                         <span className="ml-2 text-medium font-medium flex">

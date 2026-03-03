@@ -4,7 +4,7 @@ export default function PostUploadPopup() {
   return (
     <>
       <PopUpComponent />
-      <h1>postt ``</h1>
+      <h1>postt</h1>
     </>
   );
 } 
