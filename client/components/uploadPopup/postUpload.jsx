@@ -32,25 +32,22 @@ export default function PostUploadPopup({ setShowPopup }) {
   return (
     <>
       <PopUpComponent onCancel={() => setShowPopup(false)} >
-        <h1 className="mt-5 mb-3 text-xl font-medium text-blue-500 relative">
-          Create a post
-        </h1>
-        <form className="text-left p-3 my-3" onSubmit={(e) => handlePostUpload(e)}>
+        <form className="text-left p-3 my-2" onSubmit={(e) => handlePostUpload(e)}>
           <label className="text-md font-base text-gray-700 ">
             what's on your mind?
             <textarea
               name="content"
               type="text"
-              placeholder="description of the video goes here.."
+              placeholder="The weather is beautifull..."
               className="bg-gray-100
-                h-30 w-full p-2 border border-gray-300 text-sm"
+                h-30 w-full p-2 border border-gray-300 text-sm mt-1"
             />
           </label>
           <div className="flex items-center justify-center mt-1">
-            <button type="button" onClick={() => setShowPopup(false)} className="bg-gray-300 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-2 mb-5 mx-auto" >Cancel</button>
+            <button type="button" onClick={() => setShowPopup(false)} className="bg-gray-300 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3 mx-auto" >Cancel</button>
             <SubmitButton currentSubmitStatus={
               isSubmmited ? "submited" : loading ? "loading" : "normal"
-            } text={"Upload"} className={"mt-2 mb-5"} />
+            } text={"Upload"} className={"mt-3 mb-3"} />
           </div>
         </form>
       </PopUpComponent>
