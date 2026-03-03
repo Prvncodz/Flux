@@ -28,7 +28,7 @@ export default function VideoUploadPopup({ setShowPopup }) {
     setTimeout(() => {
       setIsSubmmited(false);
       setShowPopup(false);
-    }, 1000)
+    }, 1500)
   }
 
   return (
