@@ -24,8 +24,8 @@ export default function Nav({ wantTabs }) {
   const [showPopup, setShowPopup] = useState(false);
 
   const popup = {
-    "video": <VideoUploadPopup />,
-    "post": <PostUploadPopup />,
+    "video": <VideoUploadPopup setShowPopup={setShowPopup} />,
+    "post": <PostUploadPopup setShowPopup={setShowPopup} />,
   }
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Nav({ wantTabs }) {
     if (fetchtype === "video") {
       setPopupType("video")
     } else {
-      setPopupType("post")
+      setPopupType("post");
     }
   }
 

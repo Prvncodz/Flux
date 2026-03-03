@@ -1,11 +1,10 @@
 import { useState } from "react";
 import PopUpComponent from "./popupComponent";
 
-export default function VideoUploadPopup() {
-  const [showVideoUploadPopup, setShowVideoUploadPopup] = useState(true);
+export default function VideoUploadPopup({ setShowPopup }) {
   return (
     <>
-      <PopUpComponent onCancel={() => setShowVideoUploadPopup(false)}>
+      <PopUpComponent onCancel={() => setShowPopup(false)}>
         <h1>Upload Video</h1>
       </PopUpComponent>
     </>

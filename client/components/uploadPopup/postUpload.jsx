@@ -1,10 +1,11 @@
 import PopUpComponent from "./popupComponent";
 
-export default function PostUploadPopup() {
+export default function PostUploadPopup({ setShowPopup }) {
   return (
     <>
-      <PopUpComponent />
-      <h1>postt</h1>
+      <PopUpComponent onCancel={() => setShowPopup(false)} >
+        <h1>Create Post</h1>
+      </PopUpComponent>
     </>
   );
 } 
