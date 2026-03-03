@@ -4,7 +4,7 @@ export default function PopUpComponent({ children, onCancel }) {
   return (
     <div
       className="h-full w-full flex flex-col justify-center
-      items-center bg-none top-0 z-20 absolute"
+      items-center bg-none z-20 absolute top-0 left-0"
     >
       <div className="absolute top-0  h-full w-full opacity-90 overflow-hidden z-21 bg-gray-300"></div>
       <CancelIconComponent onClick={onCancel} />
