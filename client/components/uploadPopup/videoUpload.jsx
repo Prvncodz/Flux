@@ -35,7 +35,7 @@ export default function VideoUploadPopup({ setShowPopup }) {
     <>
       <PopUpComponent onCancel={() => setShowPopup(false)}>
         <form onSubmit={(e) => handleVideoUpload(e)}>
-          <h1 className="mt-5 mb-3 text-xl font-medium text-blue-400 relative">
+          <h1 className="mt-5 mb-3 text-xl font-medium text-blue-500 relative">
             Upload Video
           </h1>
           <div className="flex items-center justify-center h-40 w-full px-4 py-0 my-2 ">
