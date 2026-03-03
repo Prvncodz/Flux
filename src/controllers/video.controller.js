@@ -50,16 +50,16 @@ const publishAVideo = asyncHandler(async (req, res) => {
     const { title, description } = req.body;
 
     if (!title) {
-      throw new ApiError(407, "title field is required to publish a video");
+      throw new ApiError(403, "title field is required to publish a video");
     }
     const videoFileToPath = req.files?.videofile?.[0]?.path;
     const thumbnailFileToPath = req.files?.thumbnail?.[0]?.path;
 
     if (!videoFileToPath) {
-      throw new ApiError(400, "unable to fetch video file path");
+      throw new ApiError(403, "unable to fetch video file path");
     }
     if (!thumbnailFileToPath) {
-      throw new ApiError(400, "unable to fetch thumbnail file path");
+      throw new ApiError(403, "unable to fetch thumbnail file path");
     }
 
     const videoResponse = await uploadOnCloud(videoFileToPath);
