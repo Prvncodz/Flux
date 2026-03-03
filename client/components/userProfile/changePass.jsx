@@ -68,7 +68,7 @@ export default function ChangePassPopup({ setIsPassPopupActive }) {
             />
           </label>
         </div>
-        <SubmitButton
+        <SubmitButton text={"Submit"}
           currentSubmitStatus={
             isSubmmited ? "submited" : loading ? "loading" : "normal"
           }

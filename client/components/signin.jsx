@@ -80,7 +80,7 @@ export default function SignIn() {
               />
             </label>
           </div>
-          <SubmitButton
+          <SubmitButton text={"Submit"}
             currentSubmitStatus={
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }

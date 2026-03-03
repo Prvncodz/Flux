@@ -75,7 +75,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     if (!user) {
       throw ApiError(400, "cannot find user");
     }
-    const publishedVideo = await Video.create({
+    const UploadedVideo = await Video.create({
       videofile: {
         public_id: videoResponse.public_id,
         url: videoResponse.url,
@@ -90,13 +90,13 @@ const publishAVideo = asyncHandler(async (req, res) => {
       duration: videoResponse?.duration,
       isPublished: false,
     });
-    if (!publishedVideo) {
+    if (!UploadedVideo) {
       throw new ApiError(500, "error while publishing video");
     }
 
     return res
       .status(200)
-      .json(new ApiResponse(200, publishedVideo, "videopublished succesfully"));
+      .json(new ApiResponse(200, UploadedVideo, "video uploaded  succesfully"));
   } catch (error) {
     console.log("Error :", error.message);
     throw new ApiError(500, "unable to publish the video");
