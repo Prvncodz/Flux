@@ -19,7 +19,11 @@ function MenuBar({ setIsMenuOPen, onSignout }) {
     if (!dest) return;
     setIsMenuOPen(prev => !prev);
     if (dest === "home" || dest === "posts") {
-      navigate("/")
+      navigate("/", {
+        state: {
+          tab: dest
+        }
+      })
     } else if (dest === "dashboard") {
       navigate("/dashboard")
     } else if (dest === "watchhistory") {
