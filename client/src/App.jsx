@@ -13,6 +13,9 @@ import Profile from "../components/userProfile/profile.jsx";
 import axios from "../api/axios.js"
 import WatchVideoPage from "../components/watch/watchVideoPage.jsx";
 import WatchPostPage from "../components/watch/watchPostPage.jsx";
+import Dashboard from "../components/dashboard/dashboard.jsx";
+import LikedVideos from "../components/likedVideosPage/likedVideos.jsx";
+import HistoryPage from "../components/historyPage/historyPage.jsx";
 
 function App() {
 
@@ -50,7 +53,7 @@ function App() {
   }, [isTokenReceived]);
 
   return (
-    <UserContext.Provider value={{ user, isUserLogged }}>
+    <UserContext.Provider value={{ user, isUserLogged, setUser }}>
 
       <BrowserRouter>
         <Routes>
@@ -60,6 +63,9 @@ function App() {
           <Route path="/userchannel" element={<Profile />} />
           <Route path="/watch/video" element={<WatchVideoPage />} />
           <Route path="/watch/post" element={<WatchPostPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/liked-videos" element={<LikedVideos />} />
+          <Route path="/watch-history" element={<HistoryPage />} />
         </Routes>
       </BrowserRouter>
 

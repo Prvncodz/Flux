@@ -1,7 +1,8 @@
-import { useState, useEvent, useRef } from "react";
+import { useState, useEvent, useRef, useContext } from "react";
 import axios from "../api/axios.js";
 import SubmitButton from "./submitButton.jsx";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../contexts/UserContext.jsx";
 
 export default function SignIn() {
   const [loading, SetLoading] = useState(false);
@@ -9,6 +10,7 @@ export default function SignIn() {
   const [isSubmmited, setIsSubmmited] = useState(false);
   const [firstInputField, setFirstInputField] = useState("");
   const navigate = new useNavigate();
+  const { setUser } = useContext(UserContext);
 
   async function handleFormSubmission(e) {
     e.preventDefault();
@@ -20,6 +22,7 @@ export default function SignIn() {
       console.log(res);
       if (res.status == 200) {
         navigate("/");
+        setUser(res.data?.data?.user)
         setIsSubmmited(true);
         e.target.reset();
       }

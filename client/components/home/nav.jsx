@@ -80,7 +80,7 @@ export default function Nav({ wantTabs }) {
           {/* </div> */}
           <div className="relative">
             <button onClick={() => setIsCrtBtnActive(prev => !prev)}
-              className="w-11 h-11 rounded-full bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all flex items-center justify-center shadow-sm shadow-blue-200 text-white"
+              className="w-11 h-11 rounded-full bg-blue-600 hover:bg-blue-700 active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
               title="Create post"
             >
               <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth="2.6" viewBox="0 0 24 24" strokeLinecap="round">
@@ -99,7 +99,7 @@ export default function Nav({ wantTabs }) {
             ? (
               <>
                 <div
-                  className=" flex justify-center relative items-center active:scale-95"
+                  className=" flex justify-center relative items-center active:scale-95 cursor-pointer"
                   onClick={() => {
                     isActive ? setIsActive(false) : setIsActive(true);
                   }}
