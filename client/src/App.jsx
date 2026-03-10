@@ -53,7 +53,7 @@ function App() {
   }, [isTokenReceived]);
 
   return (
-    <UserContext.Provider value={{ user, isUserLogged, setUser }}>
+    <UserContext.Provider value={{ user, isUserLogged, setUser, setIsUserLogged }}>
 
       <BrowserRouter>
         <Routes>

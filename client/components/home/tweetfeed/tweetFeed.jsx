@@ -47,7 +47,7 @@ export default function Feed({ fetchType, userId }) {
   }
   return (
     <>
-      <div className="h-[82vh] overflow-y-auto overflow-x-hidden mt-5 flex flex-col ">
+      <div className="h-[95vh] overflow-y-auto overflow-x-hidden pb-5 flex flex-col ">
         {areTweetsFetched &&
           tweets.map((tweet, idx) => (
             <TweetComponent key={idx} tweet={tweet} idx={idx} />

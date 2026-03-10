@@ -13,32 +13,32 @@ import CreateComponent from "./Upload_CreateComponent.jsx";
 import Menu from "./menu/menu.jsx";
 
 export default function Nav({ wantTabs }) {
-  const navigate = new useNavigate();
+  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
   const { isHomeSelected, setIsHomeSelected } = useContext(TabContext) || {};
-  const { user, isUserLogged } = useContext(UserContext);
+  const { user, isUserLogged, setIsUserLogged } = useContext(UserContext);
   const [avatar, setAvatar] = useState(null);
   const [fullname, setFullname] = useState("Jhon Doe");
   const [username, setUsername] = useState("jdoejr");
   const [isCrtBtnActive, setIsCrtBtnActive] = useState(false);
   const [popupType, setPopupType] = useState("video");
   const [showPopup, setShowPopup] = useState(false);
-
   const popup = {
     "video": <VideoUploadPopup setShowPopup={setShowPopup} />,
     "post": <PostUploadPopup setShowPopup={setShowPopup} />,
   }
 
   useEffect(() => {
-    if (isUserLogged) {
+    if (isUserLogged && notLoggedOut) {
       setFullname(user?.fullName);
       setUsername(user?.userName);
       setAvatar(user?.avatar?.url);
     } else {
-      return
+      navigate("/")
     }
-  }, [user, user?.fullName, user?.userName, user?.avatar?.url]);
+
+  }, [user, user?.fullName, user?.userName, user?.avatar?.url, isUserLogged, notLoggedOut]);
 
   async function handleSignout() {
     try {
@@ -47,6 +47,7 @@ export default function Nav({ wantTabs }) {
       if (res.status == 200) {
         setIsActive(false);
         setNotLoggedOut(false);
+        setIsUserLogged(false);
       }
     } catch (error) {
       console.log(error);

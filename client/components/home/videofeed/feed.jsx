@@ -46,7 +46,7 @@ export default function Feed({ fetchType, userId }) {
   }
   return (
     <>
-      <div className="h-[85vh]  overflow-y-auto overflow-x-hidden flex flex-col gap-6 mb-2">
+      <div className="h-[95vh]  overflow-y-auto overflow-x-hidden flex flex-col gap-6 mb-2 pb-5">
         {areVideosFetched &&
           videos.map((video, idx) => (
             <VideoComponent key={idx} video={video} idx={idx} />

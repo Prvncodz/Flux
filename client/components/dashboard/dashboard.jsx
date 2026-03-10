@@ -66,11 +66,11 @@ export default function Dashboard() {
         <div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200 ">
           <div className="relative z-0 ">
             <img src={userChannelStats?.coverImage?.url || dbanner} onError={(e) => e.target.src = dbanner} className="h-35.5 w-full relative" loading="lazy" />
-            <img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-10 w-22.5 border-2 border-white" loading="lazy" />
-            <Edit2 size={20} className="absolute right-5 -bottom-8" onClick={handleEditProfile} />
+            <img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white" loading="lazy" />
+            <Edit2 size={20} className="absolute right-5 -bottom-8 cursor-pointer" onClick={handleEditProfile} />
           </div>
           <div className="h-6 ml-30">
-            <h3 className="text-left text-neutral-700 font-medium text-lg">{userChannelStats?.fullName || "Jhon doe"}</h3>
+            <h3 className="text-left text-neutral-700 font-medium text-xl">{userChannelStats?.fullName || "Jhon doe"}</h3>
             <h3 className="text-left text-neutral-600 font-medium text-xs mt-0">@{userChannelStats?.userName || "jhondoe201"}</h3>
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function Dashboard() {
               >
                 <div className="flex items-center gap-3 text-sm">
                   <Video size={16} />
-                  <span className=" min-w-[140px] max-w-[240x] text-left">
+                  <span className=" min-w-[140px] max-w-[240x] text-left truncate" >
                     {video.title}
                   </span>
                 </div>
