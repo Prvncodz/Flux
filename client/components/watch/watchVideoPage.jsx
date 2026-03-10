@@ -4,11 +4,12 @@ import dpfp from "../assets/dpfp.jpg"
 import Button from "../button.jsx";
 import UserTick from "../assets/usertick.jsx";
 import UserAddIcon from "../assets/useradd.jsx";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "../../api/axios.js";
 import CommentFeed from "../commentFeed/commentFeed.jsx";
 import VideoDescription from "./videoDescription.jsx";
 import VideoFeed from "../home/videofeed/feed.jsx";
+import LikeButton from "../home/likeComponent/likeButton.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
@@ -33,6 +34,7 @@ export default function WatchVideoPage() {
 
 
   useEffect(() => {
+
   }, [])
 
   return (
@@ -56,6 +58,9 @@ export default function WatchVideoPage() {
               <h1 className=" text-lg font-normal text-gray-700 text-left">{username || ""}</h1>
               <h1 className="text-sm font-normal text-gray-500">119k subscribers</h1>
             </div>
+          </div>
+          <div className="flex items-center">
+            <LikeButton size={20} fetchType={"video"} Id={video?._id} likeStatus={video?.isLiked} />
           </div>
           <Button children={isSubscribed ?
             (

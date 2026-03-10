@@ -35,7 +35,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function getStats() {
       try {
-        const res = await axios.get("dashboard/stats");
+        const res = await axios.get("/dashboard/stats");
         if (res.status === 200) {
           setUserChannelStats(res.data?.data[0]);
         }
@@ -45,7 +45,7 @@ export default function Dashboard() {
     }
     async function getVideos() {
       try {
-        const res = await axios.get("dashboard/videos");
+        const res = await axios.get("/dashboard/videos");
         if (res.status === 200) {
           setVideos(res.data?.data);
         }
@@ -69,7 +69,7 @@ export default function Dashboard() {
             <img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white" loading="lazy" />
             <Edit2 size={20} className="absolute right-5 -bottom-8 cursor-pointer" onClick={handleEditProfile} />
           </div>
-          <div className="h-6 ml-30">
+          <div className="h-6 ml-30 mt-1">
             <h3 className="text-left text-neutral-700 font-medium text-xl">{userChannelStats?.fullName || "Jhon doe"}</h3>
             <h3 className="text-left text-neutral-600 font-medium text-xs mt-0">@{userChannelStats?.userName || "jhondoe201"}</h3>
           </div>

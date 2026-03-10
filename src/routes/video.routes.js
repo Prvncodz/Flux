@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   deleteVideo,
   getAllVideos,
+  getAllVideosByUser,
   getVideoById,
   publishAVideo,
   togglePublishStatus,
@@ -13,6 +14,8 @@ import { upload } from "../middlewares/multer.js";
 const router = Router();
 
 
+
+router.get("/all-videos-by-user", getAllVideosByUser);
 
 router.get("/all-videos", getAllVideos);
 

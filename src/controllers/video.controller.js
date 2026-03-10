@@ -6,9 +6,10 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloud, deleteFromCloud } from "../utils/cloudinary.js";
+import { Like } from "../models/like.model.js";
 
 // get all exixting users videos
-const getAllVideos = asyncHandler(async (req, res) => {
+const getAllVideosByUser = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
 
   const pageNum = parseInt(page);
@@ -42,6 +43,52 @@ const getAllVideos = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, videos, "videos fetched succesfully"));
+});
+
+// get all videos with isLiked field(has current user liked the video from videos)
+const getAllVideos = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const skipNum = (pageNum - 1) * limitNum;
+
+  if (isNaN(pageNum) || pageNum < 1) {
+    throw new ApiError(400, "page number is invalid");
+  }
+  if (isNaN(limitNum) || limitNum < 1) {
+    throw new ApiError(400, "limit number is invalid");
+  }
+  //we will make a filter object which will help in filtering the videos with user search query if there is an query given
+  const filter = {};
+  filter.isPublished = true;
+  if (query) {
+    filter.title = { $regex: query, $options: "i" };
+  }
+  const sort = {};
+  if (sortBy) {
+    sort[sortBy] = sortType === "desc" ? -1 : 1;
+  }
+  const videos = await Video.find(filter)
+    .sort(sort)
+    .skip(skipNum)
+    .limit(limitNum);
+
+  const promises = videos
+    .map(async (video) => {
+      const obj = video.toObject();
+      obj.isLiked = userId ? !!(await Like.exists({ video: video?._id, likedBy: userId })) : false;
+      return obj;
+    });
+
+  const allVideos = await Promise.all(promises);
+
+  if (!allVideos) {
+    throw new ApiError(500, "unable to fetch all videos with like status")
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(200, allVideos, "videos fetched succesfully"));
 });
 
 // publish a video
@@ -247,6 +294,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
 });
 
 export {
+  getAllVideosByUser,
   getAllVideos,
   publishAVideo,
   getVideoById,

@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
+import UserContext from "../../../contexts/UserContext.jsx";
 
 export default function Feed({ fetchType, userId }) {
   const [videos, setVideos] = useState([{}]);
   const [areVideosFetched, SetAreVideosFetched] = useState(false);
+  const { user, isUserLogged } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchAllVideos() {
       try {
-        await axios.get("/videos/all-videos")
+        await axios.get(`/videos/all-videos${isUserLogged ? `?userId=${user?._id}` : ``}`)
           .then((res) => {
             setVideos(res.data.data);
             SetAreVideosFetched(true);
@@ -21,7 +23,7 @@ export default function Feed({ fetchType, userId }) {
     async function fetchVideosByUser(Id) {
       if (!Id) return;
       try {
-        await axios.get(`/videos/all-videos?userId=${Id}`)
+        await axios.get(`/videos/all-videos-by-user?userId=${Id}`)
           .then((res) => {
             setVideos(res.data.data);
             SetAreVideosFetched(true);

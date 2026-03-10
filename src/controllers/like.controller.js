@@ -118,7 +118,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   }
   const skipNum = (pageNum - 1) * limitNum;
 
-  const allLikedDocsByUser = await Like.find({ likedBy: req.user._id })
+  const allLikedDocsByUser = await Like.find({ likedBy: req.user?._id })
     .populate("video")
     .skip(skipNum)
     .limit(limitNum);
@@ -126,7 +126,12 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   if (!allLikedDocsByUser) {
     throw new ApiError(500, "Unable to get all liked docs");
   }
-  const allLikedVideos = allLikedDocsByUser.map((Like) => Like.video);
+  const allLikedVideos = allLikedDocsByUser.filter((Like) => Like.video)
+  console.log(allLikedVideos)
+
+  if (!allLikedVideos) {
+    throw new ApiError("500", "unable to fetch liked videos from all liked docs from user")
+  }
 
   return res
     .status(200)
