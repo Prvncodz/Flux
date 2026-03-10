@@ -109,7 +109,7 @@ export default function editProfilePopup({ setIsEditPopUpActive }) {
 
   return (
     <PopUpComponent onCancel={() => setIsEditPopUpActive(false)}>
-      <h1 className="mt-5 text-xl font-medium text-blue-400 relative">
+      <h1 className="mt-5 text-xl font-semibold text-[#1E549D] relative">
         Update Profile
       </h1>
 
@@ -236,11 +236,12 @@ export default function editProfilePopup({ setIsEditPopUpActive }) {
             />
           </label>
         </div>
-        <SubmitButton text={"Submit"}
-          currentSubmitStatus={
+        <div className="flex items-center justify-center mt-1 gap-3">
+          <button type="button" onClick={() => setIsEditPopUpActive(false)} className="border border-neutral-400 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3 mx-auto" >Cancel</button>
+          <SubmitButton currentSubmitStatus={
             isSubmmited ? "submited" : loading ? "loading" : "normal"
-          }
-        />
+          } text={"Upload"} className={"mt-3 mb-3"} />
+        </div>
       </form>
     </PopUpComponent>
   );

@@ -35,8 +35,8 @@ router.patch(
   updateVideo,
 );
 
-router.delete("/c/:videoId/delete-video",verifyJwt, deleteVideo);
+router.delete("/c/:videoId/delete-video", verifyJwt, deleteVideo);
 
-router.post("/c/:videoId/toggle-publish-status",verifyJwt, togglePublishStatus);
+router.post("/c/:videoId/toggle-publish-status", verifyJwt, togglePublishStatus);
 
 export default router;

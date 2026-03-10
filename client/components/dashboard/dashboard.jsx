@@ -5,28 +5,32 @@ import {
   Users,
   Video,
   EyeOff,
+  Edit2,
 } from "lucide-react";
 import Nav from "../home/nav";
 import axios from "../../api/axios";
 import dbanner from "../assets/dbanner.jpg"
 import dpfp from "../assets/dpfp.jpg"
+import EditProfilePopUp from "../userProfile/editProfilePopup.jsx";
 
 export default function Dashboard() {
 
   const [userChannelStats, setUserChannelStats] = useState({});
   const [videos, setVideos] = useState([]);
-
-  async function handleTogglePublish() {
+  const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
+  async function handleTogglePublish(videoId) {
     try {
-      const res = await axios.get("dashboard/stats");
+      const res = await axios.post(`/videos/c/${videoId}/toggle-publish-status`);
       if (res.status === 200) {
-        setUserChannelStats(res.data?.data[0]);
-        console.log(res.data.data[0])
+        console.log(res.data)
       }
     } catch (error) {
       console.log(error);
     }
 
+  }
+  function handleEditProfile() {
+    setIsEditPopUpActive(true);
   }
   useEffect(() => {
     async function getStats() {
@@ -34,7 +38,6 @@ export default function Dashboard() {
         const res = await axios.get("dashboard/stats");
         if (res.status === 200) {
           setUserChannelStats(res.data?.data[0]);
-          console.log(res.data.data[0])
         }
       } catch (error) {
         console.log(error);
@@ -59,31 +62,33 @@ export default function Dashboard() {
       <Nav />
       <div className="w-full p-5 space-y-6 overflow-auto">
 
-        <div className="relative h-55.25 w-full bg-none overflow-hidden rounded-xl border border-neutral-200 ">
-          <div className="relative  z-0 ">
+        {isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />}
+        <div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200 ">
+          <div className="relative z-0 ">
             <img src={userChannelStats?.coverImage?.url || dbanner} onError={(e) => e.target.src = dbanner} className="h-35.5 w-full relative" loading="lazy" />
-            <img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-2 -bottom-15 w-22.5 border-2 border-white" loading="lazy" />
+            <img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-10 w-22.5 border-2 border-white" loading="lazy" />
+            <Edit2 size={20} className="absolute right-5 -bottom-8" onClick={handleEditProfile} />
           </div>
-          <span className="ml-24 h-6">
+          <div className="h-6 ml-30">
             <h3 className="text-left text-neutral-700 font-medium text-lg">{userChannelStats?.fullName || "Jhon doe"}</h3>
             <h3 className="text-left text-neutral-600 font-medium text-xs mt-0">@{userChannelStats?.userName || "jhondoe201"}</h3>
-          </span>
+          </div>
         </div>
 
         <div>
-          <h2 className="text-sm font-bold mb-3 text-gray-900 text-left">
+          <h2 className="text-lg font-bold mb-3 text-gray-900 text-left">
             CHANNEL STATS
           </h2>
 
           <div className="space-y-3">
-            <StatCard icon={<Eye size={18} />} label="Total views" value={userChannelStats?.totalViews} />
-            <StatCard icon={<ThumbsUp size={18} />} label="Total likes" value={userChannelStats?.totalLikes} />
-            <StatCard icon={<Users size={18} />} label="Total subscribers" value={userChannelStats?.totalSubscribers} />
+            <StatCard icon={<Eye size={16} />} label="Total views" value={userChannelStats?.totalViews} />
+            <StatCard icon={<ThumbsUp size={16} />} label="Total likes" value={userChannelStats?.totalLikes} />
+            <StatCard icon={<Users size={16} />} label="Total subscribers" value={userChannelStats?.totalSubscribers} />
           </div>
         </div>
 
         <div>
-          <h2 className="text-sm font-bold mb-3 text-gray-900 text-left">
+          <h2 className="text-lg font-bold mb-3 text-gray-900 text-left">
             All Videos
           </h2>
 
@@ -96,7 +101,7 @@ export default function Dashboard() {
 
             {videos.map((video) => (
               <div
-                key={video.id}
+                key={video._id}
                 className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2"
               >
                 <div className="flex items-center gap-2 text-sm">
@@ -114,11 +119,11 @@ export default function Dashboard() {
                   )}
 
                   <button
-                    className={`text-xs px-3 py-1 rounded-md text-white ${video.visible
+                    className={`text-xs px-3 py-1 rounded-md text-white ${video.isPublished
                       ? "bg-gray-800"
                       : "bg-gray-600"
                       }`}
-                    onClick={handleTogglePublish}
+                    onClick={() => handleTogglePublish(video._id)}
                   >
                     {video.isPublished ? "Unpublish" : "Publish"}
                   </button>
