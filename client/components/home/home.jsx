@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="relative z-0">
       <TabContext.Provider value={values}>
-        <Nav wantTabs={true} />
+        <Nav />
         {
           isHomeSelected ? (
             <Feed className="relative z-0" fetchType="all" />

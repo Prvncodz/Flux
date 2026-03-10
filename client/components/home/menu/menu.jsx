@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HomeIcon from "../../assets/homeIcon.jsx"
 import MenuBtn from "../../assets/menubtn.jsx";
 import CancelIconComponent from "../../userProfile/cancelIconComponent.jsx";
@@ -8,8 +8,9 @@ import HistoryIcon from "../../assets/historyIcon.jsx";
 import PostIcon from "../../assets/PostIcon.jsx";
 import SignoutIcon from "../../assets/signoutIcon.jsx";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../../contexts/UserContext.jsx";
 
-function MenuBar({ setIsMenuOPen, onSignout }) {
+function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,9 +40,14 @@ function MenuBar({ setIsMenuOPen, onSignout }) {
         <CancelIconComponent onClick={() => setIsMenuOPen(prev => !prev)} />
         <ul className=" flex flex-col justify-left items-center gap-4 w-full h-100 mt-25 p-2">
           <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("home")}><span className="mx-2 "><HomeIcon size={18} className="" /></span><span className="text-[18px] font-medium">Home</span></li>
-          <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("dashboard")}><span className="mx-2"><DashboardIcon size={18} className="" /></span><span className="text-[18px] font-medium">Dashboard</span></li>
-          <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("likedvideos")}><span className="mx-2"><LikeIcon size={18} className="" /></span><span className="text-[18px] font-medium">Liked videos</span></li>
-          <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("watchhistory")}><span className="mx-2"><HistoryIcon size={18} className="" /></span><span className="text-[18px] font-medium">Watch history</span></li>
+          {isUserLogged &&
+            <>
+              <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("dashboard")}><span className="mx-2"><DashboardIcon size={18} className="" /></span><span className="text-[18px] font-medium">Dashboard</span></li>
+
+              <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("likedvideos")}><span className="mx-2"><LikeIcon size={18} className="" /></span><span className="text-[18px] font-medium">Liked videos</span></li>
+              <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("watchhistory")}><span className="mx-2"><HistoryIcon size={18} className="" /></span><span className="text-[18px] font-medium">Watch history</span></li>
+            </>
+          }
           <li className="h-auto w-full bg-neutral-200 hover:bg-neutral-300 cursor-pointer text-gray-800 flex items-center" onClick={() => handleNavigation("posts")}><span className="mx-2"><PostIcon size={18} className="" /></span><span className="text-[18px] font-medium">Posts</span></li>
         </ul>
 
@@ -58,7 +64,7 @@ function MenuBar({ setIsMenuOPen, onSignout }) {
 
 export default function Menu({ handleSignout }) {
   const [isMenuOpen, setIsMenuOPen] = useState(false);
-
+  const { isUserLogged } = useContext(UserContext);
   function handleToggleMenu() {
     setIsMenuOPen(prev => !prev)
   }
@@ -68,7 +74,7 @@ export default function Menu({ handleSignout }) {
     </div>
   )
   if (isMenuOpen) return (
-    <MenuBar setIsMenuOPen={setIsMenuOPen} onSignout={handleSignout} />
+    <MenuBar setIsMenuOPen={setIsMenuOPen} onSignout={handleSignout} isUserLogged={isUserLogged} />
   )
 }
 
