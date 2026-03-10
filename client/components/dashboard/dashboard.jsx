@@ -96,30 +96,30 @@ export default function Dashboard() {
 
             <div className="flex justify-between text-xs text-gray-500 px-2">
               <span>Total {userChannelStats?.totalVideoCount || videos.length} videos</span>
-              <span>Visibility</span>
+              <span className="mr-26">Visibility</span>
             </div>
 
             {videos.map((video) => (
               <div
                 key={video._id}
-                className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2"
+                className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2 h-auto"
               >
-                <div className="flex items-center gap-2 text-sm">
+                <div className="flex items-center gap-3 text-sm">
                   <Video size={16} />
-                  <span className="truncate max-w-[140px]">
+                  <span className=" min-w-[140px] max-w-[240x] text-left">
                     {video.title}
                   </span>
                 </div>
 
+                {video.isPublished ? (
+                  <Eye size={16} className="text-green-500" />
+                ) : (
+                  <EyeOff size={16} className="text-red-500" />
+                )}
                 <div className="flex items-center gap-2">
-                  {video.isPublished ? (
-                    <Eye size={16} className="text-green-500" />
-                  ) : (
-                    <EyeOff size={16} className="text-red-500" />
-                  )}
 
                   <button
-                    className={`text-xs px-3 py-1 rounded-md text-white ${video.isPublished
+                    className={`text-xs px-3 py-1 w-20 rounded-md text-white ${video.isPublished
                       ? "bg-gray-800"
                       : "bg-gray-600"
                       }`}
