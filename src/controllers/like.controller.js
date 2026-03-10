@@ -8,7 +8,7 @@ import { Video } from "../models/video.model.js";
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   if (!isValidObjectId(videoId)) {
-    throw new ApiError(400, "object id invalid");
+    throw new ApiError(403, "object id invalid");
   }
   const video = await Video.findById(videoId);
   if (!video.isPublished) {
@@ -117,28 +117,27 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     throw new ApiError(400, "page number is invalid");
   }
   const skipNum = (pageNum - 1) * limitNum;
+  const allLikedVideoIds = await Like.find({ likedBy: req.user?._id })//got all the video ids where user has liked
+    .select("video");
 
-  const allLikedDocsByUser = await Like.find({ likedBy: req.user?._id })
-    .populate("video")
+  const allVideos = await Video.find({ //got the needed videos with the help of this videoIds  
+    _id: { $in: allLikedVideoIds.map(d => d.video) }
+  })
     .skip(skipNum)
     .limit(limitNum);
 
-  if (!allLikedDocsByUser) {
+  if (!allVideos) {
     throw new ApiError(500, "Unable to get all liked docs");
   }
-  const allLikedVideos = allLikedDocsByUser.filter((Like) => Like.video)
-  console.log(allLikedVideos)
+  console.log(allVideos)
 
-  if (!allLikedVideos) {
-    throw new ApiError("500", "unable to fetch liked videos from all liked docs from user")
-  }
 
   return res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        allLikedVideos,
+        allVideos,
         "fetched all liked videos successfully",
       ),
     );
