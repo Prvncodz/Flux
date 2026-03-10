@@ -10,7 +10,7 @@ export default function SignIn() {
   const [isSubmmited, setIsSubmmited] = useState(false);
   const [firstInputField, setFirstInputField] = useState("");
   const navigate = new useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setUser, setIsUserLogged } = useContext(UserContext);
 
   async function handleFormSubmission(e) {
     e.preventDefault();
@@ -23,6 +23,7 @@ export default function SignIn() {
       if (res.status == 200) {
         navigate("/");
         setUser(res.data?.data?.user)
+        setIsUserLogged(true);
         setIsSubmmited(true);
         e.target.reset();
       }
@@ -50,7 +51,7 @@ export default function SignIn() {
         className="h-auto w-87 bg-gray-100 flex flex-col
 			justify-center overflow-hidden rounded-xl"
       >
-        <h1 className="mt-5 text-3xl font-bold text-blue-400 relative">
+        <h1 className="mt-5 text-3xl font-bold text-[#1E549D] relative">
           Sign In
         </h1>
 
