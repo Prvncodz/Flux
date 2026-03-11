@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Nav from "../home/nav.jsx";
 import axios from "../../api/axios.js";
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
+import UserContext from "../../contexts/UserContext.jsx";
 
 export default function LikedVideos() {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
+  const { user, isUserLogged } = useContext(UserContext);
   useEffect(() => {
     async function getVideos() {
       try {
-        const res = await axios.get("/likes/videos");
+        const res = await axios.get(`/likes/videos${isUserLogged ? `?userId=${user._id}` : ``}`);
         if (res.status === 200) {
           setVideos(res.data?.data);
-          console.log(res.data)
         }
       } catch (error) {
         console.log(error);
@@ -54,9 +55,10 @@ export default function LikedVideos() {
 }
 
 function VideoCardComponent({ video }) {
-  const { avatarUrl, fullname } = useGetUserById(video.owner);
+  const { avatarUrl, fullname, username } = useGetUserById(video.owner);
   const [duration, setDuration] = useState("00:00");
   const [timeOfUpload, setTimeOfUpload] = useState("1 day");
+  const navigate = useNavigate();
 
   useEffect(() => {
 
@@ -100,10 +102,28 @@ function VideoCardComponent({ video }) {
     calcDuration(Math.trunc(video.duration));
   }, [video])
 
+  function handleShowUserProfile() {
+    navigate("/userchannel", {
+      state: {
+        otherUserName: username
+      }
+    });
+  }
+  function handleShowWatchVideo() {
+    navigate("/watch/video", {
+      state: {
+        video: video,
+        ownerAvatar: avatarUrl,
+        username: username,
+      }
+    })
+  }
+
   return (
     <div
       key={video._id}
       className="flex gap-3 border border-neutral-200 rounded-xl p-3"
+      onClick={handleShowWatchVideo}
     >
       {/* thumbnail */}
       <div className="relative">
@@ -130,7 +150,8 @@ function VideoCardComponent({ video }) {
         <div className="flex items-center gap-1  ml-2">
           <img
             src={avatarUrl}
-            className="w-6 h-6 rounded-full"
+            className="w-6 h-6 rounded-full cursor-pointer"
+            onClick={handleShowUserProfile}
           />
 
           <span className="text-xs text-gray-600">

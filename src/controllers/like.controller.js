@@ -107,7 +107,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
 const getLikedVideos = asyncHandler(async (req, res) => {
 
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10, userId } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
   if (isNaN(pageNum) || pageNum < 1) {
@@ -120,17 +120,28 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   const allLikedVideoIds = await Like.find({ likedBy: req.user?._id })//got all the video ids where user has liked
     .select("video");
 
-  const allVideos = await Video.find({ //got the needed videos with the help of this videoIds  
+  const videos = await Video.find({ //got the needed videos with the help of this videoIds  
     _id: { $in: allLikedVideoIds.map(d => d.video) }
   })
     .skip(skipNum)
     .limit(limitNum);
 
-  if (!allVideos) {
-    throw new ApiError(500, "Unable to get all liked docs");
+  if (!videos) {
+    throw new ApiError(500, "Unable to get all liked videos");
   }
-  console.log(allVideos)
 
+  const promises = videos
+    .map(async (video) => {
+      const obj = video.toObject();
+      obj.isLiked = userId ? !!(await Like.exists({ video: video?._id, likedBy: userId })) : false;
+      return obj;
+    });
+
+  const allVideos = await Promise.all(promises);
+  console.log(allVideos);
+  if (!allVideos) {
+    throw new ApiError(500, "unable to fetch all videos with like status")
+  }
 
   return res
     .status(200)
