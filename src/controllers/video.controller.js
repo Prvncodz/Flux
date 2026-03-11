@@ -153,8 +153,10 @@ const publishAVideo = asyncHandler(async (req, res) => {
 //get video details by its id
 const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
+  const userId = req.user?._id || req.visitorId;
+
   if (!isValidObjectId(videoId)) {
-    throw new ApiError(400, "video id is invalid");
+    throw new ApiError(403, "video id is invalid");
   }
 
   const video = await Video.findById(videoId);
@@ -165,26 +167,33 @@ const getVideoById = asyncHandler(async (req, res) => {
   const oneHourAgo = Date.now() - 60 * 60 * 1000;
   const hasViewed = await View.exists({
     videoId,
-    userId: req.user._id,
+    userId: userId,
     createdAt: {
       $gt: oneHourAgo,
     },
   });
-
+  let updatedVideo;
   if (!hasViewed) {
     await View.create({
       videoId,
-      userId: req.user._id,
+      userId,
     });
-    await Video.findByIdAndUpdate(videoId, {
-      $inc: {
-        views: 1,
-      },
-    }).exec();
+    updatedVideo = await Video.findByIdAndUpdate(
+      videoId,
+      {
+        $inc: {
+          views: 1,
+        },
+      }, {
+      new: true,
+    }
+    ).exec();
   }
+  console.log("visiterId:", userId)
+  console.log(updatedVideo);
   return res
     .status(200)
-    .json(new ApiResponse(200, video, "video fetched by id succesfully"));
+    .json(new ApiResponse(200, updatedVideo, "video fetched by id succesfully"));
 });
 
 //update changes existing video

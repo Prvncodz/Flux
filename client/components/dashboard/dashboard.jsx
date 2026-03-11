@@ -18,17 +18,6 @@ export default function Dashboard() {
   const [userChannelStats, setUserChannelStats] = useState({});
   const [videos, setVideos] = useState([]);
   const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
-  async function handleTogglePublish(videoId) {
-    try {
-      const res = await axios.post(`/videos/c/${videoId}/toggle-publish-status`);
-      if (res.status === 200) {
-        console.log(res.data)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-
-  }
   function handleEditProfile() {
     setIsEditPopUpActive(true);
   }
@@ -100,40 +89,66 @@ export default function Dashboard() {
             </div>
 
             {videos.map((video) => (
-              <div
-                key={video._id}
-                className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2 h-auto"
-              >
-                <div className="flex items-center gap-3 text-sm">
-                  <Video size={16} />
-                  <span className=" min-w-[140px] max-w-[240x] text-left truncate" >
-                    {video.title}
-                  </span>
-                </div>
-
-                {video.isPublished ? (
-                  <Eye size={16} className="text-green-500" />
-                ) : (
-                  <EyeOff size={16} className="text-red-500" />
-                )}
-                <div className="flex items-center gap-2">
-
-                  <button
-                    className={`text-xs px-3 py-1 w-20 rounded-md text-white ${video.isPublished
-                      ? "bg-gray-800"
-                      : "bg-gray-600"
-                      }`}
-                    onClick={() => handleTogglePublish(video._id)}
-                  >
-                    {video.isPublished ? "Unpublish" : "Publish"}
-                  </button>
-                </div>
-              </div>
+              <VideoCard video={video} key={video._id} />
             ))}
           </div>
         </div>
       </div>
     </div >
+  );
+}
+
+function VideoCard({ video }) {
+  const [isPublished, setIsPublished] = useState(video.isPublished);
+
+  let timeoutId;
+  async function handleTogglePublish(videoId) {
+    clearTimeout(timeoutId);
+    setTimeout(async () => {
+      try {
+        const res = await axios.post(`/videos/c/${videoId}/toggle-publish-status`);
+        if (res.status === 200) {
+          console.log(res.data)
+          setIsPublished(prev => !prev);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+
+    }, 800);
+
+  }
+  return (
+    <div
+      key={video._id}
+      className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2 h-auto"
+    >
+      <div className="flex items-center gap-3 text-sm">
+        <Video size={16} />
+        <span className=" min-w-[140px] max-w-[240x] text-left truncate" >
+          {video.title}
+        </span>
+      </div>
+
+      {isPublished ? (
+        <Eye size={16} className="text-green-500" />
+      ) : (
+        <EyeOff size={16} className="text-red-500" />
+      )}
+      <div className="flex items-center gap-2">
+
+        <button
+          className={`text-xs px-3 py-1 w-20 rounded-md text-white active:scale-95 transition-all ${video.isPublished
+            ? "bg-gray-800"
+            : "bg-gray-600"
+            }`}
+          onClick={() => handleTogglePublish(video._id)}
+        >
+          {isPublished ? "Unpublish" : "Publish"}
+        </button>
+      </div>
+    </div>
+
   );
 }
 

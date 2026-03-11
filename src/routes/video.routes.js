@@ -10,6 +10,8 @@ import {
 } from "../controllers/video.controller.js";
 import { verifyJwt } from "../middlewares/auth.js";
 import { upload } from "../middlewares/multer.js";
+import { verifyJwtOptional } from "../middlewares/optionalAuth.js";
+import { ensureVisitor } from "../middlewares/ensureVisiter.js";
 
 const router = Router();
 
@@ -29,7 +31,7 @@ router.post(
   publishAVideo,
 );
 
-router.get("/c/:videoId", getVideoById);
+router.get("/c/:videoId", verifyJwtOptional, ensureVisitor, getVideoById);
 
 router.patch(
   "/c/:videoId/update-video",

@@ -152,7 +152,7 @@ export default function Profile() {
             )} classes="mt-2" onClick={handleSubscription} />
         }
       </div>
-      <div className="flex flex-row w-full mt-9">
+      <div className="flex flex-row w-full mt-8 pb-2">
         <span name="videos" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "videos" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "videos" ? `bg-blue-800` : ``}`}></div></span>
         <span name="posts" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "posts" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "posts" ? `bg-blue-800` : ``}`}></div></span>
         <span name="playlists" className={`text-lg relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "playlists" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "playlists" ? `bg-blue-800` : ``}`}></div></span>
