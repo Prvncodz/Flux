@@ -110,8 +110,8 @@ function VideoCardComponent({ video }) {
   function handleShowWatchVideo() {
     navigate("/watch/video", {
       state: {
-        video: video,
-        ownerAvatar: avatarUrl,
+        videoId: video._id,
+        ownerAvatar: video.owner?.avatar?.url,
         username: video?.owner?.userName,
       }
     })

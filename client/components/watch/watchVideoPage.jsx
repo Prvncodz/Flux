@@ -13,10 +13,10 @@ import LikeButton from "../home/likeComponent/likeButton.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
-  const { video, username, ownerAvatar } = location.state || {};
+  const { videoId, username, ownerAvatar } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
-
+  const [video, setVideo] = useState({})
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -34,17 +34,36 @@ export default function WatchVideoPage() {
 
 
   useEffect(() => {
+    async function getVideoById(Id) {
+      if (!Id) return;
+      try {
 
-  }, [])
+        const res = await axios.get(`/videos/c/${Id}`);
+        if (res.status === 200) {
+          setVideo(res.data?.data);
+          console.log(res.data?.data)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
+    }
+    getVideoById(videoId);
+    console.log("video state", video)
+    console.log(video?.videofile?.url)
+  }, [videoId])
 
   return (
     <div className="overflow-auto">
       <Nav wantTabs={false} />
       <div className="relative">
         <video width="640" height="360" controls loop>
-
-          <source src={video?.videofile?.url} type="video/mp4" />
-          <source src={video?.videofile?.url} type="video/webm" />
+          {video.videofile?.url &&
+            <>
+              <source src={video?.videofile?.url} type="video/mp4" />
+              <source src={video?.videofile?.url} type="video/webm" />
+            </>
+          }
           Your browser does not support the video tag.
         </video>
       </div>
