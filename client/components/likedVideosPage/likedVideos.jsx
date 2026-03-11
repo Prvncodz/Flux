@@ -144,7 +144,7 @@ function VideoCardComponent({ video }) {
           </h3>
 
           <p className="text-xs text-gray-500">
-            {video.views} · {timeOfUpload + " ago"}
+            {video.views + " views"} · {timeOfUpload + " ago"}
           </p>
         </div>
         <div className="flex items-center gap-1  ml-2">

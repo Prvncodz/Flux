@@ -223,8 +223,6 @@ const getVideoById = asyncHandler(async (req, res) => {
     }
     catch (err) {
       console.log(err.message);
-      console.log("visiterId:", userId)
-      console.log("userId:", req.user._id)
       throw new ApiError(500, "error while updating video")
     }
   }
