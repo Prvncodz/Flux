@@ -163,60 +163,74 @@ const getVideoById = asyncHandler(async (req, res) => {
 
   }
 
-  const video = await Video.findById(videoId);
-  if (req.user?._id) {
+  if (req.user?._id) { //add video to watch history
     try {
       await User.findByIdAndUpdate(
         req.user._id,
         {
           $pull: { watchHistory: videoId },
+        }, {
+        new: true
+      }
+      );
+      await User.findByIdAndUpdate(
+        req.user._id,
+        {
           $push: {
             watchHistory: {
               $each: [videoId],
               $position: 0,
             }
           }
-        },
-        {
-          new: true
-        });
+        }, {
+        new: true
+      });
     } catch (err) {
-      throw new ApiError(500, "erro while adding video to watch history")
+      console.log(err.message)
+      throw new ApiError(500, "error while adding video to watch history")
     }
   }
+
+  let video = await Video.findById(videoId);
   if (!video) {
     throw new ApiError(500, "unable to find the video");
   }
   const oneHourAgo = Date.now() - 60 * 60 * 1000;
   const hasViewed = await View.exists({
     videoId,
-    userId: userId,
+    userId,
     createdAt: {
       $gt: oneHourAgo,
     },
   });
-  let updatedVideo;
+
   if (!hasViewed) {
-    await View.create({
-      videoId,
-      userId,
-    });
-    updatedVideo = await Video.findByIdAndUpdate(
-      videoId,
-      {
-        $inc: {
-          views: 1,
-        },
-      }, {
-      new: true,
+    try {
+      await View.create({
+        videoId,
+        userId,
+      });
+      video = await Video.findByIdAndUpdate(
+        videoId,
+        {
+          $inc: {
+            views: 1,
+          },
+        }, {
+        new: true,
+      }
+      );
     }
-    ).exec();
+    catch (err) {
+      console.log(err.message);
+      console.log("visiterId:", userId)
+      console.log("userId:", req.user._id)
+      throw new ApiError(500, "error while updating video")
+    }
   }
-  console.log("visiterId:", userId)
-  console.log(updatedVideo);
   return res
     .status(200)
-    .json(new ApiResponse(200, updatedVideo, "video fetched by id succesfully"));
+    .json(new ApiResponse(200, video, "video fetched by id succesfully"));
 });
 
 //update changes existing video
