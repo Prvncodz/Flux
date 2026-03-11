@@ -10,6 +10,7 @@ import CommentFeed from "../commentFeed/commentFeed.jsx";
 import VideoDescription from "./videoDescription.jsx";
 import VideoFeed from "../home/videofeed/feed.jsx";
 import LikeButton from "../home/likeComponent/likeButton.jsx";
+import UserContext from "../../contexts/UserContext.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function WatchVideoPage() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [video, setVideo] = useState({})
+  const { user, IsUserLogged } = useContext(UserContext)
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -38,10 +40,9 @@ export default function WatchVideoPage() {
       if (!Id) return;
       try {
 
-        const res = await axios.get(`/videos/c/${Id}`);
+        const res = await axios.get(`/videos/c/${Id}${IsUserLogged ? `?userId=${user?._id}` : ``}`);
         if (res.status === 200) {
           setVideo(res.data?.data);
-          console.log(res.data?.data)
         }
       } catch (err) {
         console.log(err)
@@ -49,8 +50,6 @@ export default function WatchVideoPage() {
 
     }
     getVideoById(videoId);
-    console.log("video state", video)
-    console.log(video?.videofile?.url)
   }, [videoId])
 
   return (

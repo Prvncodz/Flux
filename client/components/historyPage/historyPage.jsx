@@ -103,7 +103,7 @@ function VideoCardComponent({ video }) {
   function handleShowUserProfile() {
     navigate("/userchannel", {
       state: {
-        otherUserName: username
+        otherUserName: video?.owner?.userName
       }
     });
   }
