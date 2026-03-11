@@ -158,9 +158,32 @@ const getVideoById = asyncHandler(async (req, res) => {
   if (!isValidObjectId(videoId)) {
     throw new ApiError(403, "video id is invalid");
   }
+  if (!videoId) {
+    throw new ApiError(403, "video id is invalid");
+
+  }
 
   const video = await Video.findById(videoId);
-
+  if (req.user?._id) {
+    try {
+      await User.findByIdAndUpdate(
+        req.user._id,
+        {
+          $pull: { watchHistory: videoId },
+          $push: {
+            watchHistory: {
+              $each: [videoId],
+              $position: 0,
+            }
+          }
+        },
+        {
+          new: true
+        });
+    } catch (err) {
+      throw new ApiError(500, "erro while adding video to watch history")
+    }
+  }
   if (!video) {
     throw new ApiError(500, "unable to find the video");
   }
