@@ -69,7 +69,8 @@ const getAllVideos = asyncHandler(async (req, res) => {
   if (sortBy) {
     sort[sortBy] = sortType === "desc" ? -1 : 1;
   }
-  const videos = await Video.find(filter)
+  const videos = await Video
+    .find(filter)
     .sort(sort)
     .skip(skipNum)
     .limit(limitNum);
@@ -236,7 +237,6 @@ const getVideoById = asyncHandler(async (req, res) => {
   if (!uVideo) {
     throw new ApiError(500, "error while adding like status to video")
   }
-  console.log("videoL:", uVideo)
 
   return res
     .status(200)

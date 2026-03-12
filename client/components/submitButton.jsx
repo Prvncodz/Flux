@@ -1,7 +1,7 @@
 export default function SubmitButton({ currentSubmitStatus, text, className }) {
   return (
     <button
-      className={`bg-[#1E549D] hover:bg-blue-600 
+      className={`bg-[#0A98FC] hover:bg-blue-600 
 		  focus:outline-offset-2 active:bg-blue-800
 		  text-gray-100 p-5 w-38 h-11 ml-auto mr-auto
 		 flex justify-center items-center rounded-full 

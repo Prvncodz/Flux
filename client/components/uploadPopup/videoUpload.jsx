@@ -22,13 +22,14 @@ export default function VideoUploadPopup({ setShowPopup }) {
       })
     } catch (error) {
       console.log(error);
+    } finally {
+      SetLoading(false);
+      setIsSubmmited(true);
+      setTimeout(() => {
+        setIsSubmmited(false);
+        setShowPopup(false);
+      }, 1500)
     }
-    SetLoading(false);
-    setIsSubmmited(true);
-    setTimeout(() => {
-      setIsSubmmited(false);
-      setShowPopup(false);
-    }, 1500)
   }
 
   return (

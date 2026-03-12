@@ -81,7 +81,7 @@ export default function SignUp() {
         className="h-auto w-87 bg-gray-100 flex flex-col
 			justify-center overflow-hidden rounded-xl"
       >
-        <h1 className="mt-5 text-3xl font-bold text-blue-400 relative">
+        <h1 className="mt-5 text-3xl font-bold text-[#0A98FC] relative">
           Sign Up
         </h1>
 

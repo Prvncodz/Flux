@@ -51,7 +51,7 @@ export default function SignIn() {
         className="h-auto w-87 bg-gray-100 flex flex-col
 			justify-center overflow-hidden rounded-xl"
       >
-        <h1 className="mt-5 text-3xl font-bold text-[#1E549D] relative">
+        <h1 className="mt-5 text-3xl font-bold text-[#0A98FC] relative">
           Sign In
         </h1>
 

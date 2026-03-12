@@ -1,30 +1,74 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function VideoDescription({ content }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function VideoDescription({ content, views, uploadTime }) {
+  const [isOpen, setIsOpen] = useState(true);
+  const [timeOfUpload, setTimeOfUpload] = useState(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+
+    const e = ref.current;
+    if (e) {
+      setIsOverflowing(e.scrollHeight > e.clientHeight || e.scrollWidth > e.clientWidth)
+    }
+
+
+    function calcTimeOfUpload(t) {
+      if (!t) return;
+      const now = new Date();
+      const dif = now.getTime() - new Date(t).getTime();
+      const hours = Math.floor(dif / (1000 * 60 * 60));
+      const minutes = Math.floor(dif / 1000 * 60);
+      const days = Math.floor(dif / (1000 * 60 * 60 * 24));
+      const months = Math.floor(days / 30);
+      const years = Math.floor(days / 365);
+      const seconds = Math.floor(dif / 1000);
+
+      if (years > 0) {
+        setTimeOfUpload(`${years} ${years > 1 ? 'years' : 'year'}`);
+      } else if (months > 0) {
+        setTimeOfUpload(`${months} ${months > 1 ? 'months' : 'month'}`);
+      } else if (days > 0) {
+        setTimeOfUpload(`${days} ${days > 1 ? 'days' : 'day'}`);
+      } else if (hours > 0) {
+        setTimeOfUpload(`${hours} ${hours > 1 ? 'hours' : 'hour'}`);
+      } else if (minutes > 0) {
+        setTimeOfUpload(`${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`);
+      } else {
+        setTimeOfUpload(`${seconds} ${seconds > 1 ? "seconds" : "second"}`)
+      }
+    }
+    calcTimeOfUpload(uploadTime);
+  }, [content, uploadTime])
 
   return (
     <>
-      {
-        isOpen ?
-          (
-            <div className="h-auto bg-gray-100 rounded-2xl p-4 text-wrap text-left text-body mx-2 relative" >
-              <p>
-                {content || ""}
-              </p>
-              <p className="text-gray-800 font-base text-body absolute bottom-1 right-4 bg-gray-100 bg-blend-color-burn z-1" onClick={() => setIsOpen(false)}>Show less..</p>
-            </div>
-          ) :
-          (
-            <div className="h-15 bg-gray-100 rounded-2xl p-4 text-wrap text-left text-body mx-2 relative z-0 " onClick={() => !isOpen && setIsOpen(true)}>
+      <div className={`${isOpen ? "h-auto" : "h-25"} bg-neutral-100  shadow-rounded-2xl px-4 py-3 text-wrap text-body mx-2 relative flex flex-col text-left`}>
+        <div className="flex gap-1">
+          <p className="text-sm font-semibold text-gray-800">
+            {views + " views"} · {timeOfUpload + " ago"}
+          </p>
+        </div>
+        <div className={`my-1 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"}`} ref={ref}>
+          {content || "This video does not contains any description"}
+        </div>
 
-              <p>
-                {content || ""}
-              </p>
-              <p className="text-gray-800 font-base text-body absolute bottom-1 right-4 bg-gray-100 bg-blend-color-burn z-1">..Show more</p>
-            </div>
-          )
-      }
+        {isOpen ?
+          <p className="text-gray-800 font-base text-body bottom-1 left-4 bg-gray-100 bg-blend-color-burn z-1" onClick={() => setIsOpen(false)}>Show less</p>
+          :
+          <>
+            {
+              isOverflowing &&
+              <>
+                <p className="text-gray-800 font-base text-sm absolute bottom-6 mr-auto right-3 bg-gray-100 bg-blend-color-burn z-2" onClick={() => setIsOpen(true)}>..Show more</p>
+                <div className="absolute bottom-0 left-0 right-0 h-2 backdrop-blur-xs z-1" />
+              </>
+            }
+          </>
+        }
+
+      </div>
     </>
   );
 }

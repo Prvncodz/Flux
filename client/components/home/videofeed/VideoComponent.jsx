@@ -46,6 +46,7 @@ export default function VideoComponent({ video }) {
       const dif = now.getTime() - new Date(t).getTime();
       const hours = Math.floor(dif / (1000 * 60 * 60));
       const minutes = Math.floor(dif / 1000 * 60);
+      const seconds = Math.floor(dif / 1000);
       const days = Math.floor(dif / (1000 * 60 * 60 * 24));
       const months = Math.floor(days / 30);
       const years = Math.floor(days / 365);
@@ -58,8 +59,10 @@ export default function VideoComponent({ video }) {
         setTimeOfUpload(`${days} ${days > 1 ? 'days' : 'day'}`);
       } else if (hours > 0) {
         setTimeOfUpload(`${hours} ${hours > 1 ? 'hours' : 'hour'}`);
-      } else {
+      } else if (minutes > 0) {
         setTimeOfUpload(`${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`);
+      } else {
+        setTimeOfUpload(`${seconds} ${seconds > 1 ? "seconds" : "second"}`)
       }
     }
     calcTimeOfUpload(video.createdAt);

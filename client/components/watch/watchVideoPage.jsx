@@ -36,7 +36,6 @@ export default function WatchVideoPage() {
     }, 800);
   }
 
-
   useEffect(() => {
     async function getVideoById(Id) {
       if (!Id) return;
@@ -58,8 +57,8 @@ export default function WatchVideoPage() {
   return (
     <div className="overflow-auto">
       <Nav wantTabs={false} />
-      <div className="relative">
-        <video width="640" height="360" controls loop autoPlay muted>
+      <div className="relative aspect-video overflow-hidden">
+        <video width="640" height="360" controls loop autoPlay playsInline preload="auto" poster="thumbnail.jpg" className="w-full h-auto object-cover">
           {video.videofile?.url &&
             <>
               <source src={video?.videofile?.url} type="video/mp4" />
@@ -70,9 +69,9 @@ export default function WatchVideoPage() {
         </video>
       </div>
       <div className="relative flex flex-col">
-        <h1 className="text-xl text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
-        <VideoDescription content={video?.description} />
-        <div className="flex mx-1 my-2 justify-between">
+        <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
+        <VideoDescription content={video?.description} views={video?.views} uploadTime={video?.createdAt} />
+        <div className="flex mx-1 my-3 justify-between">
           <div className="flex">
             <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
             <div className="flex-col ml-1 justify-left">

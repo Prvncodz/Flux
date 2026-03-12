@@ -85,7 +85,7 @@ export default function Dashboard() {
 
             <div className="flex justify-between text-xs text-gray-500 px-2">
               <span>Total {userChannelStats?.totalVideoCount || videos.length} videos</span>
-              <span className="mr-26">Visibility</span>
+              <span className="mr-23">Visibility</span>
             </div>
 
             {videos.map((video) => (
@@ -125,9 +125,9 @@ function VideoCard({ video }) {
     >
       <div className="flex items-center gap-3 text-sm">
         <Video size={16} />
-        <span className=" min-w-[140px] max-w-[240x] text-left truncate" >
+        <div className="w-35 min-w-40 max-w-[240x] text-left text-nowwrap" >
           {video.title}
-        </span>
+        </div>
       </div>
 
       {isPublished ? (
@@ -138,7 +138,7 @@ function VideoCard({ video }) {
       <div className="flex items-center gap-2">
 
         <button
-          className={`text-xs px-3 py-1 w-20 rounded-md text-white active:scale-95 transition-all ${video.isPublished
+          className={`text-xs px-3 py-1 w-20 rounded-md text-white active:scale-95 transition-all ${isPublished
             ? "bg-gray-800"
             : "bg-gray-600"
             }`}
