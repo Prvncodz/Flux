@@ -59,7 +59,7 @@ export default function WatchVideoPage() {
     <div className="overflow-auto">
       <Nav wantTabs={false} />
       <div className="relative">
-        <video width="640" height="360" controls loop>
+        <video width="640" height="360" controls loop autoPlay muted>
           {video.videofile?.url &&
             <>
               <source src={video?.videofile?.url} type="video/mp4" />
