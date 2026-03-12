@@ -8,6 +8,7 @@ function LikeButton({ fetchType, Id, likeStatus }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    setLiked(likeStatus)
     async function getVideoLikeCount(videoId) {
       if (!videoId) return;
       try {
@@ -50,7 +51,7 @@ function LikeButton({ fetchType, Id, likeStatus }) {
     else {
       getTweetLikeCount(Id);
     }
-  }, [fetchType, Id]);
+  }, [fetchType, Id, likeStatus]);
 
   let timeoutId;
   const handleLike = () => {

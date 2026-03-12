@@ -227,11 +227,16 @@ const getVideoById = asyncHandler(async (req, res) => {
     }
   }
 
-  const uVideo = video.toObject().isLiked = userId ?
+  let uVideo = video.toObject()
+  uVideo.isLiked = userId ?
     !!(await Like.exists({
       video: videoId,
       likedBy: userId
     })) : false;
+  if (!uVideo) {
+    throw new ApiError(500, "error while adding like status to video")
+  }
+  console.log("videoL:", uVideo)
 
   return res
     .status(200)

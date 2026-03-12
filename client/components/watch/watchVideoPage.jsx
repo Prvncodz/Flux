@@ -18,7 +18,9 @@ export default function WatchVideoPage() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [video, setVideo] = useState({})
-  const { user, IsUserLogged } = useContext(UserContext)
+  const [isLiked, setIsLiked] = useState(video?.isLiked || false);
+
+  const { user, isUserLogged } = useContext(UserContext)
   let timeoutId;
   async function handleSubscription() {
     clearTimeout(timeoutId);
@@ -40,9 +42,10 @@ export default function WatchVideoPage() {
       if (!Id) return;
       try {
 
-        const res = await axios.get(`/videos/c/${Id}${IsUserLogged ? `?userId=${user?._id}` : ``}`);
+        const res = await axios.get(`/videos/c/${Id}${isUserLogged ? `?userId=${user?._id}` : ``}`);
         if (res.status === 200) {
           setVideo(res.data?.data);
+          setIsLiked(res.data.data?.isLiked);
         }
       } catch (err) {
         console.log(err)
@@ -50,7 +53,7 @@ export default function WatchVideoPage() {
 
     }
     getVideoById(videoId);
-  }, [videoId])
+  }, [videoId, isUserLogged, isLiked])
 
   return (
     <div className="overflow-auto">
@@ -78,7 +81,7 @@ export default function WatchVideoPage() {
             </div>
           </div>
           <div className="flex items-center">
-            <LikeButton size={20} fetchType={"video"} Id={video?._id} likeStatus={video?.isLiked} />
+            <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
           </div>
           <Button children={isSubscribed ?
             (
