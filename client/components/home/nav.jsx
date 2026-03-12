@@ -114,37 +114,39 @@ export default function Nav({ wantTabs }) {
                 </div>
                 {isActive && (
                   <>
-                    <div className="absolute z-10 top-15 right-3 bg-gray-50  border border-gray-200 h-auto w-55 rounded flex flex-col overflow-hidden">
+                    <div className="absolute z-10 top-15 right-10 bg-gray-50  border border-gray-200 h-auto w-75 rounded flex flex-col overflow-hidden pb-1">
                       <div className="p-3 h-auto">
-                        <div className=" relative flex justify-left items-center w-full mb-2">
+                        <div className=" relative flex w-full mb-2">
                           <img
                             src={avatar || dpfp}
                             onError={(e) => e.target.src = dpfp}
                             className="h-11 w-11 rounded-full relative mr-3 ml-2 left-0"
                             loading="lazy"
                           />
-                          <span>
-                            <div className=" font-normal text-lg text-gray-700 w-auto text-left">
-                              {fullname}
-                            </div>
-                            <div className="text-gray-600 font-normal text-lg  w-auto -mt-1 text-left">
-                              {"@" + username}
-                            </div>
-                          </span>
+                          <div className="flex flex-col justify-start ml-2">
+                            <span>
+                              <div className=" font-medium text-lg text-gray-800 w-auto text-left">
+                                {fullname}
+                              </div>
+                              <div className="text-gray-600 font-medium text-base text  w-auto -mt-1 text-left">
+                                {"@" + username}
+                              </div>
+                            </span>
+                            <a
+                              href="/userchannel"
+                              className="text-base font-medium  text-blue-600 text-left "
+                            >View your channel </a>
+                          </div>
                         </div>
 
-                        <a
-                          href="/userchannel"
-                          className="text-lg font-normal  text-blue-600 text-left "
-                        >View your channel </a>
                       </div>
+                      <div className="h-0.5 bg-[#DFDFDF] ">
 
-                      <hr className="h-0.07  bg-gray-200" />
-
+                      </div>
                       <div className="p-2.5">
-                        <div onClick={handleSignout} className=" flex justify-center">
+                        <div onClick={handleSignout} className=" flex justify-left items-center pl-5">
                           <SignoutIcon />
-                          <span className="ml-2 text-medium font-medium flex">
+                          <span className="ml-3 text-medium font-medium flex">
                             Logout
                           </span>
                         </div>
