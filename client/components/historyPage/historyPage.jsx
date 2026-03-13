@@ -24,7 +24,7 @@ export default function HistoryPage() {
   return (
     <>
       <Nav />
-      <div className="max-w-lg   p-5 h-screen overflow-y-auto rounded-xl">
+      <div className="max-w-lg  p-5 h-[95vh] overflow-y-auto rounded-xl">
 
 
         {videos.length === 0 ? (
@@ -83,6 +83,7 @@ function VideoCardComponent({ video }) {
       const days = Math.floor(dif / (1000 * 60 * 60 * 24));
       const months = Math.floor(days / 30);
       const years = Math.floor(days / 365);
+      const seconds = Math.floor(dif / (1000));
 
       if (years > 0) {
         setTimeOfUpload(`${years} ${years > 1 ? 'years' : 'year'}`);
@@ -92,8 +93,10 @@ function VideoCardComponent({ video }) {
         setTimeOfUpload(`${days} ${days > 1 ? 'days' : 'day'}`);
       } else if (hours > 0) {
         setTimeOfUpload(`${hours} ${hours > 1 ? 'hours' : 'hour'}`);
-      } else {
+      } else if (minutes > 0) {
         setTimeOfUpload(`${minutes} ${minutes > 1 ? 'minutes' : 'minute'}`);
+      } else {
+        setTimeOfUpload((`${seconds} ${seconds > 1 ? 'seconds' : 'second'}`))
       }
     }
     calcTimeOfUpload(video.createdAt);

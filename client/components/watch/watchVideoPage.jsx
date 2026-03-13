@@ -79,7 +79,7 @@ export default function WatchVideoPage() {
               <h1 className="text-sm font-normal text-gray-500">119k subscribers</h1>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3">
             <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
           </div>
           <Button children={isSubscribed ?

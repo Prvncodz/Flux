@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 export default function VideoDescription({ content, views, uploadTime }) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [timeOfUpload, setTimeOfUpload] = useState(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const ref = useRef(null);
