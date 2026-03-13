@@ -68,7 +68,7 @@ export default function WatchVideoPage() {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div className="relative h-[80vh] overflow-auto ">
+      <div className="relative h-[70vh] overflow-auto ">
 
         <div className="relative flex flex-col">
           <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
@@ -81,7 +81,7 @@ export default function WatchVideoPage() {
                 <h1 className="text-sm font-normal text-gray-500">119k subscribers</h1>
               </div>
             </div>
-            <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3">
+            <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3 mt-2">
               <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
             </div>
             <Button children={isSubscribed ?
@@ -104,7 +104,7 @@ export default function WatchVideoPage() {
           <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
         </div>
         <div>
-          <VideoFeed noScroll={true} />
+          <VideoFeed />
         </div>
       </div>
     </div>

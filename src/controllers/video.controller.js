@@ -156,6 +156,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const visitorId = req.user?._id || req.visitorId;
   const { userId } = req.query;
+
   if (!isValidObjectId(videoId)) {
     throw new ApiError(403, "video id is invalid");
   }
@@ -191,56 +192,121 @@ const getVideoById = asyncHandler(async (req, res) => {
       throw new ApiError(500, "error while adding video to watch history")
     }
   }
-
-  let video = await Video.findById(videoId);
-  if (!video) {
-    throw new ApiError(500, "unable to find the video");
-  }
-  const oneHourAgo = Date.now() - 60 * 60 * 1000;
-  const hasViewed = await View.exists({
-    videoId,
-    userId: visitorId,
-    createdAt: {
-      $gt: oneHourAgo,
-    },
-  });
-
-  if (!hasViewed) {
-    try {
-      await View.create({
-        videoId,
-        userId: visitorId,
-      });
-      video = await Video.findByIdAndUpdate(
-        videoId,
-        {
-          $inc: {
-            views: 1,
-          },
-        }, {
-        new: true,
+  const pipeline = [
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(videoId)
       }
-      );
-    }
-    catch (err) {
-      console.log(err.message);
-      throw new ApiError(500, "error while updating video")
-    }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "owner",
+        foreignField: "_id",
+        as: "ownerDetails",
+        pipeline: [
+          {
+            $lookup: {
+              from: "subscriptions",
+              localField: "_id",
+              foreignField: "channel",
+              as: "subscribers",
+            }
+          },
+          {
+            $addFields: {
+              totalSubscribers: { $size: "$subscribers" },
+              isSubscribedByUser: {
+                $cond: {
+                  if: { $in: [req.user?._id, "$subscribers.subscriber"] },
+                  then: true,
+                  else: false,
+                },
+              },
+            }
+          }, {
+            $project: {
+              _id: 1,
+              totalSubscribers: 1,
+              isSubscribedByUser: 1,
+            }
+          }
+        ]
+      }
+    },
+    {
+      $addFields: {
+        owner: {
+          $first: "$ownerDetails"
+        }
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        videofile: 1,
+        thumbnail: 1,
+        title: 1,
+        description: 1,
+        createdAt: 1,
+        views: 1,
+        duration: 1,
+        isPublished: 1,
+        owner: 1
+      }
+    },
+  ]
+  const video = await Video.aggregate(pipeline)
+  console.log(video[0]);
+  if (!video?.length) {
+    throw new ApiError(500, "video does'nt exists")
   }
 
-  let uVideo = video.toObject()
-  uVideo.isLiked = userId ?
-    !!(await Like.exists({
-      video: videoId,
-      likedBy: userId
-    })) : false;
-  if (!uVideo) {
-    throw new ApiError(500, "error while adding like status to video")
-  }
+  // const oneHourAgo = Date.now() - 60 * 60 * 1000;
+  // const hasViewed = await View.exists({
+  //   videoId,
+  //   userId: visitorId,
+  //   createdAt: {
+  //     $gt: oneHourAgo,
+  //   },
+  // });
+  //
+  // if (!hasViewed) {
+  //   try {
+  //     await View.create({
+  //       videoId,
+  //       userId: visitorId,
+  //     });
+  //     video = await Video.findByIdAndUpdate(
+  //       videoId,
+  //       {
+  //         $inc: {
+  //           views: 1,
+  //         },
+  //       }, {
+  //       new: true,
+  //     }
+  //     );
+  //   }
+  //   catch (err) {
+  //     console.log(err.message);
+  //     throw new ApiError(500, "error while updating video")
+  //   }
+  // }
+
+  // let uVideo = video.toObject()
+  // uVideo.isLiked = userId ?
+  //   !!(await Like.exists({
+  //     video: videoId,
+  //     likedBy: userId
+  //   })) : false;
+  // if (!uVideo) {
+  //   throw new ApiError(500, "error while adding like status to video")
+  // }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, uVideo, "video fetched by id succesfully"));
+    .json(new ApiResponse(200, video, "video fetched by id succesfully"));
 });
 
 //update changes existing video

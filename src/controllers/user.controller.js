@@ -88,7 +88,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //login
 const loginUser = asyncHandler(async (req, res) => {
-  console.log("touched the login endpoint");
   //get the info
   // validate the input
   // check for user in db
