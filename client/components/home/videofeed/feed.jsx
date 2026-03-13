@@ -3,7 +3,7 @@ import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 
-export default function Feed({ fetchType, userId }) {
+export default function Feed({ fetchType, userId, noScroll }) {
   const [videos, setVideos] = useState([{}]);
   const [areVideosFetched, SetAreVideosFetched] = useState(false);
   const { user, isUserLogged } = useContext(UserContext);
@@ -48,7 +48,7 @@ export default function Feed({ fetchType, userId }) {
   }
   return (
     <>
-      <div className={`${fetchType === "user" ? `h-[64vh]` : `h-[95vh]`}  overflow-y-auto overflow-x-hidden flex flex-col gap-6 mb-2 pb-5`}>
+      <div className={`${fetchType === "user" ? `h-[64vh]` : `h-[95vh]`}  ${noScroll ? '' : 'overflow-y-auto'} overflow-x-hidden flex flex-col gap-6 mb-2 pb-5`}>
         {areVideosFetched &&
           videos.map((video, idx) => (
             <VideoComponent key={idx} video={video} idx={idx} />

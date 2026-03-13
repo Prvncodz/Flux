@@ -68,41 +68,44 @@ export default function WatchVideoPage() {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div className="relative flex flex-col">
-        <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
-        <VideoDescription content={video?.description} views={video?.views} uploadTime={video?.createdAt} />
-        <div className="flex mx-1 my-3 justify-between">
-          <div className="flex">
-            <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
-            <div className="flex-col ml-1 justify-left">
-              <h1 className=" text-lg font-normal text-gray-700 text-left">{username || ""}</h1>
-              <h1 className="text-sm font-normal text-gray-500">119k subscribers</h1>
+      <div className="relative h-[80vh] overflow-auto ">
+
+        <div className="relative flex flex-col">
+          <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
+          <VideoDescription content={video?.description} views={video?.views} uploadTime={video?.createdAt} />
+          <div className="flex mx-1 my-3 justify-between">
+            <div className="flex">
+              <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
+              <div className="flex-col ml-1 justify-left">
+                <h1 className=" text-lg font-normal text-gray-700 text-left">{username || ""}</h1>
+                <h1 className="text-sm font-normal text-gray-500">119k subscribers</h1>
+              </div>
             </div>
+            <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3">
+              <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
+            </div>
+            <Button children={isSubscribed ?
+              (
+                <>
+                  <UserTick />
+                  <span>Subscribed</span>
+                </>
+              )
+              :
+              (
+                <>
+                  <UserAddIcon />
+                  <span>Subscribe</span>
+                </>
+              )} classes="mt-2 ml-4" onClick={handleSubscription} />
           </div>
-          <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3">
-            <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
-          </div>
-          <Button children={isSubscribed ?
-            (
-              <>
-                <UserTick />
-                <span>Subscribed</span>
-              </>
-            )
-            :
-            (
-              <>
-                <UserAddIcon />
-                <span>Subscribe</span>
-              </>
-            )} classes="mt-2 ml-4" onClick={handleSubscription} />
         </div>
-      </div>
-      <div className="overflow-auto my-2">
-        <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
-      </div>
-      <div>
-        <VideoFeed />
+        <div className="overflow-auto my-2">
+          <CommentFeed fetchType={"video"} Id={video?._id} isOpen={isCommentSectionOpen} setIsOpen={setIsCommentSectionOpen} />
+        </div>
+        <div>
+          <VideoFeed noScroll={true} />
+        </div>
       </div>
     </div>
   );
