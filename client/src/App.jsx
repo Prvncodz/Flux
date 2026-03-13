@@ -16,6 +16,7 @@ import WatchPostPage from "../components/watch/watchPostPage.jsx";
 import Dashboard from "../components/dashboard/dashboard.jsx";
 import LikedVideos from "../components/likedVideosPage/likedVideos.jsx";
 import HistoryPage from "../components/historyPage/historyPage.jsx";
+import WatchPlaylist from "../components/playlist/watchPlaylist.jsx";
 
 function App() {
 
@@ -66,6 +67,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/liked-videos" element={<LikedVideos />} />
           <Route path="/watch-history" element={<HistoryPage />} />
+          <Route path="/watch/playlist" element={<WatchPlaylist />} />
         </Routes>
       </BrowserRouter>
 

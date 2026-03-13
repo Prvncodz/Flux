@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function VideoDescription({ content, views, uploadTime }) {
+export default function VideoDescription({ content, views, uploadTime, showVideoDetails }) {
   const [isOpen, setIsOpen] = useState(false);
   const [timeOfUpload, setTimeOfUpload] = useState(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -44,12 +44,14 @@ export default function VideoDescription({ content, views, uploadTime }) {
 
   return (
     <>
-      <div className={`${isOpen ? "h-auto" : "h-25"} bg-neutral-100  shadow-rounded-2xl px-4 py-3 text-wrap text-body mx-2 relative flex flex-col text-left`}>
-        <div className="flex gap-1">
-          <p className="text-sm font-semibold text-gray-800">
-            {views + " views"} · {timeOfUpload + " ago"}
-          </p>
-        </div>
+      <div className={`${isOpen ? "h-auto" : "h-20"} bg-neutral-100 rounded-2xl px-4 py-3 text-wrap text-body mx-2 relative flex flex-col text-left`}>
+        {showVideoDetails &&
+          <div className="flex gap-1">
+            <p className="text-sm font-semibold text-gray-800">
+              {views + " views"} · {timeOfUpload + " ago"}
+            </p>
+          </div>
+        }
         <div className={`my-1 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"}`} ref={ref}>
           {content || "This video does not contains any description"}
         </div>

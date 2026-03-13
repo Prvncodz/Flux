@@ -1,29 +1,43 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import dpfp from "../../assets/dpfp.jpg";
 import dbanner from "../../assets/dbanner.jpg";
 import PlaylistIcon from "../../assets/playlistIcon.jsx"
+import { useNavigate } from "react-router-dom";
 
 export default function PlaylistComponents({ playlist, idx }) {
-  const { avatarUrl,fullname} = useGetUserById(playlist.owner);
+  const { avatarUrl, fullname } = useGetUserById(playlist.owner);
   const [videos, setVideos] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     setVideos(playlist.videos);
   }, [playlist]);
 
+  function hanldeShowPlaylistPage() {
+    navigate("/watch/playlist", {
+      state: {
+        playlist: playlist,
+        name: playlist?.name,
+        avatarUrl,
+        fullname,
+      }
+    })
+  }
+
   return (
-    <div className="mb-3">
+    <div className="mb-3" onClick={hanldeShowPlaylistPage}>
       <div className="relative">
-        <img src={videos[0]?.thumbnail?.url || dbanner } className=" w-full h-60 rounded-2xl z-0" onError={(e)=>e.target.src=dbanner}/>
-        <div className="absolute  bottom-2 p-2 right-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium z-1 flex"><PlaylistIcon size={18}/> <span className="mr-0.5 ml-1">{videos[0]? videos.length : 0}</span>videos</div>
+        <img src={videos[0]?.thumbnail?.url || dbanner} className=" w-full h-60 rounded-2xl z-0" onError={(e) => e.target.src = dbanner} />
+        <div className="absolute  bottom-2 p-2 right-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium z-1 flex"><PlaylistIcon size={18} /> <span className="mr-0.5 ml-1">{videos[0] ? videos.length : 0}</span>videos</div>
       </div>
       <div className="flex mt-3">
         <div className="h-10 w-10">
           <img
             src={avatarUrl || dpfp}
-            className="rounded-full h-10 w-10" 
+            className="rounded-full h-10 w-10"
             loading="lazy"
-            onError={(e)=>e.target.src=dpfp}
+            onError={(e) => e.target.src = dpfp}
           />
         </div>
         <span className="ml-4">
