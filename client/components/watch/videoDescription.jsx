@@ -52,7 +52,7 @@ export default function VideoDescription({ content, views, uploadTime, showVideo
             </p>
           </div>
         }
-        <div className={`my-1 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"}`} ref={ref}>
+        <div className={`my-2 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"}`} ref={ref}>
           {content || "This video does not contains any description"}
         </div>
 
@@ -63,7 +63,7 @@ export default function VideoDescription({ content, views, uploadTime, showVideo
             {
               isOverflowing &&
               <>
-                <p className="text-gray-800 font-base text-sm absolute bottom-6 mr-auto right-3 bg-gray-100 bg-blend-color-burn z-2" onClick={() => setIsOpen(true)}>..Show more</p>
+                <p className="text-gray-800 font-base text-sm absolute bottom-5 mr-auto right-3 bg-gray-100 bg-blend-color-burn z-2" onClick={() => setIsOpen(true)}>..Show more</p>
                 <div className="absolute bottom-0 left-0 right-0 h-2 backdrop-blur-xs z-1" />
               </>
             }

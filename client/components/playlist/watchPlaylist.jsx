@@ -8,14 +8,21 @@ export default function ShowPlaylistPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { playlist, avatarUrl, fullname, name } = location.state || {};
-  const [videos, setVideos] = useState([]);
+  const [videos] = useState(playlist?.videos);
 
-  useEffect(() => {
-    console.log(playlist)
-    if (playlist) {
-      setVideos(playlist?.videos)
+  function handleShowWatchVideo(videoId) {
+    console.log("Show this video:", videoId);
+    if (videoId) {
+      navigate("/watch/video", {
+        state: {
+          videoId: videoId,
+          ownerAvatar: avatarUrl,
+          fullname: fullname
+        }
+
+      })
     }
-  }, [playlist])
+  }
 
 
   return (
@@ -64,10 +71,10 @@ export default function ShowPlaylistPage() {
       </div>
 
       {/* videos list */}
-      <div className="space-y-4 border border-gray-200 rounded-2xl p-3">
+      <div className="space-y-4">
 
         {videos.map((video) => (
-          <div key={video.id} className="flex gap-4">
+          <div key={video._id} className="flex gap-4" onClick={() => handleShowWatchVideo(video._id)}>
 
             <img
               src={video.thumbnail?.url}

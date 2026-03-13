@@ -14,7 +14,7 @@ import UserContext from "../../contexts/UserContext.jsx";
 
 export default function WatchVideoPage() {
   const location = useLocation();
-  const { videoId, username, ownerAvatar } = location.state || {};
+  const { videoId, username, ownerAvatar, fullname } = location.state || {};
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [video, setVideo] = useState({})
@@ -87,7 +87,7 @@ export default function WatchVideoPage() {
             <div className="flex">
               <img src={ownerAvatar || dpfp} className="rounded-full h-11 w-11 mx-3" />
               <div className="flex-col ml-1 justify-left">
-                <h1 className=" text-lg font-normal text-gray-700 text-left">{username || ""}</h1>
+                <h1 className=" text-lg font-normal text-gray-700 text-left">{username || fullname || ""}</h1>
                 <h1 className="text-xs font-normal text-gray-500">{subscribers + `${subscribers > 1 ? " Subscribers" : " Subscriber"}` || ""}</h1>
               </div>
             </div>

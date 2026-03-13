@@ -6,13 +6,10 @@ import PlaylistIcon from "../../assets/playlistIcon.jsx"
 import { useNavigate } from "react-router-dom";
 
 export default function PlaylistComponents({ playlist, idx }) {
-  const { avatarUrl, fullname } = useGetUserById(playlist.owner);
-  const [videos, setVideos] = useState([]);
+  const { avatarUrl, fullname } = useGetUserById(playlist?.owner);
+  const [videos] = useState(playlist?.videos);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setVideos(playlist.videos);
-  }, [playlist]);
 
   function hanldeShowPlaylistPage() {
     navigate("/watch/playlist", {
