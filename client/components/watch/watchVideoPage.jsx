@@ -91,7 +91,7 @@ export default function WatchVideoPage() {
                 <h1 className="text-sm font-normal text-gray-500">{subscribers + `${subscribers > 1 ? " Subscribers" : " Subscriber"}` || ""}</h1>
               </div>
             </div>
-            <div className="flex items-center bg-neutral-100 rounded-full px-5 py-3 mt-2 mr-2">
+            <div className="flex items-center border border-gray-200 rounded-full px-7 py-3 mt-2 mr-2">
               <LikeButton size={20} fetchType={"video"} Id={videoId} likeStatus={isLiked} />
             </div>
             {isOtherChannel &&

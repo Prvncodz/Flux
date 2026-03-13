@@ -88,6 +88,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //login
 const loginUser = asyncHandler(async (req, res) => {
+  console.log("touched the login endpoint");
   //get the info
   // validate the input
   // check for user in db
@@ -472,12 +473,25 @@ const getWatchHistory = asyncHandler(async (req, res) => {
       },
     },
     {
-      $lookup: {
+      $lookup: {//instead of doing a normal scope based lookup(which was not as per the order we needed) we are using let + pipeline to get the watch history as per the array order(most recent first)
         from: "videos",
-        localField: "watchHistory",
-        foreignField: "_id",
-        as: "watchHistory",
+        let: { history: "$watchHistory" },//created variable which has the watch history array(correctly ordered one) of user
         pipeline: [
+          {
+            $match: {
+              $expr: { $in: ["$_id", "$$history"] },// match the video ids with the ids inside the watch history
+            },
+          },
+          {
+            $addFields: {
+              order: { $indexOfArray: ["$$history", "$_id"] }// get the copy of the correct order of index of array from history to video ids we have
+            }
+          },
+          {
+            $sort: {
+              order: 1,//sort the videos as per order
+            }
+          },
           {
             $lookup: {
               from: "users",
@@ -503,9 +517,11 @@ const getWatchHistory = asyncHandler(async (req, res) => {
             },
           },
         ],
+        as: "watchHistory",
       },
-    },
+    }
   ]);
+  console.log("watchHistory:", user[0].watchHistory)
   return res
     .status(200)
     .json(

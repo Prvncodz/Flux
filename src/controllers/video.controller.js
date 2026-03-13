@@ -157,9 +157,6 @@ const getVideoById = asyncHandler(async (req, res) => {
   const visitorId = req.user?._id || req.visitorId;
   const { userId } = req.query;
 
-  if (!isValidObjectId(videoId)) {
-    throw new ApiError(403, "video id is invalid");
-  }
   if (!videoId) {
     throw new ApiError(403, "video id is invalid");
 
@@ -167,10 +164,11 @@ const getVideoById = asyncHandler(async (req, res) => {
 
   if (req.user?._id) { //add video to watch history
     try {
+      const videoObjectId = new mongoose.Types.ObjectId(videoId);
       await User.findByIdAndUpdate(
         req.user._id,
         {
-          $pull: { watchHistory: videoId },
+          $pull: { watchHistory: videoObjectId },
         }, {
         new: true
       }
@@ -180,8 +178,9 @@ const getVideoById = asyncHandler(async (req, res) => {
         {
           $push: {
             watchHistory: {
-              $each: [videoId],
+              $each: [videoObjectId],
               $position: 0,
+              $slice: 50,
             }
           }
         }, {

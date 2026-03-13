@@ -141,7 +141,7 @@ function VideoCardComponent({ video }) {
 
       {/* video info */}
       <div className="flex flex-col justify-between flex-1 h-[84px]">
-        <div className="text-left mt-3 ml-2">
+        <div className="text-left mt-1 ml-2">
           <h3 className="text-sm font-semibold leading-tight line-clamp-2">
             {video.title}
           </h3>

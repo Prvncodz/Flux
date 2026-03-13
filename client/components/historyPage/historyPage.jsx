@@ -139,8 +139,8 @@ function VideoCardComponent({ video }) {
 
       {/* video info */}
       <div className="flex flex-col justify-between flex-1 h-[84px]">
-        <div className="text-left mt-3 ml-2">
-          <h3 className="text-sm font-semibold leading-tight line-clamp-2">
+        <div className="text-left mt-1 ml-2">
+          <h3 className="text-sm font-semibold leading-tight line-clamp-2 ">
             {video.title}
           </h3>
 
@@ -148,7 +148,7 @@ function VideoCardComponent({ video }) {
             {video.views + " views"} · {timeOfUpload + " ago"}
           </p>
         </div>
-        <div className="flex items-center gap-1  ml-2">
+        <div className="flex items-center gap-1  ml-2 ">
           <img
             src={video?.owner?.avatar?.url}
             className="w-6 h-6 rounded-full cursor-pointer"
