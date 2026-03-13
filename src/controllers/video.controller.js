@@ -257,56 +257,53 @@ const getVideoById = asyncHandler(async (req, res) => {
     },
   ]
   const video = await Video.aggregate(pipeline)
-  console.log(video[0]);
   if (!video?.length) {
     throw new ApiError(500, "video does'nt exists")
   }
 
-  // const oneHourAgo = Date.now() - 60 * 60 * 1000;
-  // const hasViewed = await View.exists({
-  //   videoId,
-  //   userId: visitorId,
-  //   createdAt: {
-  //     $gt: oneHourAgo,
-  //   },
-  // });
-  //
-  // if (!hasViewed) {
-  //   try {
-  //     await View.create({
-  //       videoId,
-  //       userId: visitorId,
-  //     });
-  //     video = await Video.findByIdAndUpdate(
-  //       videoId,
-  //       {
-  //         $inc: {
-  //           views: 1,
-  //         },
-  //       }, {
-  //       new: true,
-  //     }
-  //     );
-  //   }
-  //   catch (err) {
-  //     console.log(err.message);
-  //     throw new ApiError(500, "error while updating video")
-  //   }
-  // }
+  const oneHourAgo = Date.now() - 60 * 60 * 1000;
+  const hasViewed = await View.exists({
+    videoId,
+    userId: visitorId,
+    createdAt: {
+      $gt: oneHourAgo,
+    },
+  });
 
-  // let uVideo = video.toObject()
-  // uVideo.isLiked = userId ?
-  //   !!(await Like.exists({
-  //     video: videoId,
-  //     likedBy: userId
-  //   })) : false;
-  // if (!uVideo) {
-  //   throw new ApiError(500, "error while adding like status to video")
-  // }
+  if (!hasViewed) {
+    try {
+      await View.create({
+        videoId,
+        userId: visitorId,
+      });
+      await Video.findByIdAndUpdate(
+        videoId,
+        {
+          $inc: {
+            views: 1,
+          },
+        }
+      );
+    }
+    catch (err) {
+      console.log(err.message);
+      throw new ApiError(500, "error while updating video")
+    }
+  }
+
+  let finalVideo = video[0]
+  finalVideo.isLiked = userId ?
+    !!(await Like.exists({
+      video: videoId,
+      likedBy: userId
+    })) : false;
+  if (!finalVideo) {
+    throw new ApiError(500, "error while adding like status to video")
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, video, "video fetched by id succesfully"));
+    .json(new ApiResponse(200, finalVideo, "video fetched by id succesfully"));
 });
 
 //update changes existing video
