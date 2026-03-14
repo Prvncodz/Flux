@@ -1,23 +1,23 @@
 import { ArrowLeft, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Feed from "../home/videofeed/feed";
+import TweetFeed from "../home/tweetfeed/tweetFeed.jsx";
 
-const SearchVideoPage = () => {
+const SearchPostPage = () => {
   const location = useLocation();
   const { searchQuery } = location.state || {};
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState(searchQuery || "");
 
   useEffect(() => {
-
+    console.log("search query for this page is", searchQuery)
   }, [])
   function handleSearch() {
-    navigate("/search/videos", {
+    navigate("/search/posts", {
       state: {
         searchQuery: searchInput,
       }
-    });
+    })
   }
   return (
     <div>
@@ -37,11 +37,11 @@ const SearchVideoPage = () => {
             </div>
           </div>
         </div>
-        <Feed fetchType={"search"} searchQuery={searchQuery} />
+        <TweetFeed fetchType={"search"} searchQuery={searchQuery} />
       </div>
 
     </div>
   )
 }
 
-export default SearchVideoPage
+export default SearchPostPage;

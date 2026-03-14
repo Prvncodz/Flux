@@ -21,12 +21,17 @@ export default function Home() {
   return (
     <div className="relative z-0">
       <TabContext.Provider value={values}>
-        <Nav />
         {
           isHomeSelected ? (
-            <Feed className="relative z-0" fetchType="all" />
+            <>
+              <Nav searchType={"video"} />
+              <Feed className="relative z-0" fetchType="all" />
+            </>
           ) : (
-            <TweetFeed className="relative z-0" />
+            <>
+              <Nav searchType={"post"} />
+              <TweetFeed className="relative z-0" />
+            </>
           )
         }
       </TabContext.Provider>

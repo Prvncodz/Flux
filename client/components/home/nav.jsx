@@ -13,7 +13,7 @@ import CreateComponent from "./Upload_CreateComponent.jsx";
 import Menu from "./menu/menu.jsx";
 import { ArrowBigLeft, ArrowLeft, Search } from "lucide-react";
 
-export default function Nav({ wantTabs }) {
+export default function Nav({ wantTabs, searchType }) {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
   const [notLoggedOut, setNotLoggedOut] = useState(true);
@@ -71,11 +71,20 @@ export default function Nav({ wantTabs }) {
 
   function handleSearch() {
     if (isSearchFieldOpen) {
-      navigate("/search/videos", {
-        state: {
-          searchQuery: searchInput,
-        }
-      });
+      if (searchType === "post") {
+        navigate("/search/posts", {
+          state: {
+            searchQuery: searchInput,
+          }
+        });
+      } else {
+        navigate("/search/videos", {
+          state: {
+            searchQuery: searchInput,
+          }
+        });
+
+      }
     }
     setIsSearchFieldOpen(prev => !prev);
   }
@@ -91,7 +100,7 @@ export default function Nav({ wantTabs }) {
           </div>
         </div>
         <div className="flex items-center justify-center gap-3 h-auto mr-2 mt-1 p-2">
-          <div className="">
+          {searchType && <div className="">
             <button className="w-10 h-10 rounded-full  mr-1 cursor-pointer flex items-center justify-center  text-gray-600" onClick={handleSearch}>
               <Search size={30} />
             </button>
@@ -116,6 +125,7 @@ export default function Nav({ wantTabs }) {
               </div>
             }
           </div>
+          }
           <div className="relative">
             <button onClick={() => setIsCrtBtnActive(prev => !prev)}
               className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-[#1E89FE] active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"

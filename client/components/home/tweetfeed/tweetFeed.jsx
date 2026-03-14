@@ -3,7 +3,7 @@ import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx"
 
-export default function Feed({ fetchType, userId }) {
+export default function Feed({ fetchType, userId, searchQuery }) {
   const [tweets, setTweets] = useState([{}]);
   const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
 
@@ -19,6 +19,18 @@ export default function Feed({ fetchType, userId }) {
         console.log(error);
       }
     }
+    async function fetchSearchedTweets(query) {
+      try {
+        await axios.get(`/tweets/get-all-tweets?userId=${user?._id}&query=${query}`)
+          .then((res) => {
+            setTweets(res.data.data);
+            SetAreTweetsFetched(true);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     async function fetchAllTweetsByUser() {
       if (!userId) return;
       try {
@@ -33,6 +45,8 @@ export default function Feed({ fetchType, userId }) {
 
     if (fetchType === "user") {
       fetchAllTweetsByUser();
+    } else if (fetchType === "search") {
+      fetchSearchedTweets(searchQuery);
     } else {
       fetchAllTweets();
     }

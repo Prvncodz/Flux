@@ -18,6 +18,7 @@ import LikedVideos from "../components/likedVideosPage/likedVideos.jsx";
 import HistoryPage from "../components/historyPage/historyPage.jsx";
 import WatchPlaylist from "../components/playlist/watchPlaylist.jsx";
 import SearchVideoPage from "../components/search/searchVideoPage.jsx";
+import SearchPostPage from "../components/search/searchPostPage.jsx";
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
           <Route path="/watch-history" element={<HistoryPage />} />
           <Route path="/watch/playlist" element={<WatchPlaylist />} />
           <Route path="/search/videos" element={<SearchVideoPage />} />
+          <Route path="/search/posts" element={<SearchPostPage />} />
         </Routes>
       </BrowserRouter>
 
