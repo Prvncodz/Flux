@@ -40,7 +40,7 @@ export default function PostUploadPopup({ setShowPopup }) {
               type="text"
               placeholder="The weather is beautifull..."
               className="bg-gray-100
-                h-30 w-full p-2 border border-gray-300 text-sm mt-1"
+                h-30 w-full p-2 border border-gray-300 text-sm mt-1 focus:outline-none"
             />
           </label>
           <div className="flex items-center justify-center mt-1">

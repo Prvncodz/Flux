@@ -11,6 +11,7 @@ import VideoDescription from "./videoDescription.jsx";
 import VideoFeed from "../home/videofeed/feed.jsx";
 import LikeButton from "../home/likeComponent/likeButton.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
+import VideoPlayer from "../home/videofeed/VideoPlayer.jsx"
 
 export default function WatchVideoPage() {
   const location = useLocation();
@@ -68,17 +69,17 @@ export default function WatchVideoPage() {
     <div className="overflow-auto">
       <Nav wantTabs={false} />
       <div className="relative aspect-video overflow-hidden">
-        <video width="640" height="360" controls loop autoPlay playsInline preload="auto" poster="thumbnail.jpg" className="w-full h-auto object-cover">
-          {video.videofile?.url &&
-            <>
-              <source src={video?.videofile?.url} type="video/mp4" />
-              <source src={video?.videofile?.url} type="video/webm" />
-            </>
-          }
-          Your browser does not support the video tag.
-        </video>
+        <VideoPlayer
+          videoUrl={video?.videofile?.url || "https://ik.imagekit.io/chetram/shape%20ui/loki"} // Source URL for the video
+          autoplay={true} // Automatically start playing on load
+          replay={false} // Loop the video when it ends
+          theme="light" // Player theme: 'dark' | 'light'
+          color="#1e549f" // Accent color for controls and progress bar
+          fit={false} // If true, video fits within container. If false, it fills (cover).
+          className="aspect-video rounded-xl shadow-2xl" // Container classes
+        />
       </div>
-      <div className="relative h-[70vh] overflow-auto ">
+      <div className="relative h-[70vh] overflow-auto rounded-xl ">
 
         <div className="relative flex flex-col">
           <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">{video?.title || ""}</h1>
