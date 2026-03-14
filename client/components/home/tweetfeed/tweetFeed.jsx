@@ -21,8 +21,9 @@ export default function Feed({ fetchType, userId, searchQuery }) {
     }
     async function fetchSearchedTweets(query) {
       try {
-        await axios.get(`/tweets/get-all-tweets?userId=${user?._id}&query=${query}`)
+        await axios.get(`/tweets/get-all-tweets?query=${query}&userId=${user?._id}`)
           .then((res) => {
+            console.log("tweets:", res.data.data)
             setTweets(res.data.data);
             SetAreTweetsFetched(true);
           });
@@ -50,12 +51,12 @@ export default function Feed({ fetchType, userId, searchQuery }) {
     } else {
       fetchAllTweets();
     }
-  }, [user]);
+  }, [user, fetchType, searchQuery]);
 
-  if (areTweetsFetched && tweets.length === 0) {
+  if (tweets.length == 0 && areTweetsFetched) {
     return (
       <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
-        No Tweets has been published by this user
+        No Posts available for this request
       </div>
     );
   }

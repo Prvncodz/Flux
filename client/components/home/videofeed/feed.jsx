@@ -57,7 +57,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
   if (areVideosFetched && videos.length === 0) {
     return (
       <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
-        No Videos has been published by this user
+        No Videos available for this request
       </div>
     );
   }

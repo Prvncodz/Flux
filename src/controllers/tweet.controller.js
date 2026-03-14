@@ -135,15 +135,15 @@ const getAllTweets = asyncHandler(async (req, res) => {
       return obj;
     });
     const allTweetWithLikeStatus = await Promise.all(promises);
-
-    if (allTweetWithLikeStatus.length === 0) {
-      throw new ApiError(500, "Unable to fetch all tweets with Like status")
+    if (!allTweetWithLikeStatus) {
+      throw new ApiError(500, "unable to add like status to tweet")
     }
     return res
       .status(200)
       .json(new ApiResponse(200, allTweetWithLikeStatus, "fetched tweets feed successfully"));
   } catch (error) {
     console.log("Error:", error)
+    throw new ApiError(500, "something went wrong")
   }
 
 });
