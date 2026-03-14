@@ -26,7 +26,7 @@ export default function Nav({ wantTabs }) {
   const [popupType, setPopupType] = useState("video");
   const [showPopup, setShowPopup] = useState(false);
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState(false);
-
+  const [searchInput, setSearchInput] = useState("");
 
   const popup = {
     "video": <VideoUploadPopup setShowPopup={setShowPopup} />,
@@ -71,7 +71,11 @@ export default function Nav({ wantTabs }) {
 
   function handleSearch() {
     if (isSearchFieldOpen) {
-      navigate("/search/videos");
+      navigate("/search/videos", {
+        state: {
+          searchQuery: searchInput,
+        }
+      });
     }
     setIsSearchFieldOpen(prev => !prev);
   }
@@ -102,7 +106,7 @@ export default function Nav({ wantTabs }) {
                       if (e.key == "Enter") {
                         handleSearch();
                       }
-                    }} />
+                    }} value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
                     <div className="h-10 w-18 rounded-4xl bg-gray-100 flex items-center justify-center flex-end" onClick={handleSearch}>
                       <Search size={20} />
                     </div>

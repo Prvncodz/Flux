@@ -3,7 +3,7 @@ import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 
-export default function Feed({ fetchType, userId }) {
+export default function Feed({ fetchType, userId, searchQuery }) {
   const [videos, setVideos] = useState([{}]);
   const [areVideosFetched, SetAreVideosFetched] = useState(false);
   const { user, isUserLogged } = useContext(UserContext);
@@ -12,6 +12,17 @@ export default function Feed({ fetchType, userId }) {
     async function fetchAllVideos() {
       try {
         await axios.get(`/videos/all-videos${isUserLogged ? `?userId=${user?._id}` : ``}`)
+          .then((res) => {
+            setVideos(res.data.data);
+            SetAreVideosFetched(true);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function fetchSearchedVideos(query) {
+      try {
+        await axios.get(`/videos/all-videos${isUserLogged ? `?userId=${user?._id}&` : `?`}query=${query}`)
           .then((res) => {
             setVideos(res.data.data);
             SetAreVideosFetched(true);
@@ -35,10 +46,14 @@ export default function Feed({ fetchType, userId }) {
 
     if (fetchType === "user") {
       fetchVideosByUser(userId);
-    } else {
+    } else if (fetchType === "search") {
+      fetchSearchedVideos(searchQuery);
+    }
+    else {
       fetchAllVideos();
     }
-  }, []);
+  }, [fetchType, searchQuery]);
+
   if (areVideosFetched && videos.length === 0) {
     return (
       <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
