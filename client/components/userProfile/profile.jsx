@@ -149,13 +149,13 @@ export default function Profile() {
                 <UserAddIcon />
                 <span>Subscribe</span>
               </>
-            )} classes="mt-2" onClick={handleSubscription} />
+            )} classes="mt-4 mr-2" onClick={handleSubscription} />
         }
       </div>
-      <div className={`flex flex-row w-full ${isOtherUserP ? `mt-4` : `mt-10`} pb-2`}>
-        <span name="videos" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "videos" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "videos" ? `bg-blue-800` : ``}`}></div></span>
-        <span name="posts" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "posts" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "posts" ? `bg-blue-800` : ``}`}></div></span>
-        <span name="playlists" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "playlists" ? `text-blue-700` : `text-gray-800 `}`} onClick={() => setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "playlists" ? `bg-blue-800` : ``}`}></div></span>
+      <div className={`flex flex-row w-full ${isOtherUserP ? `mt-4` : `mt-12`} pb-2`}>
+        <span name="videos" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "videos" ? `text-[#1E549D]` : `text-gray-800 `}`} onClick={() => setTabOpened("videos")}>Videos<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "videos" ? `bg-[#1E549D]` : ``}`}></div></span>
+        <span name="posts" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "posts" ? `text-[#1E549D]` : `text-gray-800 `}`} onClick={() => setTabOpened("posts")}>Posts<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "posts" ? `bg-[#1E549D]` : ``}`}></div></span>
+        <span name="playlists" className={`text-base relative mt-3.5 font-normal w-50 cursor-pointer ${tabOpened === "playlists" ? `text-[#1E549D]` : `text-gray-800 `}`} onClick={() => setTabOpened("playlists")}>Playlists<div className={`absolute -bottom-2 w-full h-1 ${tabOpened === "playlists" ? `bg-[#1E549D]` : ``}`}></div></span>
       </div>
       <div>
         {isProfileFetched && tabs[tabOpened]}

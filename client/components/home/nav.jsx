@@ -11,6 +11,7 @@ import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
 import PostUploadPopup from "../uploadPopup/postUpload.jsx";
 import CreateComponent from "./Upload_CreateComponent.jsx";
 import Menu from "./menu/menu.jsx";
+import { ArrowBigLeft, ArrowLeft, Search } from "lucide-react";
 
 export default function Nav({ wantTabs }) {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ export default function Nav({ wantTabs }) {
   const [isCrtBtnActive, setIsCrtBtnActive] = useState(false);
   const [popupType, setPopupType] = useState("video");
   const [showPopup, setShowPopup] = useState(false);
+  const [isSearchFieldOpen, setIsSearchFieldOpen] = useState(false);
+
+
   const popup = {
     "video": <VideoUploadPopup setShowPopup={setShowPopup} />,
     "post": <PostUploadPopup setShowPopup={setShowPopup} />,
@@ -65,6 +69,13 @@ export default function Nav({ wantTabs }) {
     }
   }
 
+  function handleSearch() {
+    if (isSearchFieldOpen) {
+      navigate("/search/videos");
+    }
+    setIsSearchFieldOpen(prev => !prev);
+  }
+
 
   return (
     <nav className="h-auto w-full  shadow-sm transition-all">
@@ -76,12 +87,34 @@ export default function Nav({ wantTabs }) {
           </div>
         </div>
         <div className="flex items-center justify-center gap-3 h-auto mr-2 mt-1 p-2">
-          {/* <div className="w-11 h-11 rounded-full ring bg-gray-300 "> */}
-          {/**/}
-          {/* </div> */}
+          <div className="">
+            <button className="w-10 h-10 rounded-full  mr-1 cursor-pointer flex items-center justify-center  text-gray-600" onClick={handleSearch}>
+              <Search size={30} />
+            </button>
+            {isSearchFieldOpen &&
+              <div className="absolute h-screen w-full top-0 left-0 bottom-0 right-0 z-10">
+                <div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center">
+                  <button onClick={() => setIsSearchFieldOpen(false)} className="flex flex-start ml-5">
+                    <ArrowLeft />
+                  </button>
+                  <div className="w-80 h-10 rounded-full border border-gray-200 my-2 flex">
+                    <input type="text" name="query" placeholder="Search on flux" className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-9 pr-5 flex flex-start focus:outline-none" onKeyDown={(e) => {
+                      if (e.key == "Enter") {
+                        handleSearch();
+                      }
+                    }} />
+                    <div className="h-10 w-18 rounded-4xl bg-gray-100 flex items-center justify-center flex-end" onClick={handleSearch}>
+                      <Search size={20} />
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute h-screen w-full bg-gray-400 opacity-50"></div>
+              </div>
+            }
+          </div>
           <div className="relative">
             <button onClick={() => setIsCrtBtnActive(prev => !prev)}
-              className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-blue-700 active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
+              className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-[#1E89FE] active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
               title="Create post"
             >
               <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth="2.6" viewBox="0 0 24 24" strokeLinecap="round">
