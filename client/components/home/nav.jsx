@@ -11,7 +11,7 @@ import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
 import PostUploadPopup from "../uploadPopup/postUpload.jsx";
 import CreateComponent from "./Upload_CreateComponent.jsx";
 import Menu from "./menu/menu.jsx";
-import { ArrowBigLeft, ArrowLeft, Search } from "lucide-react";
+import { ArrowBigLeft, ArrowLeft, History, HistoryIcon, HomeIcon, LayoutDashboard, LayoutList, PodcastIcon, PoundSterling, Search } from "lucide-react";
 
 export default function Nav({ wantTabs, searchType }) {
   const navigate = useNavigate();
@@ -91,10 +91,25 @@ export default function Nav({ wantTabs, searchType }) {
 
 
   return (
-    <nav className="h-auto w-full  shadow-sm transition-all">
+    <nav className="h-auto w-full transition-all">
       <div className="flex flex-row w-full justify-between items-center">
-        <div className="flex items-center justify-center mt-0">
+        <div className="flex items-center mt-0">
           <Menu handleSignout={handleSignout} />
+          <div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between ">
+            <div className="h-20  p-2 flex items-center  flex-col text-left w-full">
+              <HomeIcon size={22} className="flex flex-start " />
+              <div className=" text-center text-gray-900 font-bold text-sm w-full ">Home</div>
+            </div>
+            <div className="h-20  p-2 flex items-center w-full flex-col text-left">
+              <LayoutList size={22} />
+              <div className=" text-left text-gray-900 font-bold text-sm">Posts</div>
+            </div>
+            <div className="h-20  p-2 flex items-center w-full flex-col text-left">
+              <History size={22} className="flex flex-start" />
+              <div className=" text-left text-gray-900 font-bold text-sm w-full">History</div>
+            </div>
+
+          </div>
           <div className="ml-1 py-1 px-1">{/*logo*/}
             <img src={logo} className="h-8 w-auto bg-cover" loading="lazy" onClick={() => navigate("/")} />
           </div>

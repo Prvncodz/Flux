@@ -47,9 +47,9 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="h-screen overflow-y-auto space-x-3 overflow-x-hidden">
+    <div className="h-screen overflow-y-auto space-x-3 overflow-x-hidden ">
       <Nav />
-      <div className="w-full p-5 space-y-6 overflow-auto">
+      <div className="h-[96vh] w-full p-5 space-y-6 overflow-auto">
 
         {isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />}
         <div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200 ">
@@ -76,12 +76,12 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div>
+        <div className="h-auto">
           <h2 className="text-lg font-bold mb-3 text-gray-900 text-left">
             All Videos
           </h2>
 
-          <div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto">
+          <div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto h-auto">
 
             <div className="flex justify-between text-xs text-gray-500 px-2">
               <span>Total {userChannelStats?.totalVideoCount || videos.length} videos</span>

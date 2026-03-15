@@ -70,7 +70,7 @@ export default function WatchVideoPage() {
       <Nav wantTabs={false} />
       <div className="relative aspect-video overflow-hidden">
         <VideoPlayer
-          videoUrl={video?.videofile?.url || "https://ik.imagekit.io/chetram/shape%20ui/loki"} // Source URL for the video
+          videoUrl={video?.videofile?.url} // Source URL for the video
           autoplay={true} // Automatically start playing on load
           replay={false} // Loop the video when it ends
           theme="light" // Player theme: 'dark' | 'light'

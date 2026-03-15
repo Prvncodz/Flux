@@ -19,7 +19,6 @@ export default function SignIn() {
     SetLoading(true);
     try {
       const res = await axios.post("/user/login", Data);
-      console.log(res);
       if (res.status == 200) {
         navigate("/");
         setUser(res.data?.data?.user)

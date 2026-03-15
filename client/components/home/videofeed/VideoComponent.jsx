@@ -71,8 +71,8 @@ export default function VideoComponent({ video }) {
 
   return (
     <div className="">
-      <div className="relative ">
-        <img src={video.thumbnail.url} className=" w-full h-60" onClick={handleShowWatchVideo} />
+      <div className="relative aspect-video">
+        <img src={video.thumbnail.url} className=" w-full h-full" onClick={handleShowWatchVideo} />
         <div className="absolute right-2 bottom-2 p-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium">{duration}</div>
       </div>
       <div className="flex mt-3 p-2">
