@@ -70,10 +70,10 @@ export default function VideoComponent({ video }) {
   }, [])
 
   return (
-    <div className="">
-      <div className="relative aspect-video">
-        <img src={video.thumbnail.url} className=" w-full h-full" onClick={handleShowWatchVideo} />
-        <div className="absolute right-2 bottom-2 p-2  rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium">{duration}</div>
+    <div className="md:p-2 lg:p-2 ">
+      <div className="relative z-0 aspect-video md:rounded-xl">
+        <img src={video.thumbnail.url} className=" w-full h-full md:rounded-lg" onClick={handleShowWatchVideo} />
+        <div className="absolute right-2 bottom-2 p-2 z-1 rounded-xl text-center text-neutral-300 bg-gray-900 text-sm font-medium">{duration}</div>
       </div>
       <div className="flex mt-3 p-2">
         <div className="h-10 w-10">

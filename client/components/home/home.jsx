@@ -19,7 +19,7 @@ export default function Home() {
     }
   }, [tab])
   return (
-    <div className="relative z-0 flex items-center flex-col">
+    <div className="relative z-0 flex items-center flex-col h-screen w-screen top-0 left-0 ">
       <TabContext.Provider value={values}>
         {
           isHomeSelected ? (

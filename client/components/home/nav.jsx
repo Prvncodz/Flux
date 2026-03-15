@@ -11,6 +11,7 @@ import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
 import PostUploadPopup from "../uploadPopup/postUpload.jsx";
 import CreateComponent from "./Upload_CreateComponent.jsx";
 import Menu from "./menu/menu.jsx";
+import MenuBtn from "../assets/menubtn.jsx";
 import { ArrowBigLeft, ArrowLeft, History, HistoryIcon, HomeIcon, LayoutDashboard, LayoutList, PodcastIcon, PoundSterling, Search } from "lucide-react";
 
 export default function Nav({ wantTabs, searchType }) {
@@ -27,6 +28,7 @@ export default function Nav({ wantTabs, searchType }) {
   const [showPopup, setShowPopup] = useState(false);
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [isMenuOpen, setIsMenuOPen] = useState(false)
 
   const popup = {
     "video": <VideoUploadPopup setShowPopup={setShowPopup} />,
@@ -89,57 +91,69 @@ export default function Nav({ wantTabs, searchType }) {
     setIsSearchFieldOpen(prev => !prev);
   }
 
-
+  function handleToggleMenu() {
+    setIsMenuOPen(prev => !prev)
+  }
   return (
-    <nav className="h-auto w-full transition-all">
-      <div className="flex flex-row w-full justify-between items-center">
-        <div className="flex items-center mt-0">
-          <Menu handleSignout={handleSignout} />
-          <div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between ">
-            <div className="h-20  p-2 flex items-center  flex-col text-left w-full">
-              <HomeIcon size={22} className="flex flex-start " />
-              <div className=" text-center text-gray-900 font-bold text-sm w-full ">Home</div>
-            </div>
-            <div className="h-20  p-2 flex items-center w-full flex-col text-left">
-              <LayoutList size={22} />
-              <div className=" text-left text-gray-900 font-bold text-sm">Posts</div>
-            </div>
-            <div className="h-20  p-2 flex items-center w-full flex-col text-left">
-              <History size={22} className="flex flex-start" />
-              <div className=" text-left text-gray-900 font-bold text-sm w-full">History</div>
-            </div>
+    <nav className="h-auto w-full transition-all md:relative md:top-0 md:left-0 md:z-5">
+      <div className="flex flex-row w-full justify-between items-center h-15 ">
+        <div className="flex justify-center items-center">
 
+          <div className="flex justify-center items-center ml-2 mt-2 cursor-pointer md:ml-4 md:mr-3 md:relative md:z-3 lg:mr-3 ">
+            <button type="button" className="border-none active:scale-95 transistion-all cursor-pointer" onClick={handleToggleMenu}><MenuBtn size={35} /></button>
           </div>
-          <div className="ml-1 py-1 px-1">{/*logo*/}
+
+          <div className="relative ">{/*logo*/}
             <img src={logo} className="h-8 w-auto bg-cover" loading="lazy" onClick={() => navigate("/")} />
           </div>
+          <div className="flex items-center">
+            {isMenuOpen &&
+              <Menu onSignout={handleSignout} setIsMenuOPen={setIsMenuOPen} isUserLogged={isUserLogged} />
+            }
+            <div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2">
+              <div className={`h-20  p-2 flex items-center  flex-col text-left w-full`} onClick={() => navigate("/")}>
+                <HomeIcon size={20} className="flex flex-start " />
+                <div className=" text-center text-gray-900 font-normal text-sm w-full">Home</div>
+              </div>
+              <div className="h-20  p-2 flex items-center w-full flex-col text-left" onClick={() => navigate("/", { state: { tab: "posts" } })}>
+                <LayoutList size={20} />
+                <div className=" text-left text-gray-900 font-normal text-sm">Posts</div>
+              </div>
+              <div className="h-20  p-2 flex items-center w-full flex-col text-left font-normal" onClick={() => navigate("/watch-history")}>
+                <History size={20} className="flex flex-start" />
+                <div className=" text-left text-gray-900 font-normal text-sm w-full">History</div>
+              </div>
+
+            </div>
+          </div>
         </div>
-        <div className="flex items-center justify-center gap-3 h-auto mr-2 mt-1 p-2">
-          {searchType && <div className="">
-            <button className="w-10 h-10 rounded-full  mr-1 cursor-pointer flex items-center justify-center  text-gray-600" onClick={handleSearch}>
-              <Search size={30} />
-            </button>
-            {isSearchFieldOpen &&
-              <div className="absolute h-screen w-full top-0 left-0 bottom-0 right-0 z-10">
-                <div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center">
-                  <button onClick={() => setIsSearchFieldOpen(false)} className="flex flex-start ml-5">
-                    <ArrowLeft />
-                  </button>
-                  <div className="w-80 h-10 rounded-full border border-gray-200 my-2 flex">
-                    <input type="text" name="query" placeholder="Search on flux" className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-9 pr-5 flex flex-start focus:outline-none" onKeyDown={(e) => {
-                      if (e.key == "Enter") {
-                        handleSearch();
-                      }
-                    }} value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
-                    <div className="h-10 w-18 rounded-4xl bg-gray-100 flex items-center justify-center flex-end" onClick={handleSearch}>
-                      <Search size={20} />
+        <div className="flex items-center justify-center gap-3 h-auto mr-2 mt-1 p-2 md:mr-5">
+          {searchType &&
+            <div className="">
+              <button className="w-10 h-10 rounded-full  mr-1 cursor-pointer flex items-center justify-center  text-gray-600" onClick={handleSearch}>
+                <Search size={30} />
+              </button>
+              {isSearchFieldOpen &&
+                <div className="absolute h-screen w-full top-0 left-0 bottom-0 right-0 z-10">
+                  <div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center">
+                    <button onClick={() => setIsSearchFieldOpen(false)} className="flex flex-start ml-5">
+                      <ArrowLeft />
+                    </button>
+                    <div className="w-80 h-10 rounded-full border border-gray-200 my-2 flex">
+                      <input type="text" name="query" placeholder="Search on flux" className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-9 pr-5 flex flex-start focus:outline-none" onKeyDown={(e) => {
+                        if (e.key == "Enter") {
+                          handleSearch();
+                        }
+                      }} value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+                      <div className="h-10 w-18 rounded-4xl bg-gray-100 flex items-center justify-center flex-end" onClick={handleSearch}>
+                        <Search size={20} />
+                      </div>
                     </div>
                   </div>
+                  <div className="absolute h-screen w-full bg-gray-400 opacity-50"></div>
                 </div>
-                <div className="absolute h-screen w-full bg-gray-400 opacity-50"></div>
-              </div>
-            }
-          </div>
+              }
+            </div>
           }
           <div className="relative">
             <button onClick={() => setIsCrtBtnActive(prev => !prev)}
