@@ -30,11 +30,11 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
   return (
     <>
       <div className="absolute top-0 left-0 bg-neutral-100 opacity-85 z-22 h-screen w-screen overflow-hidden md:hidden "></div>
-      <div className="absolute h-screen overflow-hidden w-[30vh] bg-neutral-100  left-0 top-0 z-23 transition-all text-left flex flex-col justify-between  md:z-1  md:h-[95vh] md:mt-18 md:bg-[#ffffff]">
+      <div className="absolute h-screen overflow-hidden w-[30vh] bg-neutral-100  left-0 top-0 z-23 transition-all text-left flex flex-col justify-between  md:z-1  md:h-[95vh] md:mt-15 md:bg-[#ffffff]">
         <div className="md:hidden">
           <CancelIconComponent onClick={() => setIsMenuOPen(prev => !prev)} />
         </div>
-        <ul className=" flex flex-col justify-left items-center gap-3 w-full h-150 p-4 md:mt-3 md:gap-5 md:p-0 md:h-full md:w-full md:ml-1 ">
+        <ul className=" flex flex-col justify-left items-center gap-3 w-full h-150 p-4 md:mt-6 md:gap-5 md:p-0 md:h-full md:w-full md:ml-1 ">
           <li className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50" onClick={() => handleNavigation("home")}><span className="mx-2 md:mx-4 "><Home size={20} className="" /></span><span className="text-[18px] font-medium md:text-xl md:font-normal">Home</span></li>
           {isUserLogged &&
             <>

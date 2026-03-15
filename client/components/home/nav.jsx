@@ -135,7 +135,7 @@ export default function Nav({ wantTabs, searchType }) {
               </button>
               {isSearchFieldOpen &&
                 <div className="absolute h-screen w-full top-0 left-0 bottom-0 right-0 z-10">
-                  <div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center">
+                  <div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center md:justify-between md:gap-0 ">
                     <button onClick={() => setIsSearchFieldOpen(false)} className="flex flex-start ml-5">
                       <ArrowLeft />
                     </button>
@@ -149,8 +149,26 @@ export default function Nav({ wantTabs, searchType }) {
                         <Search size={20} />
                       </div>
                     </div>
+                    <div className="hidden md:block lg:block md:mr-3">
+                      <button onClick={() => setIsCrtBtnActive(prev => !prev)}
+                        className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-[#1E89FE] active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
+                        title="Create post"
+                      >
+                        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" strokeWidth="2.6" viewBox="0 0 24 24" strokeLinecap="round">
+                          <line x1="12" y1="5" x2="12" y2="19" />
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                      </button>
+                      {isCrtBtnActive &&
+                        <CreateComponent handleUpload={handleUpload} />
+                      }
+                    </div>
+                    {
+                      showPopup && popup[popupType] /*if show popup is true show the popup with popupType which is defined when one of the options to create is clicked*/
+                    }
+
                   </div>
-                  <div className="absolute h-screen w-full bg-gray-400 opacity-50"></div>
+                  <div className="absolute h-screen w-full bg-gray-400 opacity-50 md:hidden"></div>
                 </div>
               }
             </div>
