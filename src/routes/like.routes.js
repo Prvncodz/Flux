@@ -6,7 +6,7 @@ import {
   toggleTweetLike,
   getTweetLikesCount,
   getVideoLikesCount,
-  getCommentLikesCount
+  getCommentLikesCount,
 } from "../controllers/like.controller.js";
 import { verifyJwt } from "../middlewares/auth.js";
 

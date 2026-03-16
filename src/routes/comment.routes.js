@@ -7,12 +7,11 @@ import {
   getTweetComments,
   getCommentComments,
   addCommentOnTweet,
-  addCommentOnComment
+  addCommentOnComment,
 } from "../controllers/comment.controller.js";
 import { verifyJwt } from "../middlewares/auth.js";
 
 const router = Router();
-
 
 router.get("/:videoId/get-video-comments", getVideoComments);
 

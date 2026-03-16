@@ -39,7 +39,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
   }
   const allTweets = await Tweet.find({ owner: userId })
     .skip(skipNum)
-    .limit(limitNum)
+    .limit(limitNum);
   if (!allTweets) {
     throw new ApiError(-501, "error finding tweets by this user");
   }
@@ -48,7 +48,6 @@ const getUserTweets = asyncHandler(async (req, res) => {
     obj.isLiked = !!(await Like.exists({ tweet: tweet?._id, likedBy: userId }));
     return obj;
   });
-
 
   const allTweetWithLikeStatus = await Promise.all(promises);
 
@@ -130,17 +129,24 @@ const getAllTweets = asyncHandler(async (req, res) => {
 
   const promises = allTweets.map(async (tweet) => {
     const obj = tweet.toObject();
-    obj.isLiked = userId ? !!(await Like.exists({ tweet: tweet?._id, likedBy: userId })) : false;
+    obj.isLiked = userId
+      ? !!(await Like.exists({ tweet: tweet?._id, likedBy: userId }))
+      : false;
     return obj;
   });
   const allTweetWithLikeStatus = await Promise.all(promises);
   if (!allTweetWithLikeStatus) {
-    throw new ApiError(500, "unable to add like status to tweet")
+    throw new ApiError(500, "unable to add like status to tweet");
   }
   return res
     .status(200)
-    .json(new ApiResponse(200, allTweetWithLikeStatus, "fetched tweets feed successfully"));
-
+    .json(
+      new ApiResponse(
+        200,
+        allTweetWithLikeStatus,
+        "fetched tweets feed successfully",
+      ),
+    );
 });
 
 export { createTweet, getUserTweets, updateTweet, deleteTweet, getAllTweets };

@@ -69,9 +69,9 @@ const registerUser = asyncHandler(async (req, res) => {
     },
     coverImage: coverImage
       ? {
-        public_id: coverImage?.public_id,
-        url: coverImage?.secure_url,
-      }
+          public_id: coverImage?.public_id,
+          url: coverImage?.secure_url,
+        }
       : {},
     password,
   });
@@ -263,12 +263,10 @@ const currentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "current user fetched successfully"));
 });
 
-//get user by id 
+//get user by id
 const getUserById = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  const user = await User.findById(userId).select(
-    "-password -refreshTokens",
-  );
+  const user = await User.findById(userId).select("-password -refreshTokens");
   if (!user) {
     throw new ApiError(500, "Unable to find user");
   }
@@ -291,11 +289,10 @@ const updateAccountInfo = asyncHandler(async (req, res) => {
     UpdatedFields.email = email;
   }
 
-
   const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
-      $set: UpdatedFields
+      $set: UpdatedFields,
     },
     {
       new: true,
@@ -320,7 +317,6 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
   const user = req.user;
   const fileToBeDeleted = user.avatar?.public_id;
 
-
   const updateAvatar = await User.findByIdAndUpdate(
     user?._id,
     {
@@ -338,7 +334,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
     try {
       const fileDeleted = await deleteFromCloud(fileToBeDeleted);
     } catch (err) {
-      throw new ApiError(504, "error while deleting file From Cloud")
+      throw new ApiError(504, "error while deleting file From Cloud");
     }
   }
   return res
@@ -375,16 +371,15 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
   ).select("-password -refreshTokens");
 
   if (!updateCoverImage) {
-    throw new ApiError(404, "Could'nt update the coverImage")
+    throw new ApiError(404, "Could'nt update the coverImage");
   }
   if (fileToBeDeleted) {
     try {
       const fileDeleted = await deleteFromCloud(fileToBeDeleted);
     } catch (err) {
-      throw new ApiError(504, "error while deleting file From Cloud")
+      throw new ApiError(504, "error while deleting file From Cloud");
     }
   }
-
 
   return res
     .status(200)
@@ -473,24 +468,25 @@ const getWatchHistory = asyncHandler(async (req, res) => {
       },
     },
     {
-      $lookup: {//instead of doing a normal scope based lookup(which was not as per the order we needed) we are using let + pipeline to get the watch history as per the array order(most recent first)
+      $lookup: {
+        //instead of doing a normal scope based lookup(which was not as per the order we needed) we are using let + pipeline to get the watch history as per the array order(most recent first)
         from: "videos",
-        let: { history: "$watchHistory" },//created variable which has the watch history array(correctly ordered one) of user
+        let: { history: "$watchHistory" }, //created variable which has the watch history array(correctly ordered one) of user
         pipeline: [
           {
             $match: {
-              $expr: { $in: ["$_id", "$$history"] },// match the video ids with the ids inside the watch history
+              $expr: { $in: ["$_id", "$$history"] }, // match the video ids with the ids inside the watch history
             },
           },
           {
             $addFields: {
-              order: { $indexOfArray: ["$$history", "$_id"] }// get the copy of the correct order of index of array from history to video ids we have
-            }
+              order: { $indexOfArray: ["$$history", "$_id"] }, // get the copy of the correct order of index of array from history to video ids we have
+            },
           },
           {
             $sort: {
-              order: 1,//sort the videos as per order
-            }
+              order: 1, //sort the videos as per order
+            },
           },
           {
             $lookup: {
@@ -519,9 +515,9 @@ const getWatchHistory = asyncHandler(async (req, res) => {
         ],
         as: "watchHistory",
       },
-    }
+    },
   ]);
-  console.log("watchHistory:", user[0].watchHistory)
+  console.log("watchHistory:", user[0].watchHistory);
   return res
     .status(200)
     .json(
@@ -545,5 +541,5 @@ export {
   updateUserCoverImage,
   showUserProfile,
   getWatchHistory,
-  getUserById
+  getUserById,
 };

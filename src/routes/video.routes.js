@@ -15,8 +15,6 @@ import { ensureVisitor } from "../middlewares/ensureVisiter.js";
 
 const router = Router();
 
-
-
 router.get("/all-videos-by-user", getAllVideosByUser);
 
 router.get("/all-videos", getAllVideos);
@@ -42,6 +40,10 @@ router.patch(
 
 router.delete("/c/:videoId/delete-video", verifyJwt, deleteVideo);
 
-router.post("/c/:videoId/toggle-publish-status", verifyJwt, togglePublishStatus);
+router.post(
+  "/c/:videoId/toggle-publish-status",
+  verifyJwt,
+  togglePublishStatus,
+);
 
 export default router;

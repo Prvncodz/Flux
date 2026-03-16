@@ -69,23 +69,23 @@ const getAllVideos = asyncHandler(async (req, res) => {
   if (sortBy) {
     sort[sortBy] = sortType === "desc" ? -1 : 1;
   }
-  const videos = await Video
-    .find(filter)
+  const videos = await Video.find(filter)
     .sort(sort)
     .skip(skipNum)
     .limit(limitNum);
 
-  const promises = videos
-    .map(async (video) => {
-      const obj = video.toObject();
-      obj.isLiked = userId ? !!(await Like.exists({ video: video?._id, likedBy: userId })) : false;
-      return obj;
-    });
+  const promises = videos.map(async (video) => {
+    const obj = video.toObject();
+    obj.isLiked = userId
+      ? !!(await Like.exists({ video: video?._id, likedBy: userId }))
+      : false;
+    return obj;
+  });
 
   const allVideos = await Promise.all(promises);
 
   if (!allVideos) {
-    throw new ApiError(500, "unable to fetch all videos with like status")
+    throw new ApiError(500, "unable to fetch all videos with like status");
   }
   return res
     .status(200)
@@ -159,19 +159,20 @@ const getVideoById = asyncHandler(async (req, res) => {
 
   if (!videoId) {
     throw new ApiError(403, "video id is invalid");
-
   }
 
-  if (req.user?._id) { //add video to watch history
+  if (req.user?._id) {
+    //add video to watch history
     try {
       const videoObjectId = new mongoose.Types.ObjectId(videoId);
       await User.findByIdAndUpdate(
         req.user._id,
         {
           $pull: { watchHistory: videoObjectId },
-        }, {
-        new: true
-      }
+        },
+        {
+          new: true,
+        },
       );
       await User.findByIdAndUpdate(
         req.user._id,
@@ -181,21 +182,23 @@ const getVideoById = asyncHandler(async (req, res) => {
               $each: [videoObjectId],
               $position: 0,
               $slice: 50,
-            }
-          }
-        }, {
-        new: true
-      });
+            },
+          },
+        },
+        {
+          new: true,
+        },
+      );
     } catch (err) {
-      console.log(err.message)
-      throw new ApiError(500, "error while adding video to watch history")
+      console.log(err.message);
+      throw new ApiError(500, "error while adding video to watch history");
     }
   }
   const pipeline = [
     {
       $match: {
-        _id: new mongoose.Types.ObjectId(videoId)
-      }
+        _id: new mongoose.Types.ObjectId(videoId),
+      },
     },
     {
       $lookup: {
@@ -210,7 +213,7 @@ const getVideoById = asyncHandler(async (req, res) => {
               localField: "_id",
               foreignField: "channel",
               as: "subscribers",
-            }
+            },
           },
           {
             $addFields: {
@@ -222,23 +225,24 @@ const getVideoById = asyncHandler(async (req, res) => {
                   else: false,
                 },
               },
-            }
-          }, {
+            },
+          },
+          {
             $project: {
               _id: 1,
               totalSubscribers: 1,
               isSubscribedByUser: 1,
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     },
     {
       $addFields: {
         owner: {
-          $first: "$ownerDetails"
-        }
-      }
+          $first: "$ownerDetails",
+        },
+      },
     },
     {
       $project: {
@@ -251,13 +255,13 @@ const getVideoById = asyncHandler(async (req, res) => {
         views: 1,
         duration: 1,
         isPublished: 1,
-        owner: 1
-      }
+        owner: 1,
+      },
     },
-  ]
-  const video = await Video.aggregate(pipeline)
+  ];
+  const video = await Video.aggregate(pipeline);
   if (!video?.length) {
-    throw new ApiError(500, "video does'nt exists")
+    throw new ApiError(500, "video does'nt exists");
   }
 
   const oneHourAgo = Date.now() - 60 * 60 * 1000;
@@ -275,29 +279,26 @@ const getVideoById = asyncHandler(async (req, res) => {
         videoId,
         userId: visitorId,
       });
-      await Video.findByIdAndUpdate(
-        videoId,
-        {
-          $inc: {
-            views: 1,
-          },
-        }
-      );
-    }
-    catch (err) {
+      await Video.findByIdAndUpdate(videoId, {
+        $inc: {
+          views: 1,
+        },
+      });
+    } catch (err) {
       console.log(err.message);
-      throw new ApiError(500, "error while updating video")
+      throw new ApiError(500, "error while updating video");
     }
   }
 
-  let finalVideo = video[0]
-  finalVideo.isLiked = userId ?
-    !!(await Like.exists({
-      video: videoId,
-      likedBy: userId
-    })) : false;
+  let finalVideo = video[0];
+  finalVideo.isLiked = userId
+    ? !!(await Like.exists({
+        video: videoId,
+        likedBy: userId,
+      }))
+    : false;
   if (!finalVideo) {
-    throw new ApiError(500, "error while adding like status to video")
+    throw new ApiError(500, "error while adding like status to video");
   }
 
   return res

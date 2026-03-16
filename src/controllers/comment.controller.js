@@ -14,7 +14,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     throw new ApiError(400, "This video is invalid or removed by the user");
   }
   if (!videoId) {
-    throw new ApiError(404, "this video id is undefined ")
+    throw new ApiError(404, "this video id is undefined ");
   }
   const { page = 1, limit = 10 } = req.query;
 
@@ -50,10 +50,11 @@ const getVideoComments = asyncHandler(async (req, res) => {
 
   const promises = comments.map(async (comment) => {
     const obj = comment.toObject();
-    obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
+    obj.isLiked = userId
+      ? !!(await Like.exists({ comment: obj._id, likedBy: userId }))
+      : false;
     return obj;
   });
-
 
   const allCommentsWithLikeStatus = await Promise.all(promises);
   return res
@@ -111,10 +112,11 @@ const getTweetComments = asyncHandler(async (req, res) => {
   }
   const promises = comments.map(async (comment) => {
     const obj = comment.toObject();
-    obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
+    obj.isLiked = userId
+      ? !!(await Like.exists({ comment: obj._id, likedBy: userId }))
+      : false;
     return obj;
   });
-
 
   const allCommentsWithLikeStatus = await Promise.all(promises);
   return res
@@ -132,7 +134,7 @@ const getCommentComments = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const { userId } = req.query;
   if (!commentId) {
-    throw new ApiError(404, "undefined comment Id")
+    throw new ApiError(404, "undefined comment Id");
   }
   if (!isValidObjectId(commentId)) {
     throw new ApiError(400, "This comment is invalid or removed by the user");
@@ -170,10 +172,11 @@ const getCommentComments = asyncHandler(async (req, res) => {
 
   const promises = comments.map(async (comment) => {
     const obj = comment.toObject();
-    obj.isLiked = userId ? !!(await Like.exists({ comment: obj._id, likedBy: userId })) : false;
+    obj.isLiked = userId
+      ? !!(await Like.exists({ comment: obj._id, likedBy: userId }))
+      : false;
     return obj;
   });
-
 
   const allCommentsWithLikeStatus = await Promise.all(promises);
   return res
@@ -300,4 +303,13 @@ const deleteComment = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, deletedComment, "Deleted comment successfully"));
 });
 
-export { getVideoComments, addCommentOnVideo, updateComment, deleteComment, getTweetComments, getCommentComments, addCommentOnTweet, addCommentOnComment };
+export {
+  getVideoComments,
+  addCommentOnVideo,
+  updateComment,
+  deleteComment,
+  getTweetComments,
+  getCommentComments,
+  addCommentOnTweet,
+  addCommentOnComment,
+};

@@ -106,7 +106,6 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 });
 
 const getLikedVideos = asyncHandler(async (req, res) => {
-
   const { page = 1, limit = 10, userId } = req.query;
   const pageNum = parseInt(page);
   const limitNum = parseInt(limit);
@@ -117,11 +116,12 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     throw new ApiError(400, "page number is invalid");
   }
   const skipNum = (pageNum - 1) * limitNum;
-  const allLikedVideoIds = await Like.find({ likedBy: req.user?._id })//got all the video ids where user has liked
+  const allLikedVideoIds = await Like.find({ likedBy: req.user?._id }) //got all the video ids where user has liked
     .select("video");
 
-  const videos = await Video.find({ //got the needed videos with the help of this videoIds  
-    _id: { $in: allLikedVideoIds.map(d => d.video) }
+  const videos = await Video.find({
+    //got the needed videos with the help of this videoIds
+    _id: { $in: allLikedVideoIds.map((d) => d.video) },
   })
     .skip(skipNum)
     .limit(limitNum);
@@ -130,27 +130,24 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Unable to get all liked videos");
   }
 
-  const promises = videos
-    .map(async (video) => {
-      const obj = video.toObject();
-      obj.isLiked = userId ? !!(await Like.exists({ video: video?._id, likedBy: userId })) : false;
-      return obj;
-    });
+  const promises = videos.map(async (video) => {
+    const obj = video.toObject();
+    obj.isLiked = userId
+      ? !!(await Like.exists({ video: video?._id, likedBy: userId }))
+      : false;
+    return obj;
+  });
 
   const allVideos = await Promise.all(promises);
   console.log(allVideos);
   if (!allVideos) {
-    throw new ApiError(500, "unable to fetch all videos with like status")
+    throw new ApiError(500, "unable to fetch all videos with like status");
   }
 
   return res
     .status(200)
     .json(
-      new ApiResponse(
-        200,
-        allVideos,
-        "fetched all liked videos successfully",
-      ),
+      new ApiResponse(200, allVideos, "fetched all liked videos successfully"),
     );
 });
 const getTweetLikesCount = asyncHandler(async (req, res) => {
@@ -169,9 +166,9 @@ const getTweetLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         likesCount,
-        "Tweet's like count successfully fetched"
-      )
-    )
+        "Tweet's like count successfully fetched",
+      ),
+    );
 });
 
 const getVideoLikesCount = asyncHandler(async (req, res) => {
@@ -191,9 +188,9 @@ const getVideoLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         likesCount,
-        "Video's like count successfully fetched"
-      )
-    )
+        "Video's like count successfully fetched",
+      ),
+    );
 });
 const getCommentLikesCount = asyncHandler(async (req, res) => {
   let likesCount = 0;
@@ -211,10 +208,17 @@ const getCommentLikesCount = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         likesCount,
-        "Comment's like count successfully fetched"
-      )
-    )
+        "Comment's like count successfully fetched",
+      ),
+    );
 });
 
-
-export { toggleCommentLike, toggleTweetLike, toggleVideoLike, getLikedVideos, getTweetLikesCount, getVideoLikesCount, getCommentLikesCount };
+export {
+  toggleCommentLike,
+  toggleTweetLike,
+  toggleVideoLike,
+  getLikedVideos,
+  getTweetLikesCount,
+  getVideoLikesCount,
+  getCommentLikesCount,
+};

@@ -13,11 +13,11 @@ const commentSchema = new Schema(
     },
     tweet: {
       type: Schema.Types.ObjectId,
-      ref: "Tweet"
+      ref: "Tweet",
     },
     comment: {
       type: Schema.Types.ObjectId,
-      ref: "Comment"
+      ref: "Comment",
     },
     owner: {
       type: Schema.Types.ObjectId,
