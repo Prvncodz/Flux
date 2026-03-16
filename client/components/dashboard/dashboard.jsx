@@ -47,9 +47,9 @@ export default function Dashboard() {
 	}, [])
 
 	return (
-		<div className="h-screen overflow-y-auto space-x-3 overflow-x-hidden ">
+		<div className="h-screen">
 			<Nav />
-			<div className="h-[96vh] w-full p-5 space-y-6 overflow-auto md:h-full md:pl-16">
+			<div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20 md:h-full md:pl-16 ">
 
 				{isEditPopUpActive && <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />}
 				<div className="hidden md:flex flex-col items-center mb-6 md:mt-5">
@@ -60,50 +60,51 @@ export default function Dashboard() {
 					<p className="text-sm text-gray-500 mt-1">
 						Here’s what’s happening on your channel today.
 					</p>
-					
+
 				</div>
 				<div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200  md:w-120 md:h-70 md:mx-auto">
-				<div className="relative z-0 ">
-					<img src={userChannelStats?.coverImage?.url || dbanner} onError={(e) => e.target.src = dbanner} className="h-35.5 w-full relative md:h-45 " loading="lazy" />
-					<img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white md:h-25 md:w-25 md:-bottom-15" loading="lazy" />
-					<Edit2 size={20} className="absolute right-5 -bottom-8 cursor-pointer" onClick={handleEditProfile} />
-				</div>
-				<div className="h-15 ml-30 w-full mt-1 md:ml-32 md:mt-1 ">
-					<h3 className="text-left text-neutral-600 font-medium text-xl ">{userChannelStats?.fullName || "Jhon doe"}</h3>
-					<h3 className="text-left text-neutral-500 font-medium text-sm mt-0 ">@{userChannelStats?.userName || "jhondoe201"}</h3>
-				</div>
-			</div>
-
-			<div className="md:mt-1">
-				<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5 md:mt-3 md:text-base">
-					CHANNEL STATS
-				</h2>
-
-				<div className="space-y-3  md:flex md:flex-col md:justify-center md:p-5 md:items-center lg:flex lg:flex-row lg:space-x-3 ">
-					<StatCard icon={<Eye size={16} />} label="Total views" value={userChannelStats?.totalViews} />
-					<StatCard icon={<ThumbsUp size={16} />} label="Total likes" value={userChannelStats?.totalLikes} />
-					<StatCard icon={<Users size={16} />} label="Total subscribers" value={userChannelStats?.totalSubscribers} />
-				</div>
-			</div>
-
-			<div className="h-auto">
-				<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5">
-					All Videos
-				</h2>
-
-				<div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto h-auto">
-
-					<div className="flex justify-between text-xs text-gray-500 px-2">
-						<span>Total {userChannelStats?.totalVideoCount || videos.length} videos</span>
-						<span className="mr-23">Visibility</span>
+					<div className="relative z-0 ">
+						<img src={userChannelStats?.coverImage?.url || dbanner} onError={(e) => e.target.src = dbanner} className="h-35.5 w-full relative md:h-45 " loading="lazy" />
+						<img src={userChannelStats?.avatar?.url || dpfp} onError={(e) => e.target.src = dpfp} className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white md:h-25 md:w-25 md:-bottom-15" loading="lazy" />
+						<Edit2 size={20} className="absolute right-5 -bottom-8 cursor-pointer" onClick={handleEditProfile} />
 					</div>
+					<div className="h-15 ml-30 w-full mt-1 md:ml-32 md:mt-1 ">
+						<h3 className="text-left text-neutral-600 font-medium text-xl ">{userChannelStats?.fullName || "Jhon doe"}</h3>
+						<h3 className="text-left text-neutral-500 font-medium text-sm mt-0 ">@{userChannelStats?.userName || "jhondoe201"}</h3>
+					</div>
+				</div>
 
-					{videos.map((video) => (
-						<VideoCard video={video} key={video._id} />
-					))}
+				<div className="md:mt-1">
+					<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5 md:mt-3 md:text-base">
+						CHANNEL STATS
+					</h2>
+
+					<div className="space-y-3  md:flex md:flex-col md:justify-center md:p-5 md:items-center lg:flex lg:flex-row lg:space-x-3 ">
+						<StatCard icon={<Eye size={16} />} label="Total views" value={userChannelStats?.totalViews} />
+						<StatCard icon={<ThumbsUp size={16} />} label="Total likes" value={userChannelStats?.totalLikes} />
+						<StatCard icon={<Users size={16} />} label="Total subscribers" value={userChannelStats?.totalSubscribers} />
+					</div>
+				</div>
+
+				<div className="h-auto">
+					<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5">
+						All Videos
+					</h2>
+
+					<div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto h-auto">
+
+						<div className="flex justify-between text-xs text-gray-500 px-2">
+							<span>Total {userChannelStats?.totalVideoCount || videos.length} videos</span>
+							<span className="ml-24 md:ml-64 lg:ml-134 ">Visibility</span>
+							<span className="mr-6">Status</span>
+						</div>
+
+						{videos.map((video) => (
+							<VideoCard video={video} key={video._id} />
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
 		</div >
 	);
 }
@@ -135,7 +136,7 @@ function VideoCard({ video }) {
 		>
 			<div className="flex items-center gap-3 text-sm">
 				<Video size={16} />
-				<div className="w-35 min-w-40 max-w-[240x] text-left text-nowwrap" >
+				<div className="w-35 min-w-40 max-w-[240x] text-left text-wrap md:w-80 lg:w-150" >
 					{video.title}
 				</div>
 			</div>
