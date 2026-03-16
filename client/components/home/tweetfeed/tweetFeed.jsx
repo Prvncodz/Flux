@@ -4,70 +4,70 @@ import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx"
 
 export default function Feed({ fetchType, userId, searchQuery }) {
-  const [tweets, setTweets] = useState([{}]);
-  const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
+	const [tweets, setTweets] = useState([{}]);
+	const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
 
-  const { user } = useContext(UserContext);
-  useEffect(() => {
-    async function fetchAllTweets() {
-      try {
-        await axios.get(`/tweets/get-all-tweets?userId=${user?._id}`).then((res) => {
-          setTweets(res.data.data);
-          SetAreTweetsFetched(true);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    async function fetchSearchedTweets(query) {
-      try {
-        await axios.get(`/tweets/get-all-tweets?query=${query}&userId=${user?._id}`)
-          .then((res) => {
-            console.log("tweets:", res.data.data)
-            setTweets(res.data.data);
-            SetAreTweetsFetched(true);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    }
+	const { user } = useContext(UserContext);
+	useEffect(() => {
+		async function fetchAllTweets() {
+			try {
+				await axios.get(`/tweets/get-all-tweets?userId=${user?._id}`).then((res) => {
+					setTweets(res.data.data);
+					SetAreTweetsFetched(true);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		async function fetchSearchedTweets(query) {
+			try {
+				await axios.get(`/tweets/get-all-tweets?query=${query}&userId=${user?._id}`)
+					.then((res) => {
+						console.log("tweets:", res.data.data)
+						setTweets(res.data.data);
+						SetAreTweetsFetched(true);
+					});
+			} catch (error) {
+				console.log(error);
+			}
+		}
 
-    async function fetchAllTweetsByUser() {
-      if (!userId) return;
-      try {
-        await axios.get(`/tweets/${userId}`).then((res) => {
-          setTweets(res.data.data);
-          SetAreTweetsFetched(true);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
+		async function fetchAllTweetsByUser() {
+			if (!userId) return;
+			try {
+				await axios.get(`/tweets/${userId}`).then((res) => {
+					setTweets(res.data.data);
+					SetAreTweetsFetched(true);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
 
-    if (fetchType === "user") {
-      fetchAllTweetsByUser();
-    } else if (fetchType === "search") {
-      fetchSearchedTweets(searchQuery);
-    } else {
-      fetchAllTweets();
-    }
-  }, [user, fetchType, searchQuery]);
+		if (fetchType === "user") {
+			fetchAllTweetsByUser();
+		} else if (fetchType === "search") {
+			fetchSearchedTweets(searchQuery);
+		} else {
+			fetchAllTweets();
+		}
+	}, [user, fetchType, searchQuery]);
 
-  if (tweets.length == 0 && areTweetsFetched) {
-    return (
-      <div className="flex h-100 w-full justify-center items-center text-base font-medium ">
-        No Posts available for this request
-      </div>
-    );
-  }
-  return (
-    <>
-      <div className="h-[95vh] overflow-y-auto overflow-x-hidden pb-5 flex flex-col ">
-        {areTweetsFetched &&
-          tweets.map((tweet, idx) => (
-            <TweetComponent key={idx} tweet={tweet} idx={idx} />
-          ))}
-      </div>
-    </>
-  );
+	if (tweets.length == 0 && areTweetsFetched) {
+		return (
+			<div className="flex h-100 w-full justify-center items-center text-base font-medium ">
+				No Posts available for this request
+			</div>
+		);
+	}
+	return (
+		<>
+			<div className="h-[95vh] w-full overflow-y-auto overflow-x-hidden pb-5 flex flex-col scrollbar scrollbar-track-transparent    md:block md:w-[65vh] md:boder md:border-gray-200 ">
+				{areTweetsFetched &&
+					tweets.map((tweet, idx) => (
+						<TweetComponent key={idx} tweet={tweet} idx={idx} />
+					))}
+			</div>
+		</>
+	);
 }

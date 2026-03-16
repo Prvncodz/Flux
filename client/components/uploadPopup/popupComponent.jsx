@@ -10,7 +10,7 @@ export default function PopUpComponent({ children, onCancel }) {
       <CancelIconComponent onClick={onCancel} />
       <div
         className="h-auto w-87 bg-gray-100 flex flex-col
-        justify-center overflow-hidden rounded-lg absolute z-22 p-2"
+        justify-center overflow-hidden rounded-lg absolute z-22 p-2 md:w-100 "
       >
         {children}
       </div>
