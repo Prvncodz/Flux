@@ -130,7 +130,7 @@ function VideoCardComponent({ video }) {
 			<div className="relative">
 				<img
 					src={video.thumbnail?.url}
-					className="w-[142px] h-[84px] object-cover rounded-lg"
+					className="w-[142px] h-[84px] object-cover rounded-lg md:aspect-video md:h-30 md:w-50 lg:h-40 lg:w-70"
 				/>
 				<div className="absolute bg-gray-800 rounded-2xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300">
 					{duration}
@@ -138,30 +138,30 @@ function VideoCardComponent({ video }) {
 			</div>
 
 			{/* video info */}
-			<div className="flex flex-col justify-between flex-1 h-[84px]">
+			<div className="flex flex-col justify-between flex-1 h-[84px] md:mt-1 md:p-y-20">
 				<div className="text-left mt-1 ml-2">
-					<h3 className="text-sm font-semibold leading-tight line-clamp-2 ">
+					<h3 className="text-sm font-semibold leading-tight line-clamp-2  md:font-normal md:leading-relaxed md:text-lg  lg:font-normal lg:leading-relaxed lg:text-xl">
 						{video.title}
 					</h3>
 
-					<p className="text-xs text-gray-500">
+					<p className="text-xs text-gray-500 md:text-sm  lg:text-base">
 						{video.views + " views"} · {timeOfUpload + " ago"}
 					</p>
 				</div>
-				<div className="flex items-center gap-1  ml-2 ">
+				<div className="flex items-center gap-1  ml-2 md:mt-3 ">
 					<img
 						src={video?.owner?.avatar?.url}
 						className="w-6 h-6 rounded-full cursor-pointer"
 						onClick={handleShowUserProfile}
 					/>
 
-					<span className="text-xs text-gray-600">
+					<span className="text-xs text-gray-600 md:ml-0.5 lg:text-sm">
 						{video?.owner?.fullName}
 					</span>
 				</div>
 
 			</div>
-		</div>
+		</div >
 
 	);
 }
