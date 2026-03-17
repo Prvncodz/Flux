@@ -1,11 +1,6 @@
 export default function UserTick() {
-  return(
-
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 28 28"
-      fill="none"
-    >
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" fill="none">
       <path
         d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM3.41 22c0-3.87 3.85-7 8.59-7 .96 0 1.89.13 2.76.37"
         stroke="currentColor"

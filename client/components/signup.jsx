@@ -215,7 +215,8 @@ export default function SignUp() {
               />
             </label>
           </div>
-          <SubmitButton text={"Submit"}
+          <SubmitButton
+            text={"Submit"}
             currentSubmitStatus={
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }

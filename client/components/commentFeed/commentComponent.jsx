@@ -1,6 +1,6 @@
 import { useGetUserById } from "../../hooks/useGetUserById.jsx";
-import Like from "../home/likeComponent/likeButton.jsx"
-import dpfp from "../assets/dpfp.jpg"
+import Like from "../home/likeComponent/likeButton.jsx";
+import dpfp from "../assets/dpfp.jpg";
 import { useContext, useEffect, useState } from "react";
 import axios from "../../api/axios.js";
 import AddCommentsBox from "./AddCommentBox.jsx";
@@ -8,8 +8,6 @@ import ChatBubbleIcon from "../assets/chatIcon.jsx";
 import { useNavigate } from "react-router-dom";
 import ReplyIcon from "../assets/replyIcon.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
-
-
 
 export default function CommentComponent({ comment, onlyContent, mainPost }) {
   const { avatarUrl, fullname, username } = useGetUserById(comment?.owner);
@@ -21,7 +19,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
 
   function HandleReplyToComment() {
     if (!mainPost) {
-      setShowAddReplyBox(prev => !prev);
+      setShowAddReplyBox((prev) => !prev);
     }
   }
   function handleShowPostPage() {
@@ -30,9 +28,9 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
         state: {
           post: comment,
           comments: commentsPosts,
-          postType: "comment"
-        }
-      })
+          postType: "comment",
+        },
+      });
     } else {
       return;
     }
@@ -41,7 +39,9 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
   useEffect(() => {
     async function getAllCommentPosts() {
       try {
-        const res = await axios.get(`/comments/${comment?._id}/get-comment-comments${user?._id ? `?userId=${user._id}` : ``}`)//if userid is there it will be sent as query else no query will be sent
+        const res = await axios.get(
+          `/comments/${comment?._id}/get-comment-comments${user?._id ? `?userId=${user._id}` : ``}`,
+        ); //if userid is there it will be sent as query else no query will be sent
         if (res.status === 200) {
           setCommentPosts(res.data?.data);
           if (res.data.data.length !== 0) {
@@ -55,12 +55,18 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
       }
     }
     getAllCommentPosts();
-  }, [comment?._id, user?._id])
+  }, [comment?._id, user?._id]);
   if (onlyContent) {
     return (
       <div className="flex p-3">
-        <img src={avatarUrl || dpfp} className="rounded-full h-10 w-10" onError={(e => e.target.src = dpfp)} />
-        <h1 className="text-neutral-700 text-lg font-normal text-left wrap ml-3 my-1 w-full">{comment?.content || ""}</h1>
+        <img
+          src={avatarUrl || dpfp}
+          className="rounded-full h-10 w-10"
+          onError={(e) => (e.target.src = dpfp)}
+        />
+        <h1 className="text-neutral-700 text-lg font-normal text-left wrap ml-3 my-1 w-full">
+          {comment?.content || ""}
+        </h1>
       </div>
     );
   }
@@ -72,26 +78,59 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
             <img
               src={avatarUrl || dpfp}
               className="rounded-full h-10 w-10"
-              onError={(e) => e.target.src = dpfp}
+              onError={(e) => (e.target.src = dpfp)}
             />
           </div>
           <span className="ml-4 h-7">
-            <h3 className="text-left text-neutral-700 font-medium text-lg">{fullname}</h3>
-            <h3 className="text-left text-neutral-600 font-medium text-xs mt-0">{"@" + username}</h3>
+            <h3 className="text-left text-neutral-700 font-medium text-lg">
+              {fullname}
+            </h3>
+            <h3 className="text-left text-neutral-600 font-medium text-xs mt-0">
+              {"@" + username}
+            </h3>
           </span>
-
         </div>
         <div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left wrap">
           {comment?.content || ""}
         </div>
         <div className="flex justify-start gap-8 mt-4 ml-5 mb-2">
-          <span><Like fetchType={"comment"} Id={comment._id} likeStatus={comment?.isLiked} /></span>
-          <span className="flex text-sm text-black cursor-pointer " onClick={HandleReplyToComment}><span className="mr-1"><ReplyIcon /></span>reply</span>
-          <span onClick={handleShowPostPage} className="flex text-sm text-black cursor-pointer "><ChatBubbleIcon size={26} className="bg-gray-600" />{!areAnyComments || mainPost ? "" : <span className="ml-2"> View {commentsPosts.length} replies</span>}</span>
+          <span>
+            <Like
+              fetchType={"comment"}
+              Id={comment._id}
+              likeStatus={comment?.isLiked}
+            />
+          </span>
+          <span
+            className="flex text-sm text-black cursor-pointer "
+            onClick={HandleReplyToComment}
+          >
+            <span className="mr-1">
+              <ReplyIcon />
+            </span>
+            reply
+          </span>
+          <span
+            onClick={handleShowPostPage}
+            className="flex text-sm text-black cursor-pointer "
+          >
+            <ChatBubbleIcon size={26} className="bg-gray-600" />
+            {!areAnyComments || mainPost ? (
+              ""
+            ) : (
+              <span className="ml-2"> View {commentsPosts.length} replies</span>
+            )}
+          </span>
         </div>
       </div>
 
-      {showAddReplyBox && <AddCommentsBox fetchType={"comment"} Id={comment?._id} setShowAddReplyBox={setShowAddReplyBox} />}
+      {showAddReplyBox && (
+        <AddCommentsBox
+          fetchType={"comment"}
+          Id={comment?._id}
+          setShowAddReplyBox={setShowAddReplyBox}
+        />
+      )}
     </>
   );
 }

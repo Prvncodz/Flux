@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   Play,
   Pause,
@@ -16,13 +16,13 @@ import {
   AlertCircle,
   ChevronsRight,
   ChevronsLeft,
-} from 'lucide-react';
+} from "lucide-react";
 
 const formatTime = (timeInSeconds) => {
-  if (!timeInSeconds) return '0:00';
+  if (!timeInSeconds) return "0:00";
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
 
 /**
@@ -38,10 +38,10 @@ const VideoPlayer = ({
   videoUrl,
   autoplay = true,
   replay = false,
-  theme = 'dark',
-  color = '#7c3aed',
+  theme = "dark",
+  color = "#7c3aed",
   fit = true,
-  className = '',
+  className = "",
 }) => {
   const videoRef = useRef(null);
   const containerRef = useRef(null);
@@ -81,25 +81,25 @@ const VideoPlayer = ({
   let controlsTimeout = useRef(null);
 
   // --- Theme Config ---
-  const isDark = theme === 'dark';
+  const isDark = theme === "dark";
 
   const themeStyles = {
-    container: isDark ? 'bg-black' : 'bg-white',
-    iconBase: isDark ? 'text-white' : 'text-neutral-800',
-    iconHover: isDark ? 'hover:text-white' : 'hover:text-black',
-    iconDim: isDark ? 'text-neutral-400' : 'text-neutral-500',
+    container: isDark ? "bg-black" : "bg-white",
+    iconBase: isDark ? "text-white" : "text-neutral-800",
+    iconHover: isDark ? "hover:text-white" : "hover:text-black",
+    iconDim: isDark ? "text-neutral-400" : "text-neutral-500",
     toolbarBg: isDark
-      ? 'bg-neutral-900/90 border-white/5'
-      : 'bg-white/90 border-black/5',
-    progressBarBg: isDark ? 'bg-white/10' : 'bg-black/10',
-    bufferedBarBg: isDark ? 'bg-white/20' : 'bg-black/20',
+      ? "bg-neutral-900/90 border-white/5"
+      : "bg-white/90 border-black/5",
+    progressBarBg: isDark ? "bg-white/10" : "bg-black/10",
+    bufferedBarBg: isDark ? "bg-white/20" : "bg-black/20",
     menuBg: isDark
-      ? 'bg-neutral-900/95 border-white/10'
-      : 'bg-white/95 border-black/10',
-    menuText: isDark ? 'text-neutral-300' : 'text-neutral-600',
-    menuHover: isDark ? 'hover:bg-white/10' : 'hover:bg-black/5',
-    overlayBg: isDark ? 'bg-black/60' : 'bg-white/80',
-    overlayText: isDark ? 'text-white' : 'text-black',
+      ? "bg-neutral-900/95 border-white/10"
+      : "bg-white/95 border-black/10",
+    menuText: isDark ? "text-neutral-300" : "text-neutral-600",
+    menuHover: isDark ? "hover:bg-white/10" : "hover:bg-black/5",
+    overlayBg: isDark ? "bg-black/60" : "bg-white/80",
+    overlayText: isDark ? "text-white" : "text-black",
   };
 
   // --- Initialization ---
@@ -111,7 +111,7 @@ const VideoPlayer = ({
         playPromise
           .then(() => setIsPlaying(true))
           .catch((error) => {
-            console.log('Autoplay prevented:', error);
+            console.log("Autoplay prevented:", error);
             setIsPlaying(false);
             setShowControls(true);
             // Browser policy might block unmuted autoplay.
@@ -209,10 +209,10 @@ const VideoPlayer = ({
       clearTimeout(clickTimeoutRef.current);
       if (x < width * 0.35) {
         skip(-10);
-        triggerSkipFeedback('backward');
+        triggerSkipFeedback("backward");
       } else if (x > width * 0.65) {
         skip(10);
-        triggerSkipFeedback('forward');
+        triggerSkipFeedback("forward");
       } else {
         toggleFullscreen();
       }
@@ -245,7 +245,7 @@ const VideoPlayer = ({
       setProgress(videoRef.current.currentTime);
       if (videoRef.current.buffered.length > 0) {
         const bufferedEnd = videoRef.current.buffered.end(
-          videoRef.current.buffered.length - 1
+          videoRef.current.buffered.length - 1,
         );
         setBuffered((bufferedEnd / videoRef.current.duration) * 100);
       }
@@ -305,9 +305,8 @@ const VideoPlayer = ({
         setShowSpeedMenu(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () =>
-      document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showSpeedMenu]);
 
   useEffect(() => {
@@ -322,20 +321,20 @@ const VideoPlayer = ({
 
     const container = containerRef.current;
     if (container) {
-      container.addEventListener('mousemove', handleMouseMove);
-      container.addEventListener('mouseleave', () => {
+      container.addEventListener("mousemove", handleMouseMove);
+      container.addEventListener("mouseleave", () => {
         if (!showSpeedMenu && !isEnded) setShowControls(false);
       });
-      container.addEventListener('touchstart', handleMouseMove);
+      container.addEventListener("touchstart", handleMouseMove);
     }
 
     return () => {
       if (container) {
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('mouseleave', () =>
-          setShowControls(false)
+        container.removeEventListener("mousemove", handleMouseMove);
+        container.removeEventListener("mouseleave", () =>
+          setShowControls(false),
         );
-        container.removeEventListener('touchstart', handleMouseMove);
+        container.removeEventListener("touchstart", handleMouseMove);
       }
       if (controlsTimeout.current) clearTimeout(controlsTimeout.current);
     };
@@ -343,27 +342,27 @@ const VideoPlayer = ({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.target.tagName === 'INPUT') return;
+      if (e.target.tagName === "INPUT") return;
 
       switch (e.key.toLowerCase()) {
-        case ' ':
-        case 'k':
+        case " ":
+        case "k":
           e.preventDefault();
           togglePlay();
           break;
-        case 'f':
+        case "f":
           toggleFullscreen();
           break;
-        case 'm':
+        case "m":
           toggleMute();
           break;
-        case 'arrowright':
+        case "arrowright":
           skip(5);
           break;
-        case 'arrowleft':
+        case "arrowleft":
           skip(-5);
           break;
-        case 'arrowup':
+        case "arrowup":
           e.preventDefault();
           setVolume((prev) => {
             const newVol = Math.min(1, prev + 0.1);
@@ -375,7 +374,7 @@ const VideoPlayer = ({
             return newVol;
           });
           break;
-        case 'arrowdown':
+        case "arrowdown":
           e.preventDefault();
           setVolume((prev) => {
             const newVol = Math.max(0, prev - 0.1);
@@ -391,8 +390,8 @@ const VideoPlayer = ({
           break;
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [togglePlay]);
 
   const getVolumeIcon = () => {
@@ -407,14 +406,14 @@ const VideoPlayer = ({
   if (!videoUrl) {
     return (
       <div
-        className={`w-full aspect-video flex flex-col items-center justify-center border ${isDark ? 'bg-neutral-900 border-neutral-800' : 'bg-gray-100 border-gray-200'} ${className}`}
+        className={`w-full aspect-video flex flex-col items-center justify-center border ${isDark ? "bg-neutral-900 border-neutral-800" : "bg-gray-100 border-gray-200"} ${className}`}
       >
         <AlertCircle
           size={48}
-          className={isDark ? 'text-neutral-700' : 'text-gray-400'}
+          className={isDark ? "text-neutral-700" : "text-gray-400"}
         />
         <span
-          className={`mt-4 font-medium ${isDark ? 'text-neutral-500' : 'text-gray-500'}`}
+          className={`mt-4 font-medium ${isDark ? "text-neutral-500" : "text-gray-500"}`}
         >
           No Video Source Provided
         </span>
@@ -430,7 +429,7 @@ const VideoPlayer = ({
     >
       <video
         ref={videoRef}
-        className={`w-full h-full bg-black ${isCover ? 'object-cover' : 'object-contain'}`}
+        className={`w-full h-full bg-black ${isCover ? "object-cover" : "object-contain"}`}
         src={videoUrl}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={() => setDuration(videoRef.current.duration)}
@@ -453,9 +452,7 @@ const VideoPlayer = ({
       {error && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-50">
           <AlertCircle size={48} className="text-red-500 mb-2" />
-          <span className="text-white font-medium">
-            Error Loading Video
-          </span>
+          <span className="text-white font-medium">Error Loading Video</span>
         </div>
       )}
 
@@ -464,25 +461,19 @@ const VideoPlayer = ({
       {/* Skip Feedback Animation */}
       {skipFeedback.show && (
         <div
-          className={`absolute top-0 bottom-0 flex items-center justify-center w-1/3 z-20 backdrop-blur-[2px] transition-opacity duration-300 ${isDark ? 'bg-white/10' : 'bg-black/10'} ${skipFeedback.fadingOut ? 'opacity-0' : 'opacity-100 animate-in fade-in'} ${skipFeedback.direction === 'backward' ? 'left-0 rounded-r-[50%]' : 'right-0 rounded-l-[50%]'}`}
+          className={`absolute top-0 bottom-0 flex items-center justify-center w-1/3 z-20 backdrop-blur-[2px] transition-opacity duration-300 ${isDark ? "bg-white/10" : "bg-black/10"} ${skipFeedback.fadingOut ? "opacity-0" : "opacity-100 animate-in fade-in"} ${skipFeedback.direction === "backward" ? "left-0 rounded-r-[50%]" : "right-0 rounded-l-[50%]"}`}
         >
           <div
-            className={`flex flex-col items-center ${isDark ? 'text-white/90' : 'text-black/80'}`}
+            className={`flex flex-col items-center ${isDark ? "text-white/90" : "text-black/80"}`}
           >
-            {skipFeedback.direction === 'backward' ? (
+            {skipFeedback.direction === "backward" ? (
               <>
-                <ChevronsLeft
-                  size={48}
-                  className="animate-pulse"
-                />
+                <ChevronsLeft size={48} className="animate-pulse" />
                 <span className="font-bold text-sm">-10s</span>
               </>
             ) : (
               <>
-                <ChevronsRight
-                  size={48}
-                  className="animate-pulse"
-                />
+                <ChevronsRight size={48} className="animate-pulse" />
                 <span className="font-bold text-sm">+10s</span>
               </>
             )}
@@ -515,8 +506,7 @@ const VideoPlayer = ({
       )}
 
       {/* Center Controls (Pause/Play/Replay + Skips) */}
-      {(!isPlaying && !isBuffering && showControls && !error) ||
-        isEnded ? (
+      {(!isPlaying && !isBuffering && showControls && !error) || isEnded ? (
         <div className="absolute inset-0 hidden sm:flex items-center justify-center bg-black/40 z-10 transition-opacity duration-300">
           <div className="flex items-center gap-6 sm:gap-8">
             {/* Previous 5s */}
@@ -526,7 +516,7 @@ const VideoPlayer = ({
                   e.stopPropagation();
                   skip(-5);
                 }}
-                className={`cursor-pointer flex items-center justify-center p-1.5 sm:p-2 rounded-full backdrop-blur-sm active:scale-95 transition-all w-8 h-8 sm:w-10 sm:h-10 group/skip ${isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-white'}`}
+                className={`cursor-pointer flex items-center justify-center p-1.5 sm:p-2 rounded-full backdrop-blur-sm active:scale-95 transition-all w-8 h-8 sm:w-10 sm:h-10 group/skip ${isDark ? "bg-white/10 hover:bg-white/20 text-white" : "bg-black/10 hover:bg-black/20 text-white"}`}
               >
                 <div className="relative">
                   <RotateCcw
@@ -582,7 +572,7 @@ const VideoPlayer = ({
                   e.stopPropagation();
                   skip(5);
                 }}
-                className={`cursor-pointer flex items-center justify-center p-1.5 sm:p-2 rounded-full backdrop-blur-sm active:scale-95 transition-all w-8 h-8 sm:w-10 sm:h-10 group/skip ${isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-white'}`}
+                className={`cursor-pointer flex items-center justify-center p-1.5 sm:p-2 rounded-full backdrop-blur-sm active:scale-95 transition-all w-8 h-8 sm:w-10 sm:h-10 group/skip ${isDark ? "bg-white/10 hover:bg-white/20 text-white" : "bg-black/10 hover:bg-black/20 text-white"}`}
               >
                 <div className="relative">
                   <RotateCw
@@ -602,7 +592,7 @@ const VideoPlayer = ({
 
       {/* --- Bottom Toolbar --- */}
       <div
-        className={`absolute bottom-0 left-0 right-0 p-2 md:p-6 mb-0 sm:mb-2 transition-all duration-500 ease-out z-30 ${showControls && !error ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+        className={`absolute bottom-0 left-0 right-0 p-2 md:p-6 mb-0 sm:mb-2 transition-all duration-500 ease-out z-30 ${showControls && !error ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Floating Control Island */}
@@ -647,10 +637,7 @@ const VideoPlayer = ({
                 className={`cursor-pointer transition-colors p-0.5 sm:p-0 ${themeStyles.iconBase} ${themeStyles.iconHover}`}
               >
                 {isEnded ? (
-                  <RotateCcw
-                    size={16}
-                    className="sm:w-[22px] sm:h-[22px]"
-                  />
+                  <RotateCcw size={16} className="sm:w-[22px] sm:h-[22px]" />
                 ) : isPlaying ? (
                   <Pause
                     size={16}
@@ -725,7 +712,7 @@ const VideoPlayer = ({
                     onChange={handleVolumeChange}
                     className="w-full h-1 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
                     style={{
-                      background: `linear-gradient(to right, ${color} ${volume * 100}%, ${isDark ? '#404040' : '#d1d5db'} ${volume * 100}%)`,
+                      background: `linear-gradient(to right, ${color} ${volume * 100}%, ${isDark ? "#404040" : "#d1d5db"} ${volume * 100}%)`,
                     }}
                   />
                 </div>
@@ -739,8 +726,7 @@ const VideoPlayer = ({
                 className={`flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono ${themeStyles.iconDim}`}
               >
                 <span>
-                  {formatTime(progress)} /{' '}
-                  {formatTime(duration)}
+                  {formatTime(progress)} / {formatTime(duration)}
                 </span>
 
                 {/* Speed Indicator */}
@@ -749,29 +735,22 @@ const VideoPlayer = ({
                     <div
                       className={`absolute bottom-full left-1/2 -translate-x-1/2 mb-2 border rounded-lg overflow-hidden flex flex-col p-0.5 min-w-9 sm:min-w-[50px] shadow-xl backdrop-blur-md ${themeStyles.menuBg}`}
                     >
-                      {[2, 1.5, 1.25, 1, 0.5].map(
-                        (speed) => (
-                          <button
-                            key={speed}
-                            onClick={() =>
-                              changePlaybackSpeed(
-                                speed
-                              )
-                            }
-                            className={`cursor-pointer px-1 py-1 rounded text-[9px] sm:text-xs font-medium transition-colors text-center ${playbackSpeed === speed ? 'bg-black/5 dark:bg-white/5 font-bold' : ''} ${themeStyles.menuText} ${themeStyles.menuHover}`}
-                            style={
-                              playbackSpeed ===
-                                speed
-                                ? {
+                      {[2, 1.5, 1.25, 1, 0.5].map((speed) => (
+                        <button
+                          key={speed}
+                          onClick={() => changePlaybackSpeed(speed)}
+                          className={`cursor-pointer px-1 py-1 rounded text-[9px] sm:text-xs font-medium transition-colors text-center ${playbackSpeed === speed ? "bg-black/5 dark:bg-white/5 font-bold" : ""} ${themeStyles.menuText} ${themeStyles.menuHover}`}
+                          style={
+                            playbackSpeed === speed
+                              ? {
                                   color: color,
                                 }
-                                : {}
-                            }
-                          >
-                            {speed}x
-                          </button>
-                        )
-                      )}
+                              : {}
+                          }
+                        >
+                          {speed}x
+                        </button>
+                      ))}
                     </div>
                   )}
                   <button
@@ -783,8 +762,8 @@ const VideoPlayer = ({
                     style={{
                       color: color,
                       backgroundColor: isDark
-                        ? 'rgba(255,255,255,0.1)'
-                        : 'rgba(0,0,0,0.05)',
+                        ? "rgba(255,255,255,0.1)"
+                        : "rgba(0,0,0,0.05)",
                     }}
                   >
                     {playbackSpeed}x
@@ -793,7 +772,7 @@ const VideoPlayer = ({
               </div>
 
               <div
-                className={`w-px h-4 hidden sm:block ${isDark ? 'bg-white/10' : 'bg-black/10'}`}
+                className={`w-px h-4 hidden sm:block ${isDark ? "bg-white/10" : "bg-black/10"}`}
               ></div>
 
               <button
@@ -801,29 +780,18 @@ const VideoPlayer = ({
                 className={`cursor-pointer transition-colors hidden sm:block p-0.5 sm:p-0 ${themeStyles.iconDim} ${themeStyles.iconHover}`}
                 title="Picture in Picture"
               >
-                <PictureInPicture
-                  size={16}
-                  className="sm:w-5 sm:h-5"
-                />
+                <PictureInPicture size={16} className="sm:w-5 sm:h-5" />
               </button>
 
               <button
                 onClick={toggleFit}
                 className={`cursor-pointer transition-colors p-0.5 sm:p-0 ${themeStyles.iconDim} ${themeStyles.iconHover}`}
-                title={
-                  isCover ? 'Fit to Screen' : 'Fill Screen'
-                }
+                title={isCover ? "Fit to Screen" : "Fill Screen"}
               >
                 {isCover ? (
-                  <Minimize2
-                    size={16}
-                    className="sm:w-5 sm:h-5"
-                  />
+                  <Minimize2 size={16} className="sm:w-5 sm:h-5" />
                 ) : (
-                  <Maximize2
-                    size={16}
-                    className="sm:w-5 sm:h-5"
-                  />
+                  <Maximize2 size={16} className="sm:w-5 sm:h-5" />
                 )}
               </button>
 
@@ -833,15 +801,9 @@ const VideoPlayer = ({
                 title="Fullscreen"
               >
                 {isFullscreen ? (
-                  <Minimize
-                    size={16}
-                    className="sm:w-5 sm:h-5"
-                  />
+                  <Minimize size={16} className="sm:w-5 sm:h-5" />
                 ) : (
-                  <Maximize
-                    size={16}
-                    className="sm:w-5 sm:h-5"
-                  />
+                  <Maximize size={16} className="sm:w-5 sm:h-5" />
                 )}
               </button>
             </div>
@@ -853,4 +815,3 @@ const VideoPlayer = ({
 };
 
 export default VideoPlayer;
-

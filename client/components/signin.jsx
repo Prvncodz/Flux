@@ -21,7 +21,7 @@ export default function SignIn() {
       const res = await axios.post("/user/login", Data);
       if (res.status == 200) {
         navigate("/");
-        setUser(res.data?.data?.user)
+        setUser(res.data?.data?.user);
         setIsUserLogged(true);
         setIsSubmmited(true);
         e.target.reset();
@@ -83,7 +83,8 @@ export default function SignIn() {
               />
             </label>
           </div>
-          <SubmitButton text={"Submit"}
+          <SubmitButton
+            text={"Submit"}
             currentSubmitStatus={
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }

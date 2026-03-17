@@ -1,6 +1,5 @@
 export default function CrossIcon({ size, color, className, onClick }) {
   return (
-
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -31,5 +30,4 @@ export default function CrossIcon({ size, color, className, onClick }) {
       </defs>
     </svg>
   );
-
 }

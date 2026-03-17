@@ -8,7 +8,7 @@ function LikeButton({ fetchType, Id, likeStatus }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setLiked(likeStatus)
+    setLiked(likeStatus);
     async function getVideoLikeCount(videoId) {
       if (!videoId) return;
       try {
@@ -17,7 +17,10 @@ function LikeButton({ fetchType, Id, likeStatus }) {
           setCount(res.data.data);
         }
       } catch (err) {
-        console.log(`Error while fetching video likes with id ${videoId} `, err);
+        console.log(
+          `Error while fetching video likes with id ${videoId} `,
+          err,
+        );
       }
     }
     async function getTweetLikeCount(tweetId) {
@@ -28,7 +31,10 @@ function LikeButton({ fetchType, Id, likeStatus }) {
           setCount(res.data.data);
         }
       } catch (err) {
-        console.log(`Error while fetching tweet likes with id ${tweetId} `, err);
+        console.log(
+          `Error while fetching tweet likes with id ${tweetId} `,
+          err,
+        );
       }
     }
     async function getCommentLikeCount(commentId) {
@@ -39,16 +45,17 @@ function LikeButton({ fetchType, Id, likeStatus }) {
           setCount(res.data.data);
         }
       } catch (err) {
-        console.log(`Error while fetching comment likes with id ${commentId} `, err);
+        console.log(
+          `Error while fetching comment likes with id ${commentId} `,
+          err,
+        );
       }
     }
     if (fetchType === "video") {
       getVideoLikeCount(Id);
-    }
-    else if (fetchType === "comment") {
+    } else if (fetchType === "comment") {
       getCommentLikeCount(Id);
-    }
-    else {
+    } else {
       getTweetLikeCount(Id);
     }
   }, [fetchType, Id, likeStatus]);
@@ -58,7 +65,6 @@ function LikeButton({ fetchType, Id, likeStatus }) {
     clearTimeout(timeoutId);
     if (liked) {
       setCount(count - 1);
-
     } else {
       setCount(count + 1);
     }
@@ -68,7 +74,7 @@ function LikeButton({ fetchType, Id, likeStatus }) {
         try {
           const res = await axios.post(`/likes/toggle/t/${Id}`);
           if (res.status == 200) {
-            console.log(res.data)
+            console.log(res.data);
           }
         } catch (err) {
           console.log(`Error while toggling tweet likes with id ${Id}`, err);
@@ -77,17 +83,16 @@ function LikeButton({ fetchType, Id, likeStatus }) {
         try {
           const res = await axios.post(`/likes/toggle/v/${Id}`);
           if (res.status == 200) {
-            console.log(res.data)
+            console.log(res.data);
           }
         } catch (err) {
           console.log(`Error while toggling video likes with id ${Id}`, err);
         }
-      }
-      else {
+      } else {
         try {
           const res = await axios.post(`/likes/toggle/c/${Id}`);
           if (res.status == 200) {
-            console.log(res.data)
+            console.log(res.data);
           }
         } catch (err) {
           console.log(`Error while toggling comment likes with id ${Id}`, err);
@@ -106,8 +111,18 @@ function LikeButton({ fetchType, Id, likeStatus }) {
         display: "flex",
       }}
     >
-      {liked ? <><LikeFilledIcon size={20} /><span className="ml-1">{count}</span></> : <><LikeIcon size={20} /><span className="ml-1">{count}</span></>}
-    </button >
+      {liked ? (
+        <>
+          <LikeFilledIcon size={20} />
+          <span className="ml-1">{count}</span>
+        </>
+      ) : (
+        <>
+          <LikeIcon size={20} />
+          <span className="ml-1">{count}</span>
+        </>
+      )}
+    </button>
   );
 }
 

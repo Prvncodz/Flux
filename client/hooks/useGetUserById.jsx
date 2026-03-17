@@ -1,9 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "../api/axios.js";
 
-
 const useGetUserById = (userId) => {
-
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [coverimgUrl, setCoverimageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -13,15 +11,14 @@ const useGetUserById = (userId) => {
   const [watchHistory, setWatchHistory] = useState([]);
 
   if (!userId) {
-    console.log(userId)
+    console.log(userId);
     return;
   }
 
   const fetchUserById = useCallback(
     async (userId) => {
-
       try {
-        setLoading(true)
+        setLoading(true);
         const res = await axios.get(`user/c/${userId}`);
         if (res.status === 200) {
           setAvatarUrl(res.data.data?.avatar?.url);
@@ -33,14 +30,13 @@ const useGetUserById = (userId) => {
           setWatchHistory(res.data.data?.watchHistory);
         }
       } catch (error) {
-        console.log(error)
-        console.log("backend message :", error?.response?.data?.message)
-        setLoading(false)
-
+        console.log(error);
+        console.log("backend message :", error?.response?.data?.message);
+        setLoading(false);
       }
-    }
-    , [userId],
-  )
+    },
+    [userId],
+  );
 
   useEffect(() => {
     try {
@@ -48,9 +44,8 @@ const useGetUserById = (userId) => {
     } catch (error) {
       console.log(error);
     }
-
   }, [fetchUserById]);
 
   return { avatarUrl, coverimgUrl, fullname, username, email, watchHistory };
-}
-export { useGetUserById }
+};
+export { useGetUserById };

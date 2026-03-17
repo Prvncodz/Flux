@@ -1,8 +1,14 @@
 import { useRef, useState } from "react";
 import axios from "../../api/axios";
-import PlusIcon from "../assets/plusIcon"
+import PlusIcon from "../assets/plusIcon";
 
-export default function AddCommentsBox({ Id, fetchType, className, setShowAddTweetBox, setShowAddReplyBox }) {
+export default function AddCommentsBox({
+  Id,
+  fetchType,
+  className,
+  setShowAddTweetBox,
+  setShowAddReplyBox,
+}) {
   const [content, setContent] = useState("");
   let addCommentRef = useRef(null);
 
@@ -10,32 +16,34 @@ export default function AddCommentsBox({ Id, fetchType, className, setShowAddTwe
     if (content === "" || !content) return;
     if (fetchType === "video") {
       try {
-        const res = await axios.post(`/comments/v/${Id}/add-comment`, { content: content });
+        const res = await axios.post(`/comments/v/${Id}/add-comment`, {
+          content: content,
+        });
         if (res.status == 200) {
           setContent("");
         }
-
       } catch (err) {
         console.log("error occured while adding a new comment", err);
       }
     } else if (fetchType === "tweet") {
       try {
-        const res = await axios.post(`/comments/t/${Id}/add-comment`, { content: content });
+        const res = await axios.post(`/comments/t/${Id}/add-comment`, {
+          content: content,
+        });
         if (res.status == 200) {
           setContent("");
         }
-
       } catch (err) {
         console.log("error occured while adding a new comment", err);
       }
-    }
-    else {
+    } else {
       try {
-        const res = await axios.post(`/comments/c/${Id}/add-comment`, { content: content });
+        const res = await axios.post(`/comments/c/${Id}/add-comment`, {
+          content: content,
+        });
         if (res.status == 200) {
           setContent("");
         }
-
       } catch (err) {
         console.log("error occured while adding a new comment", err);
       }
@@ -45,14 +53,31 @@ export default function AddCommentsBox({ Id, fetchType, className, setShowAddTwe
     setContent("");
   }
   return (
-    <div className={`w-full rounded-3xl bg-gray-100 h-14 my-6 relative ${className}`}>
-      <input type="text" name="comment input" placeholder="Add a comment here" className="w-4/5 h-full rounded-3xl text-gray-600 relative z-0 focus:outline-none pr-4 wrap-anywhere" value={content} onChange={(e) => setContent(e.target.value)} onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          addCommentRef.current.click();
-          setContent("");
-        }
-      }} />
-      <button type="button" className="absolute rounded-full top-2 right-2 z-1" onClick={handleAddComment} ref={addCommentRef} ><PlusIcon size={40} color={"gray"} /></button>
-    </div >
+    <div
+      className={`w-full rounded-3xl bg-gray-100 h-14 my-6 relative ${className}`}
+    >
+      <input
+        type="text"
+        name="comment input"
+        placeholder="Add a comment here"
+        className="w-4/5 h-full rounded-3xl text-gray-600 relative z-0 focus:outline-none pr-4 wrap-anywhere"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            addCommentRef.current.click();
+            setContent("");
+          }
+        }}
+      />
+      <button
+        type="button"
+        className="absolute rounded-full top-2 right-2 z-1"
+        onClick={handleAddComment}
+        ref={addCommentRef}
+      >
+        <PlusIcon size={40} color={"gray"} />
+      </button>
+    </div>
   );
 }

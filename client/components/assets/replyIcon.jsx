@@ -1,11 +1,13 @@
 const ReplyIcon = ({
-  size = 16,             // default fits inline with text/counters
+  size = 16, // default fits inline with text/counters
   color = "currentColor",
   strokeWidth = 1.6,
-  title,                 // optional accessible title
+  title, // optional accessible title
   ...props
 }) => {
-  const ariaAttrs = title ? { role: "img", "aria-label": title } : { "aria-hidden": true };
+  const ariaAttrs = title
+    ? { role: "img", "aria-label": title }
+    : { "aria-hidden": true };
 
   return (
     <svg

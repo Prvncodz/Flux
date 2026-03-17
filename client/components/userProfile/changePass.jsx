@@ -4,7 +4,6 @@ import axios from "../../api/axios.js";
 import PopUpComponent from "../uploadPopup/popupComponent.jsx";
 
 export default function ChangePassPopup({ setIsPassPopupActive }) {
-
   const [loading, SetLoading] = useState(false);
   const [isSubmmited, setIsSubmmited] = useState(false);
 
@@ -17,8 +16,8 @@ export default function ChangePassPopup({ setIsPassPopupActive }) {
     }
     try {
       await axios.post("/user/change-password", {
-        "oldPassword": formData.get("oldPassword"),
-        "newPassword": formData.get("newPassword")
+        oldPassword: formData.get("oldPassword"),
+        newPassword: formData.get("newPassword"),
       });
     } catch (error) {
       console.log(error);
@@ -33,7 +32,7 @@ export default function ChangePassPopup({ setIsPassPopupActive }) {
     e.target.reset();
     setTimeout(() => {
       setIsSubmmited(false);
-      setIsPassPopupActive(false)
+      setIsPassPopupActive(false);
     }, 1000);
   }
 
@@ -68,7 +67,8 @@ export default function ChangePassPopup({ setIsPassPopupActive }) {
             />
           </label>
         </div>
-        <SubmitButton text={"Submit"}
+        <SubmitButton
+          text={"Submit"}
           currentSubmitStatus={
             isSubmmited ? "submited" : loading ? "loading" : "normal"
           }

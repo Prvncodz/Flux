@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
-import PlaylistComponent from "./playlistComponent.jsx"
+import PlaylistComponent from "./playlistComponent.jsx";
 
 export default function PlaylistFeed({ userId }) {
-
   const [playlists, setPlaylists] = useState([{}]);
   const [arePlaylistsFetched, SetArePlaylistsFetched] = useState(false);
 
@@ -11,11 +10,10 @@ export default function PlaylistFeed({ userId }) {
     async function fetchAllPlaylists(Id) {
       if (!Id) return;
       try {
-        await axios.get(`/playlists/user/${Id}`)
-          .then((res) => {
-            setPlaylists(res.data?.data);
-            SetArePlaylistsFetched(true);
-          });
+        await axios.get(`/playlists/user/${Id}`).then((res) => {
+          setPlaylists(res.data?.data);
+          SetArePlaylistsFetched(true);
+        });
       } catch (error) {
         console.log(error);
       }
@@ -42,4 +40,3 @@ export default function PlaylistFeed({ userId }) {
     </>
   );
 }
-

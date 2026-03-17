@@ -5,7 +5,8 @@ export default function Button({ children, classes, onClick }) {
 		  focus:outline-offset-2 active:bg-blue-800 active:scale-95 transition-all
 		  text-gray-100 w-32 h-11 p-3 
 		 flex justify-center items-center rounded-4xl 
-		  font-semibold text-center text-md transition-bg ease cursor-pointer ${classes}`} onClick={onClick}
+		  font-semibold text-center text-md transition-bg ease cursor-pointer ${classes}`}
+      onClick={onClick}
     >
       {children}
     </button>

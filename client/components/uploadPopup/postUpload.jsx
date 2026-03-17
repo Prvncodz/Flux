@@ -14,11 +14,15 @@ export default function PostUploadPopup({ setShowPopup }) {
     const content = formdata.get("content");
 
     try {
-      await axios.post("tweets/create-tweet", { content }, {
-        headers: {
-          "Content-Type": "application/json",
+      await axios.post(
+        "tweets/create-tweet",
+        { content },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
     } catch (error) {
       console.log(error);
     }
@@ -27,12 +31,15 @@ export default function PostUploadPopup({ setShowPopup }) {
     setTimeout(() => {
       setIsSubmmited(false);
       setShowPopup(false);
-    }, 1500)
+    }, 1500);
   }
   return (
     <>
-      <PopUpComponent onCancel={() => setShowPopup(false)} >
-        <form className="text-left p-3 my-2" onSubmit={(e) => handlePostUpload(e)}>
+      <PopUpComponent onCancel={() => setShowPopup(false)}>
+        <form
+          className="text-left p-3 my-2"
+          onSubmit={(e) => handlePostUpload(e)}
+        >
           <label className="text-md font-base text-gray-700 ">
             what's on your mind?
             <textarea
@@ -44,13 +51,23 @@ export default function PostUploadPopup({ setShowPopup }) {
             />
           </label>
           <div className="flex items-center justify-center mt-1">
-            <button type="button" onClick={() => setShowPopup(false)} className="bg-gray-300 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3 mx-auto" >Cancel</button>
-            <SubmitButton currentSubmitStatus={
-              isSubmmited ? "submited" : loading ? "loading" : "normal"
-            } text={"Upload"} className={"mt-3 mb-3"} />
+            <button
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="bg-gray-300 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3 mx-auto"
+            >
+              Cancel
+            </button>
+            <SubmitButton
+              currentSubmitStatus={
+                isSubmmited ? "submited" : loading ? "loading" : "normal"
+              }
+              text={"Upload"}
+              className={"mt-3 mb-3"}
+            />
           </div>
         </form>
       </PopUpComponent>
     </>
   );
-} 
+}
