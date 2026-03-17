@@ -27,7 +27,8 @@ export default function LikedVideos() {
   return (
     <>
       <Nav />
-      <div className="max-w-full   p-5 h-[95vh] overflow-y-auto rounded-xl md:max-w-full md:ml-20 md:p-5 ">
+			<div className="flex justify-center">
+      <div className="max-w-full   p-5 h-[95vh] overflow-y-auto rounded-xl md:max-w-[60vw] md:w-full md:ml-20 md:p-5 ">
         {videos.length === 0 ? (
           <div className="flex flex-col items-center justify-center mt-20 gap-4 text-center">
             <p className="text-gray-500">You haven't liked any video yet</p>
@@ -50,6 +51,7 @@ export default function LikedVideos() {
           </div>
         )}
       </div>
+			</div>
     </>
   );
 }
