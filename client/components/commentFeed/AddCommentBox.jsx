@@ -55,7 +55,7 @@ export default function AddCommentsBox({
 	}
 	return (
 		<div
-			className={`w-full rounded-3xl bg-gray-100 h-14 my-6 relative ${className}  ring ring-gray-400 p-4 cursor-pointer`}
+			className={`w-full rounded-3xl bg- h-14 my-6 relative ${className}  ring ring-gray-400 p-4 cursor-pointer`}
 		>
 			<input
 				type="text"
