@@ -80,7 +80,7 @@ export default function WatchVideoPage() {
 							className="aspect-video" // Container classes
 						/>
 					</div>
-					<div className="relative h-[70vh] overflow-auto rounded-xl ">
+					<div className="relative h-auto lg:h-[70vh] overflow-auto rounded-xl ">
 						<div className="relative flex flex-col">
 							<h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">
 								{video?.title || ""}
@@ -149,7 +149,7 @@ export default function WatchVideoPage() {
 					</div>
 				</div>
 				<div className="">
-					<VideoFeed fetchType={"all"} recommendations={true} />
+					<VideoFeed fetchType={"all"} recommendations={true} playingVideoId={video?._id}/>
 				</div>
 			</div>
 		</div>
