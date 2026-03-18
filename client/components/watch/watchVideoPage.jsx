@@ -14,140 +14,144 @@ import UserContext from "../../contexts/UserContext.jsx";
 import VideoPlayer from "../home/videofeed/VideoPlayer.jsx";
 
 export default function WatchVideoPage() {
-  const location = useLocation();
-  const { videoId, username, ownerAvatar, fullname } = location.state || {};
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
-  const [video, setVideo] = useState({});
-  const [isLiked, setIsLiked] = useState(video?.isLiked || false);
-  const [subscribers, setSubscribers] = useState(0);
-  const [isOtherChannel, setIsOtherChannel] = useState(false);
+	const location = useLocation();
+	const { videoId, username, ownerAvatar, fullname } = location.state || {};
+	const [isSubscribed, setIsSubscribed] = useState(false);
+	const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
+	const [video, setVideo] = useState({});
+	const [isLiked, setIsLiked] = useState(video?.isLiked || false);
+	const [subscribers, setSubscribers] = useState(0);
+	const [isOtherChannel, setIsOtherChannel] = useState(false);
 
-  const { user, isUserLogged } = useContext(UserContext);
+	const { user, isUserLogged } = useContext(UserContext);
 
-  let timeoutId;
-  async function handleSubscription() {
-    clearTimeout(timeoutId);
-    setIsSubscribed(!isSubscribed);
-    timeoutId = setTimeout(async () => {
-      try {
-        await axios.post(`/subscriptions/c/${video?.owner?._id}`);
-      } catch (error) {
-        console.log(error);
-        console.log(error.response?.data?.message);
-      }
-    }, 800);
-  }
+	let timeoutId;
+	async function handleSubscription() {
+		clearTimeout(timeoutId);
+		setIsSubscribed(!isSubscribed);
+		timeoutId = setTimeout(async () => {
+			try {
+				await axios.post(`/subscriptions/c/${video?.owner?._id}`);
+			} catch (error) {
+				console.log(error);
+				console.log(error.response?.data?.message);
+			}
+		}, 800);
+	}
 
-  useEffect(() => {
-    async function getVideoById(Id) {
-      if (!Id) return;
-      try {
-        const res = await axios.get(
-          `/videos/c/${Id}${isUserLogged ? `?userId=${user?._id}` : ``}`,
-        );
-        if (res.status === 200) {
-          setVideo(res.data?.data);
-          setIsLiked(res.data.data?.isLiked);
-          setIsSubscribed(res.data?.data?.owner?.isSubscribedByUser);
-          setSubscribers(res.data?.data?.owner?.totalSubscribers);
-          if (res.data.data.owner?._id !== user?._id) {
-            setIsOtherChannel(true);
-          } else {
-            setIsOtherChannel(false);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getVideoById(videoId);
-  }, [videoId, isUserLogged, isLiked]);
+	useEffect(() => {
+		async function getVideoById(Id) {
+			if (!Id) return;
+			try {
+				const res = await axios.get(
+					`/videos/c/${Id}${isUserLogged ? `?userId=${user?._id}` : ``}`,
+				);
+				if (res.status === 200) {
+					setVideo(res.data?.data);
+					setIsLiked(res.data.data?.isLiked);
+					setIsSubscribed(res.data?.data?.owner?.isSubscribedByUser);
+					setSubscribers(res.data?.data?.owner?.totalSubscribers);
+					if (res.data.data.owner?._id !== user?._id) {
+						setIsOtherChannel(true);
+					} else {
+						setIsOtherChannel(false);
+					}
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		getVideoById(videoId);
+	}, [videoId, isUserLogged, isLiked]);
 
-  return (
-    <div className="overflow-auto h-screen">
-      <Nav wantTabs={false} />
-      <div className="relative aspect-video overflow-hidden">
-        <VideoPlayer
-          videoUrl={video?.videofile?.url} // Source URL for the video
-          autoplay={true} // Automatically start playing on load
-          replay={false} // Loop the video when it ends
-          theme="light" // Player theme: 'dark' | 'light'
-          color="#1e549f" // Accent color for controls and progress bar
-          fit={false} // If true, video fits within container. If false, it fills (cover).
-          className="aspect-video shadow-2xl" // Container classes
-        />
-      </div>
-      <div className="relative h-[70vh] overflow-auto rounded-xl ">
-        <div className="relative flex flex-col">
-          <h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">
-            {video?.title || ""}
-          </h1>
-          <VideoDescription
-            content={video?.description}
-            views={video?.views}
-            uploadTime={video?.createdAt}
-            showVideoDetails={true}
-          />
-          <div className="flex mx-1 justify-between">
-            <div className="flex">
-              <img
-                src={ownerAvatar || dpfp}
-                className="rounded-full h-11 w-11 mx-3"
-              />
-              <div className="flex-col  justify-left">
-                <h1 className=" text-base font-normal text-gray-700 text-left">
-                  { fullname ||username || ""}
-                </h1>
-                <h1 className="text-xs font-normal text-gray-500">
-                  {subscribers +
-                    `${subscribers > 1 ? " Subscribers" : " Subscriber"}` || ""}
-                </h1>
-              </div>
-            </div>
-            <div className="flex gap-0">
-              <div className="flex items-center  px-7 py-3">
-                <LikeButton
-                  size={20}
-                  fetchType={"video"}
-                  Id={videoId}
-                  likeStatus={isLiked}
-                />
-              </div>
-              {isOtherChannel && (
-                <Button
-                  children={
-                    isSubscribed ? (
-                      <>
-                        <UserTick />
-                        <span>Subscribed</span>
-                      </>
-                    ) : (
-                      <>
-                        <UserAddIcon />
-                        <span>Subscribe</span>
-                      </>
-                    )
-                  }
-                  classes=" ml-4"
-                  onClick={handleSubscription}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="overflow-auto my-2">
-          <CommentFeed
-            fetchType={"video"}
-            Id={video?._id}
-            isOpen={isCommentSectionOpen}
-            setIsOpen={setIsCommentSectionOpen}
-          />
-        </div>
-        <div>
-          <VideoFeed fetchType={"all"} recommendations={true}/>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="overflow-auto h-screen">
+			<Nav wantTabs={false} />
+			<div className="lg:flex lg:flex-row lg:h-screen lg:w-screen">
+				<div className="lg:flex lg:flex-col lg:h-screen lg:w-full lg:max-w-[70vw] lg:overflow-y-auto lg:overflow-x-hidden ">
+					<div className="relative aspect-video overflow-hidden lg:p-5 lg:h-full lg:bg-[#ffffff] lg:z-10  ">
+						<VideoPlayer
+							videoUrl={video?.videofile?.url} // Source URL for the video
+							autoplay={true} // Automatically start playing on load
+							replay={false} // Loop the video when it ends
+							theme="light" // Player theme: 'dark' | 'light'
+							color="#1e549f" // Accent color for controls and progress bar
+							fit={false} // If true, video fits within container. If false, it fills (cover).
+							className="aspect-video" // Container classes
+						/>
+					</div>
+					<div className="relative h-[70vh] overflow-auto rounded-xl ">
+						<div className="relative flex flex-col">
+							<h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">
+								{video?.title || ""}
+							</h1>
+							<VideoDescription
+								content={video?.description}
+								views={video?.views}
+								uploadTime={video?.createdAt}
+								showVideoDetails={true}
+							/>
+							<div className="flex mx-1 justify-between">
+								<div className="flex">
+									<img
+										src={ownerAvatar || dpfp}
+										className="rounded-full h-11 w-11 mx-3"
+									/>
+									<div className="flex-col  justify-left">
+										<h1 className=" text-base font-normal text-gray-700 text-left">
+											{fullname || username || ""}
+										</h1>
+										<h1 className="text-xs font-normal text-gray-500">
+											{subscribers +
+												`${subscribers > 1 ? " Subscribers" : " Subscriber"}` || ""}
+										</h1>
+									</div>
+								</div>
+								<div className="flex gap-0">
+									<div className="flex items-center  px-7 py-3">
+										<LikeButton
+											size={20}
+											fetchType={"video"}
+											Id={videoId}
+											likeStatus={isLiked}
+										/>
+									</div>
+									{isOtherChannel && (
+										<Button
+											children={
+												isSubscribed ? (
+													<>
+														<UserTick />
+														<span>Subscribed</span>
+													</>
+												) : (
+													<>
+														<UserAddIcon />
+														<span>Subscribe</span>
+													</>
+												)
+											}
+											classes=" ml-4"
+											onClick={handleSubscription}
+										/>
+									)}
+								</div>
+							</div>
+						</div>
+						<div className="overflow-auto my-2">
+							<CommentFeed
+								fetchType={"video"}
+								Id={video?._id}
+								isOpen={isCommentSectionOpen}
+								setIsOpen={setIsCommentSectionOpen}
+							/>
+						</div>
+					</div>
+				</div>
+				<div className="">
+					<VideoFeed fetchType={"all"} recommendations={true} />
+				</div>
+			</div>
+		</div>
+	);
 }
