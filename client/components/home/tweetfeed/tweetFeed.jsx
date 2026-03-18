@@ -64,13 +64,13 @@ export default function Feed({ fetchType, userId, searchQuery }) {
     );
   }
   return (
-    <>
-      <div className="h-[95vh] w-full overflow-y-auto overflow-x-hidden pb-5 flex flex-col scrollbar scrollbar-track-transparent    md:block md:w-[65vh] md:boder md:border-gray-200 ">
+    <div className={`${fetchType==="user"?"md:flex md:justify-center ":""}`} >
+      <div className={`${fetchType==="user"?" h-[65vh] md:h-[60vh] lg:max-w-[70vw] ":"h-[95vh] md:w-[65vh] "} w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block md:boder md:border-gray-200 `}>
         {areTweetsFetched &&
           tweets.map((tweet, idx) => (
             <TweetComponent key={idx} tweet={tweet} idx={idx} />
           ))}
       </div>
-    </>
+    </div>
   );
 }

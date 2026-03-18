@@ -22,7 +22,7 @@ export default function PlaylistComponents({ playlist, idx }) {
   }
 
   return (
-    <div className="mb-3" onClick={hanldeShowPlaylistPage}>
+    <div className="mb-3 h-50 w-full aspect-video max-w-100 md:max-w-190 lg:max-w-400  " onClick={hanldeShowPlaylistPage}>
       <div className="relative">
         <img
           src={videos[0]?.thumbnail?.url || dbanner}

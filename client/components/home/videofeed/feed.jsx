@@ -70,7 +70,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	return (
 		<>
 			<div
-				className={`${fetchType === "user" ? `h-[64vh]` : `h-[95vh]`} w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 scrollbar-none md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:" : "md:pl-16 lg:pl-18"} md:pr-5 md:py-4  lg:grid-cols-3 lg:pr-4 xl:grid-cols-4 `}
+				className={`${fetchType === "user" ? `h-[64vh]` : `h-[95vh]`} w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4"}  md:py-4  lg:grid-cols-3 xl:grid-cols-4 `}
 			>
 				{areVideosFetched &&
 					videos.map((video, idx) => (

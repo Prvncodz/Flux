@@ -24,7 +24,7 @@ export default function HistoryPage() {
 		<>
 			<Nav />
 			<div className="flex justify-center ">
-				<div className="max-w-lg  p-5 h-[95vh] overflow-y-auto rounded-xl  md:max-w-[60vw] md:w-full  md:ml-20 md:p-5 md:flex md:flex-col ">
+				<div className="max-w-lg  p-5 h-[95vh] overflow-y-auto rounded-xl  md:max-w-[90vw] md:w-full  md:ml-20 md:p-5 md:flex md:flex-col ">
 					{videos.length === 0 ? (
 						<div className="flex flex-col items-center justify-center mt-20 gap-4 text-center">
 							<p className="text-gray-500">You haven't watched any video yet</p>

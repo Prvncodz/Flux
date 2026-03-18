@@ -26,7 +26,6 @@ export default function Profile() {
 	const { otherUserName } = location.state || {};
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isProfileFetched, setIsProfileFetched] = useState(false);
-
 	let timeoutId;
 	async function handleSubscription() {
 		clearTimeout(timeoutId);
@@ -54,7 +53,6 @@ export default function Profile() {
 						setUserProfile(res.data?.data);
 						setIsSubscribed(res.data?.data?.isSubscribed);
 						setIsProfileFetched(true);
-						console.log(res.data?.data);
 					}
 				} catch (error) {
 					console.log(
@@ -92,16 +90,16 @@ export default function Profile() {
 	};
 
 	return (
-		<>
-			<nav className="bg-neutral-50 h-12 w-full border-b-neutral-100 relative flex items-center justify-between overflow-hidden ">
+		<div className="h-screen overflow-y-auto overflow-x-hidden">
+			<nav className="bg-neutral-50 h-12 w-full border-b-neutral-100 relative flex items-center justify-between ">
 				<a
 					href="/"
-					className="relative ml-5 text-gray-800 font flex items-center justify-left "
+					className="relative ml-5 text-gray-800 font flex items-center justify-left md:"
 				>
 					<ArrowLeftIcon />
 				</a>
 				<button
-					type="button"
+					type=""
 					className="mr-3 relative"
 					onClick={() => setisPopupActive((prev) => !prev)}
 				>
@@ -109,7 +107,7 @@ export default function Profile() {
 				</button>
 				{isPopupActive && (
 					<>
-						<ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-800 shadow-xs p-3 px-2 ">
+						<ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-50 shadow-xs z-10 p-3 px-2 ">
 							<li
 								className="text-gray-800 font-normal text-base p-2 rounded-2xl hover:bg-neutral-100 "
 								onClick={() => {
@@ -138,22 +136,22 @@ export default function Profile() {
 				(isPassPopupActive && (
 					<ChangePassPopup setIsPassPopupActive={setIsPassPopupActive} />
 				))}
-			<div className="relative h-45 z-0 md:h-60">
+			<div className="relative h-45 z-0 md:h-60 lg:h-90">
 				<img
 					src={UserProfile?.coverImage?.url || dbanner}
 					onError={(e) => (e.target.src = dbanner)}
-					className="h-full w-full "
+					className="h-full w-full relative"
 					loading="lazy"
 				/>
 				<img
 					src={UserProfile?.avatar?.url || dpfp}
 					onError={(e) => (e.target.src = dpfp)}
-					className="h-20 rounded-full absolute left-1 -bottom-15 w-20 border-2 border-white md:h-25 md:w-25 md:ml-2 "
+					className="h-20 rounded-full absolute left-1 -bottom-15 w-20 border-2 border-white md:h-25 md:w-25 md:left-8 lg:h-30 lg:w-30 "
 					loading="lazy"
 				/>
 			</div>
-			<div className="flex justify-between h-auto w-full relative z-0 md:ml-6 ">
-				<span className="ml-24 h-6">
+			<div className="flex justify-between h-15 w-full relative z-0 ">
+				<div className="ml-24 h-6 md:ml-36 lg:ml-45">
 					<h3 className="text-left text-neutral-700 font-medium text-lg">
 						{UserProfile?.fullName || "Jhon doe"}
 					</h3>
@@ -169,7 +167,7 @@ export default function Profile() {
 							{UserProfile?.channelsSubscribedCount || 0} Subscribed
 						</h3>
 					</div>
-				</span>
+				</div>
 				{isOtherUserP && (
 					<Button
 						children={
@@ -185,13 +183,13 @@ export default function Profile() {
 								</>
 							)
 						}
-						classes="mt-4 mr-2"
+						classes="mt-4 mr-2 md:mr-10"
 						onClick={handleSubscription}
 					/>
 				)}
 			</div>
 			<div
-				className={`flex flex-row w-full ${isOtherUserP ? `mt-4` : `mt-12`} pb-2 justify-center`}
+				className={`flex flex-row w-full ${isOtherUserP ? `mt-4 md:mt-6` : `mt-3 md:mt-6`} pb-2 justify-center`}
 			>
 				<div
 					name="videos"
@@ -225,6 +223,6 @@ export default function Profile() {
 				</div>
 			</div>
 			<div>{isProfileFetched && tabs[tabOpened]}</div>
-		</>
+		</div>
 	);
 }
