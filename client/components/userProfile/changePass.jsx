@@ -38,7 +38,7 @@ export default function ChangePassPopup({ setIsPassPopupActive }) {
 
   return (
     <PopUpComponent onCancel={() => setIsPassPopupActive(false)}>
-      <h1 className="mt-5 text-xl font-medium text-blue-400 relative">
+      <h1 className="mt-5 text-xl font-medium text-blue-400 relative text-center">
         Change Password
       </h1>
 

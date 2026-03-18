@@ -41,8 +41,8 @@ export default function Dashboard() {
 	return (
 		<div className="h-screen ">
 			<Nav />
-			<div className="flex justify-center h-screen overflow-y-auto md:pb-2">
-				<div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20 scrollbar-none  md:h-full md:pl-16 max-w-[60vw] ">
+			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
+				<div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[70vw] ">
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
@@ -55,7 +55,7 @@ export default function Dashboard() {
 							Here’s what’s happening on your channel today.
 						</p>
 					</div>
-					<div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200  md:w-120 md:h-70 md:mx-auto">
+					<div className="relative h-55.25 w-full overflow-hidden rounded-xl border border-neutral-200   md:h-70 md:w-full md:mx-auto lg:w-130">
 						<div className="relative z-0 ">
 							<img
 								src={userChannelStats?.coverImage?.url || dbanner}
@@ -66,7 +66,7 @@ export default function Dashboard() {
 							<img
 								src={userChannelStats?.avatar?.url || dpfp}
 								onError={(e) => (e.target.src = dpfp)}
-								className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white md:h-25 md:w-25 md:-bottom-15"
+								className="h-21 rounded-full absolute left-3 -bottom-12 w-22.5 border-2 border-white md:h-25 md:w-25 md:-bottom-15 lg:-bottom-18"
 								loading="lazy"
 							/>
 							<Edit2
@@ -86,11 +86,11 @@ export default function Dashboard() {
 					</div>
 
 					<div className="md:mt-1">
-						<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5 md:mt-3 md:text-base">
+						<h2 className="text-lg font-bold mb-3 text-gray-900 text-left  md:mt-3 md:text-base">
 							CHANNEL STATS
 						</h2>
 
-						<div className="space-y-3  md:flex md:flex-col md:justify-center md:p-5 md:items-center lg:space-y-0 lg:flex lg:flex-row lg:space-x-3 ">
+						<div className="space-y-3 h-auto w-full   md:flex md:flex-col md:justify-center  md:items-center lg:space-y-0 lg:flex lg:flex-row lg:space-x-3 ">
 							<StatCard
 								icon={<Eye size={16} />}
 								label="Total views"
@@ -110,18 +110,17 @@ export default function Dashboard() {
 					</div>
 
 					<div className="h-auto">
-						<h2 className="text-lg font-bold mb-3 text-gray-900 text-left md:pl-5">
+						<h2 className="text-lg font-bold mb-3 text-gray-900 text-left ">
 							All Videos
 						</h2>
 
-						<div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto h-auto">
+						<div className="border border-neutral-200 rounded-xl p-3 space-y-3 mx-auto h-auto flex flex-col justify-center ">
 							<div className="flex justify-between text-xs text-gray-500 px-2">
 								<span>
-									Total {userChannelStats?.totalVideoCount || videos.length}{" "}
-									videos
+									Total {userChannelStats?.totalVideoCount || videos.length}{" "} videos
 								</span>
-								<span className="ml-24 md:ml-64 lg:ml-134 ">Visibility</span>
-								<span className="mr-6">Status</span>
+								<span className="ml-24 md:ml-35 lg:ml-85 ">Visibility</span>
+								<span className="mr-8">Status</span>
 							</div>
 
 							{videos.map((video) => (
@@ -162,7 +161,7 @@ function VideoCard({ video }) {
 		>
 			<div className="flex items-center gap-3 text-sm">
 				<Video size={16} />
-				<div className="w-35 min-w-40 max-w-[240x] text-left text-wrap md:w-80 lg:w-150">
+				<div className="sm:w-25 w-35 min-w-40 max-w-[240x] text-left text-wrap md:w-50 lg:w-100">
 					{video.title}
 				</div>
 			</div>

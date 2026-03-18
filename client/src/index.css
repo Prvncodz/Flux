@@ -2,7 +2,11 @@
 @import "tailwindcss";
 @plugin "tailwind-scrollbar";
 
+*::-webkit-scrollbar {
+  display: none;               /* Chrome, Edge, Safari */
+}
 * {
+	scrollbar-width: none;
   font-family:
     Roboto,
     system-ui,

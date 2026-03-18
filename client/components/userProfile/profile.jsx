@@ -26,6 +26,7 @@ export default function Profile() {
 	const { otherUserName } = location.state || {};
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isProfileFetched, setIsProfileFetched] = useState(false);
+
 	let timeoutId;
 	async function handleSubscription() {
 		clearTimeout(timeoutId);
@@ -92,15 +93,15 @@ export default function Profile() {
 
 	return (
 		<>
-			<nav className="bg-neutral-50 h-12 w-full border-b-neutral-100 relative flex items-center justify-between ">
+			<nav className="bg-neutral-50 h-12 w-full border-b-neutral-100 relative flex items-center justify-between overflow-hidden ">
 				<a
 					href="/"
-					className="relative ml-5 text-gray-800 font flex items-center justify-left md:"
+					className="relative ml-5 text-gray-800 font flex items-center justify-left "
 				>
 					<ArrowLeftIcon />
 				</a>
 				<button
-					type=""
+					type="button"
 					className="mr-3 relative"
 					onClick={() => setisPopupActive((prev) => !prev)}
 				>
@@ -108,7 +109,7 @@ export default function Profile() {
 				</button>
 				{isPopupActive && (
 					<>
-						<ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-50 shadow-xs z-10 p-3 px-2 ">
+						<ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-800 shadow-xs p-3 px-2 ">
 							<li
 								className="text-gray-800 font-normal text-base p-2 rounded-2xl hover:bg-neutral-100 "
 								onClick={() => {
@@ -141,7 +142,7 @@ export default function Profile() {
 				<img
 					src={UserProfile?.coverImage?.url || dbanner}
 					onError={(e) => (e.target.src = dbanner)}
-					className="h-full w-full relative"
+					className="h-full w-full "
 					loading="lazy"
 				/>
 				<img
