@@ -50,7 +50,7 @@ export default function VideoDescription({
   return (
     <>
       <div
-        className={`${isOpen ? "h-auto" : "h-20"} bg-neutral-100 rounded-2xl px-4 py-3 text-wrap text-body mx-2 relative flex flex-col text-left`}
+        className={`${isOpen ? "h-auto" : "h-20"} bg-neutral-50 rounded-2xl px-4 py-3 text-wrap text-body mx-2 my-1 mb-1 relative flex flex-col text-left`}
       >
         {showVideoDetails && (
           <div className="flex gap-1">
@@ -68,7 +68,7 @@ export default function VideoDescription({
 
         {isOpen ? (
           <p
-            className="text-gray-800 font-base text-body bottom-1 left-4 bg-gray-100 bg-blend-color-burn z-1"
+            className="text-gray-800 font-base text-body bottom-1 left-4 bg-neutral-50 bg-blend-color-burn z-1"
             onClick={() => setIsOpen(false)}
           >
             Show less
@@ -78,7 +78,7 @@ export default function VideoDescription({
             {isOverflowing && (
               <>
                 <p
-                  className="text-gray-800 font-base text-sm absolute bottom-5 mr-auto right-3 bg-gray-100 bg-blend-color-burn z-2"
+                  className="text-gray-800 font-base text-sm absolute bottom-5 mr-auto right-3 bg-neutral-50 bg-blend-color-burn z-2"
                   onClick={() => setIsOpen(true)}
                 >
                   ..Show more

@@ -25,7 +25,7 @@ export default function Home() {
           <>
             <Nav searchType={"video"} />
             <div className="block">
-              <Feed className="relative z-0" fetchType="all" />
+              <Feed className="relative z-0" fetchType="all" recommendations={false}  />
             </div>
           </>
         ) : (

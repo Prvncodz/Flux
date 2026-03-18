@@ -65,7 +65,7 @@ export default function WatchVideoPage() {
   }, [videoId, isUserLogged, isLiked]);
 
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto h-screen">
       <Nav wantTabs={false} />
       <div className="relative aspect-video overflow-hidden">
         <VideoPlayer
@@ -75,7 +75,7 @@ export default function WatchVideoPage() {
           theme="light" // Player theme: 'dark' | 'light'
           color="#1e549f" // Accent color for controls and progress bar
           fit={false} // If true, video fits within container. If false, it fills (cover).
-          className="aspect-video rounded-xl shadow-2xl" // Container classes
+          className="aspect-video shadow-2xl" // Container classes
         />
       </div>
       <div className="relative h-[70vh] overflow-auto rounded-xl ">
@@ -89,15 +89,15 @@ export default function WatchVideoPage() {
             uploadTime={video?.createdAt}
             showVideoDetails={true}
           />
-          <div className="flex mx-1 my-3 justify-between">
+          <div className="flex mx-1 justify-between">
             <div className="flex">
               <img
                 src={ownerAvatar || dpfp}
                 className="rounded-full h-11 w-11 mx-3"
               />
-              <div className="flex-col ml-1 justify-left">
-                <h1 className=" text-lg font-normal text-gray-700 text-left">
-                  {username || fullname || ""}
+              <div className="flex-col  justify-left">
+                <h1 className=" text-base font-normal text-gray-700 text-left">
+                  { fullname ||username || ""}
                 </h1>
                 <h1 className="text-xs font-normal text-gray-500">
                   {subscribers +
@@ -106,7 +106,7 @@ export default function WatchVideoPage() {
               </div>
             </div>
             <div className="flex gap-0">
-              <div className="flex items-center border border-gray-200 rounded-full px-7 py-3 mt-2">
+              <div className="flex items-center  px-7 py-3">
                 <LikeButton
                   size={20}
                   fetchType={"video"}
@@ -129,7 +129,7 @@ export default function WatchVideoPage() {
                       </>
                     )
                   }
-                  classes="mt-2 ml-4"
+                  classes=" ml-4"
                   onClick={handleSubscription}
                 />
               )}
@@ -145,7 +145,7 @@ export default function WatchVideoPage() {
           />
         </div>
         <div>
-          <VideoFeed />
+          <VideoFeed fetchType={"all"} recommendations={true}/>
         </div>
       </div>
     </div>

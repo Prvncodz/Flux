@@ -4,7 +4,7 @@ import dpfp from "../../assets/dpfp.jpg";
 import { useNavigate } from "react-router-dom";
 
 export default function VideoComponent({ video }) {
-  const { avatarUrl, username } = useGetUserById(video.owner);
+  const { avatarUrl, username,fullname } = useGetUserById(video.owner);
   const [duration, setDuration] = useState("00:00");
   const [timeOfUpload, setTimeOfUpload] = useState("1 day");
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function VideoComponent({ video }) {
       state: {
         videoId: video._id,
         ownerAvatar: avatarUrl,
-        username: username,
+        fullname:fullname,
       },
     });
   }

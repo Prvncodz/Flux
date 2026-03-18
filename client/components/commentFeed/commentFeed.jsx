@@ -3,7 +3,7 @@ import axios from "../../api/axios.js";
 import CommentComponent from "./commentComponent.jsx";
 import AddCommentsBox from "./AddCommentBox.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
-import { Cross } from "lucide-react";
+import { Cross, CrossIcon, X } from "lucide-react";
 
 export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
 	const [comments, setComments] = useState([{}]);
@@ -69,18 +69,17 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen }) {
 	return (
 		<>
 			<div
-				className="my-2 max-h-screen min-h-2.5 overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100"
+				className={`my-2 ${isOpen ? "h-[50vh]" : "h-30"} overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100`}
 				onClick={() => !isOpen && setIsOpen(true)}
 			>
-				<h1 className="text-gray-900 text-left text-lg text-medium">
+				<h1 className="text-gray-900 text-left text-base text-medium">
 					{areCommentsFetched && comments.length} Comments
 				</h1>
 				{areCommentsFetched && isOpen ? (
 					<div>
-						<Cross
+						<X
 							size={26}
-							color={"#000000"}
-							className={"absolute top-4 right-4 z-1"}
+							className={"absolute top-4 right-4 z-1 text-gray-500"}
 							onClick={() => isOpen && setIsOpen(false)}
 						/>
 						<AddCommentsBox Id={Id} fetchType={fetchType} className={"mb-8"} />

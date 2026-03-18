@@ -406,7 +406,7 @@ const VideoPlayer = ({
   if (!videoUrl) {
     return (
       <div
-        className={`w-full aspect-video flex flex-col items-center justify-center border ${isDark ? "bg-neutral-900 border-neutral-800" : "bg-gray-100 border-gray-200"} ${className}`}
+        className={`w-full aspect-video flex flex-col items-center justify-center border bg-neutral-900 border-neutral-800 ${className}`}
       >
         <AlertCircle
           size={48}
