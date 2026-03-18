@@ -69,7 +69,7 @@ export default function WatchVideoPage() {
 			<Nav wantTabs={false} />
 			<div className="lg:flex lg:flex-row lg:h-screen lg:w-screen">
 				<div className="lg:flex lg:flex-col lg:h-screen lg:w-full lg:max-w-[70vw] lg:overflow-y-auto lg:overflow-x-hidden ">
-					<div className="relative aspect-video overflow-hidden lg:p-5 lg:h-full lg:bg-[#ffffff] lg:z-10  ">
+					<div className="relative overflow-hidden lg:p-5 lg:h-full lg:max-h-[70vh] lg:bg-[#ffffff] lg:z-10  ">
 						<VideoPlayer
 							videoUrl={video?.videofile?.url} // Source URL for the video
 							autoplay={true} // Automatically start playing on load
@@ -77,7 +77,7 @@ export default function WatchVideoPage() {
 							theme="light" // Player theme: 'dark' | 'light'
 							color="#1e549f" // Accent color for controls and progress bar
 							fit={false} // If true, video fits within container. If false, it fills (cover).
-							className="aspect-video" // Container classes
+							className=" h-full w-full" // Container classes
 						/>
 					</div>
 					<div className="relative h-auto lg:h-[70vh] overflow-auto rounded-xl ">

@@ -7,6 +7,7 @@ export default function SubmitButton({ currentSubmitStatus, text, className }) {
 		 flex justify-center items-center rounded-full 
 		  font-semibold text-center text-md transition-bg ease cursor-pointer ${className}`}
       type="submit"
+			disabled={currentSubmitStatus== "loading"?"true":"false"}
     >
       {currentSubmitStatus == "normal"
         ? text

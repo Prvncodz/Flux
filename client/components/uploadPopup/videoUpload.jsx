@@ -112,7 +112,7 @@ export default function VideoUploadPopup({ setShowPopup }) {
                 isSubmmited ? "submited" : loading ? "loading" : "normal"
               }
               text={"Upload"}
-              className={"mt-2 mb-5"}
+              className={`mt-2 mb-5`}
             />
           </div>
         </form>

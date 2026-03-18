@@ -2,22 +2,24 @@ import { useState, useEffect, useContext } from "react";
 import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
+import { Loader2 } from "lucide-react";
 
 export default function Feed({ fetchType, userId, searchQuery, recommendations, playingVideoId }) {
-	const [videos, setVideos] = useState([{}]);
+	const [videos, setVideos] = useState([]);
 	const [areVideosFetched, SetAreVideosFetched] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [page, setPage] = useState(1)
 	const { user, isUserLogged } = useContext(UserContext);
 
 	useEffect(() => {
 		async function fetchAllVideos() {
 			try {
-				await axios
-					.get(
-						`/videos/all-videos${isUserLogged ? `?userId=${user?._id}` : ``}`,
-					)
+				await axios.get(`/videos/all-videos?page=${page}${isUserLogged ? `&userId=${user?._id}` : ``}`)
 					.then((res) => {
-						setVideos(res.data.data);
+						setVideos(prev => [...prev, ...res.data.data]);
 						SetAreVideosFetched(true);
+					  setLoading(false)
+						setPage(prev => prev + 1);
 					});
 			} catch (error) {
 				console.log(error);
@@ -70,7 +72,7 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 	return (
 		<>
 			<div
-				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-[40vh]" : "h-[95vh]"} w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
+				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-[40vh]" : "h-[95vh]"} w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
 			>
 				{areVideosFetched &&
 					videos.map((video, idx) => (
@@ -78,6 +80,14 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 							video._id !== playingVideoId && <VideoComponent key={idx} video={video} idx={idx} /> :
 							<VideoComponent key={idx} video={video} idx={idx} />
 					))}
+				{loading && (
+					<div className="absolute bottom-0  inset-0 flex items-center justify-center z-20 pointer-events-none">
+						<Loader2
+							className="w-12 h-12 animate-spin"
+							style={{ color: "#0A98FC" }}
+						/>
+					</div>
+				)}
 			</div>
 		</>
 	);

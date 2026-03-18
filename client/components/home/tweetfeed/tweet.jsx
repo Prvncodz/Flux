@@ -9,7 +9,7 @@ import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
 import ReplyIcon from "../../assets/replyIcon.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 
-export default function TweetComponent({ tweet, mainPost }) {
+export default function TweetComponent({ tweet, mainPost,idx,tweetsLength,setLoading }) {
   const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
   const [commentsPost, setCommentPosts] = useState([{}]);
   const [showAddTweetBox, setShowAddTweetBox] = useState(false);
@@ -53,6 +53,10 @@ export default function TweetComponent({ tweet, mainPost }) {
         console.log(err);
       }
     }
+		if(idx===tweetsLength-1 ){
+			setLoading(false);
+			console.log("alltweetsfetched")
+		}
     getAllCommentPosts();
   }, [tweet?._id, user?._id]);
   return (

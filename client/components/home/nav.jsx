@@ -14,10 +14,15 @@ import Menu from "./menu/menu.jsx";
 import MenuBtn from "../assets/menubtn.jsx";
 import {
 	ArrowLeft,
+	CircleUser,
+	CircleUserRound,
 	History,
 	HomeIcon,
 	LayoutList,
 	Search,
+	SquareUserRound,
+	UserRound,
+	UserRoundCogIcon,
 } from "lucide-react";
 
 export default function Nav({ wantTabs, searchType }) {
@@ -144,7 +149,7 @@ export default function Nav({ wantTabs, searchType }) {
 								onClick={() => navigate("/")}
 							>
 								<HomeIcon size={20} className="flex flex-start text-gray-800" />
-								<div className=" text-center text-gray-900 font-normal text-sm w-full">
+								<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
 									Home
 								</div>
 							</div>
@@ -153,17 +158,23 @@ export default function Nav({ wantTabs, searchType }) {
 								onClick={() => navigate("/", { state: { tab: "posts" } })}
 							>
 								<LayoutList size={20} className="text-gray-800" />
-								<div className=" text-left text-gray-900 font-normal text-sm text">
+								<div className=" text-center text-gray-900 font-normal text-sm text my-1">
 									Posts
 								</div>
 							</div>
 							<div
 								className="h-20  p-2 flex items-center w-full flex-col text-left font-normal"
-								onClick={() => navigate("/watch-history")}
+								onClick={() =>{
+								if(isUserLogged){
+								navigate("/userchannel")
+									}else{
+										navigate("/signin")
+									}
+								}}
 							>
-								<History size={20} className="flex flex-start text-gray-800" />
-								<div className=" text-left text-gray-900 font-normal text-sm w-full">
-									History
+								<CircleUserRound size={22} className="flex flex-start text-gray-800" />
+								<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
+									You
 								</div>
 							</div>
 						</div>
