@@ -21,7 +21,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 				setPage(prev => prev + 1);
 			}
 		}
-		el.addEventListener("scroll", handleScroll);
+		el?.addEventListener("scroll", handleScroll);
 		return (() => el.removeEventListener('scroll', handleScroll))
 	})
 	useEffect(() => {
@@ -55,7 +55,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 							setHasNoMore(true);
 							setLoading(false)
 						}
-						setTweets(res.data.data);
+						setTweets(prev => [...prev, ...res.data.data]);
 						SetAreTweetsFetched(true);
 					});
 			} catch (error) {
@@ -72,7 +72,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 							setHasNoMore(true);
 							setLoading(false)
 						}
-						setTweets(res.data.data);
+						setTweets(prev => [...prev, ...res.data.data]);
 						SetAreTweetsFetched(true);
 					});
 			} catch (error) {
@@ -100,8 +100,8 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		);
 	}
 	return (
-		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""}h-screen overflow-y-auto`} >
-			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} ${loading ? "pb-12" : ""}relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
+		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""} overflow-y-auto`} >
+			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
 				{areTweetsFetched &&
 					tweets.map((tweet, idx) => (
 						<TweetComponent key={idx} tweet={tweet} idx={idx} tweetsLength={tweets.length} setLoading={setLoading} />

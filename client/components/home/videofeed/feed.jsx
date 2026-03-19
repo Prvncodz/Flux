@@ -39,7 +39,7 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 						SetAreVideosFetched(true);
 						if (res.data.data.length == 0) {
 							setHasNoMore(true);
-						  setLoading(false)
+							setLoading(false)
 						}
 					});
 			} catch (error) {
@@ -50,10 +50,15 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 			try {
 				await axios
 					.get(
-						`/videos/all-videos${isUserLogged ? `?userId=${user?._id}&` : `?`}query=${query}`, { signal }
+						`/videos/all-videos${isUserLogged ? `?userId=${user?._id}&` : `?`}query=${query}&page=${page}`, { signal }
 					)
 					.then((res) => {
-						setVideos(res.data.data);
+						if (res.data.data.length == 0) {
+							setHasNoMore(true);
+							setLoading(false)
+						}
+
+						setVideos(prev => [...prev, ...res.data.data]);
 						SetAreVideosFetched(true);
 					});
 			} catch (error) {
@@ -64,9 +69,14 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 			if (!Id) return;
 			try {
 				await axios
-					.get(`/videos/all-videos-by-user?userId=${Id}`, { signal })
+					.get(`/videos/all-videos-by-user?userId=${Id}&page=${page}`, { signal })
 					.then((res) => {
-						setVideos(res.data.data);
+						if (res.data.data.length == 0) {
+							setHasNoMore(true);
+							setLoading(false)
+						}
+
+						setVideos(prev => [...prev, ...res.data.data]);
 						SetAreVideosFetched(true);
 					});
 			} catch (error) {

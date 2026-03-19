@@ -1,10 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import PlaylistComponent from "./playlistComponent.jsx";
+import UserContext from "../../../contexts/UserContext.jsx";
 
 export default function PlaylistFeed({ userId }) {
 	const [playlists, setPlaylists] = useState([{}]);
 	const [arePlaylistsFetched, SetArePlaylistsFetched] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [page, setPage] = useState(1)
+	const { user, isUserLogged } = useContext(UserContext);
+	const [hasNoMore, setHasNoMore] = useState(false)
+	const ref = useRef(null);
 
 	useEffect(() => {
 		async function fetchAllPlaylists(Id) {
@@ -31,7 +37,7 @@ export default function PlaylistFeed({ userId }) {
 
 	return (
 		<div className={`md:flex md:justify-center `}>
-			<div className={`h-[65vh] md:h-[60vh] w-full p-5  mt-4 overflow-y-auto overflow-x-hidden grid grid-cols-1 md:p-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-2`}>
+			<div className={`h-[65vh] md:h-[60vh] w-full p-5  mt-4 overflow-y-auto overflow-x-hidden grid grid-cols-1 , md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-2`}>
 				{arePlaylistsFetched &&
 					playlists.map((playlist, idx) => (
 						<PlaylistComponent key={idx} playlist={playlist} idx={idx} />
