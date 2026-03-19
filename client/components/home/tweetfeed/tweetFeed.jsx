@@ -107,7 +107,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		);
 	}
 	return (
-		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""} overflow-y-auto`} >
+		<div className={`${fetchType === "user" ? "md:flex md:justify-center" : "md:flex md:justify-center md:mt-4 md:flex-col"} overflow-y-auto`} >
 			{showSiginPopup && <SignInBanner setShowPopup={setShowSiginPopup} />}
 			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
 				{areTweetsFetched &&
