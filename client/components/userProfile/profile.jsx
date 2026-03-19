@@ -13,11 +13,13 @@ import EditProfilePopUp from "./editProfilePopup.jsx";
 import ChangePassPopup from "./changePass.jsx";
 import { useLocation } from "react-router-dom";
 import { ArrowLeftIcon, Ellipsis, LucideDotSquare } from "lucide-react";
+import SignInBanner from "../signinInstructPopup.jsx";
 
 export default function Profile() {
-	const { user } = useContext(UserContext);
+	const { user,isUserLogged } = useContext(UserContext);
 	const [UserProfile, setUserProfile] = useState({});
 	const [tabOpened, setTabOpened] = useState("videos");
+	const [showElipse,setShowElipse]= useState(false);
 	const [isPopupActive, setisPopupActive] = useState(false);
 	const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
 	const [isPassPopupActive, setIsPassPopupActive] = useState(false);
@@ -26,10 +28,15 @@ export default function Profile() {
 	const { otherUserName } = location.state || {};
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isProfileFetched, setIsProfileFetched] = useState(false);
+  const [signinInstruction,setSigninInstruction]=useState(false)
 	let timeoutId;
 
 	async function handleSubscription() {
 		clearTimeout(timeoutId);
+		if(!isUserLogged){
+     setSigninInstruction(true);
+			return;
+		}
 		setIsSubscribed(!isSubscribed);
 		timeoutId = setTimeout(async () => {
 		 try {
@@ -44,6 +51,7 @@ export default function Profile() {
 		if (otherUserName) {
 			if (otherUserName !== user?.userName) {
 				setIsOtherUserP(true);
+				setShowElipse(false);
 			}
 			if (!otherUserName) return;
 			async function getUserProfile(username) {
@@ -71,6 +79,7 @@ export default function Profile() {
 					const res = await axios.get(`/user/p/${username}`);
 					if (res.status === 200) {
 						setUserProfile(res.data?.data);
+						setShowElipse(true)
 						setIsProfileFetched(true);
 					}
 				} catch (error) {
@@ -81,6 +90,7 @@ export default function Profile() {
 				}
 			}
 			getUserProfile(user?.userName);
+			
 		}
 	}, [user?.userName, otherUserName]);
 
@@ -99,20 +109,27 @@ export default function Profile() {
 				>
 					<ArrowLeftIcon />
 				</a>
+				{signinInstruction && 
+           <SignInBanner setShowPopup={setSigninInstruction}/>
+				}
+				{showElipse &&
 				<button
-					type=""
+					type="button"
 					className="mr-3 relative"
 					onClick={() => setisPopupActive((prev) => !prev)}
 				>
 					<Ellipsis size={30} />
 				</button>
+				}
 				{isPopupActive && (
 					<>
 						<ul className="absolute top-12 right-0 w-45 h-auto  bg-neutral-50 shadow-xs z-10 p-3 px-2 ">
 							<li
 								className="text-gray-800 font-normal text-base p-2 rounded-2xl hover:bg-neutral-100 "
 								onClick={() => {
+									if(isUserLogged){
 									setIsEditPopUpActive((prev) => !prev);
+									}
 									setisPopupActive(false);
 								}}
 							>
@@ -121,7 +138,9 @@ export default function Profile() {
 							<li
 								className="text-gray-800 font-normal text-base p-2 rounded-2xl hover:bg-neutral-100"
 								onClick={() => {
+									if(isUserLogged){
 									setIsPassPopupActive(true);
+									}
 									setisPopupActive(false);
 								}}
 							>

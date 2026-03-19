@@ -24,6 +24,7 @@ import {
 	UserRound,
 	UserRoundCogIcon,
 } from "lucide-react";
+import SignInBanner from "../signinInstructPopup.jsx";
 
 export default function Nav({ wantTabs, searchType }) {
 	const navigate = useNavigate();
@@ -40,6 +41,7 @@ export default function Nav({ wantTabs, searchType }) {
 	const [isSearchFieldOpen, setIsSearchFieldOpen] = useState(false);
 	const [searchInput, setSearchInput] = useState("");
 	const [isMenuOpen, setIsMenuOPen] = useState(false);
+	const [signinInstruction, setSigninInstruction] = useState(false)
 
 	const popup = {
 		video: <VideoUploadPopup setShowPopup={setShowPopup} />,
@@ -107,6 +109,13 @@ export default function Nav({ wantTabs, searchType }) {
 		setIsSearchFieldOpen((prev) => !prev);
 	}
 
+	function handleCreatePopup() {
+		if (!isUserLogged) {
+			setSigninInstruction(true)
+			return;
+		}
+	}
+
 	function handleToggleMenu() {
 		setIsMenuOPen((prev) => !prev);
 	}
@@ -164,10 +173,10 @@ export default function Nav({ wantTabs, searchType }) {
 							</div>
 							<div
 								className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
-								onClick={() =>{
-								if(isUserLogged){
-								navigate("/userchannel")
-									}else{
+								onClick={() => {
+									if (isUserLogged) {
+										navigate("/userchannel")
+									} else {
 										navigate("/signin")
 									}
 								}}
@@ -222,7 +231,7 @@ export default function Nav({ wantTabs, searchType }) {
 										<div className="flex gap-1 mr-10">
 											<div className="hidden md:block lg:block md:mr-3">
 												<button
-													onClick={() => setIsCrtBtnActive((prev) => !prev)}
+													onClick={handleCreatePopup}
 													className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-[#1E89FE] active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
 													title="Create post"
 												>
@@ -242,6 +251,10 @@ export default function Nav({ wantTabs, searchType }) {
 													<CreateComponent handleUpload={handleUpload} />
 												)}
 											</div>
+											{
+												signinInstruction &&
+												<SignInBanner setShowPopup={setSigninInstruction} />
+											}
 											{
 												showPopup &&
 												popup[
@@ -313,7 +326,7 @@ export default function Nav({ wantTabs, searchType }) {
 											) : (
 												<>
 													<div
-														className="w-auto h-9 flex justify-center items-center rounded-3xl border-2 border-gray-200 pt-5 pb-5 pl-2 pr-2 cursor-pointer"
+														className="w-auto h-9 flex justify-center items-center rounded-full border-2 border-gray-200 pt-5 pb-5 pl-6 pr-7 md:pl-4 lg:pl-2 lg:pr-2 cursor-pointer"
 														onClick={() => {
 															navigate("/signin");
 														}}
@@ -322,9 +335,9 @@ export default function Nav({ wantTabs, searchType }) {
 															src={profileIcon}
 															className="h-9 rounded-full"
 														/>
-														<span className="text-l pl-1 font-medium">
+														<div className="text-left pl-1 font-medium  h-auto text-nowrap">
 															Sign in
-														</span>
+														</div>
 													</div>
 												</>
 											)}
@@ -337,7 +350,7 @@ export default function Nav({ wantTabs, searchType }) {
 					)}
 					<div className="relative">
 						<button
-							onClick={() => setIsCrtBtnActive((prev) => !prev)}
+							onClick={handleCreatePopup}
 							className="w-10 h-10 rounded-full bg-[#0A98FC] hover:bg-[#1E89FE] active:scale-95 transition-all cursor-pointer flex items-center justify-center shadow-sm shadow-blue-200 text-white"
 							title="Create post"
 						>
@@ -355,6 +368,10 @@ export default function Nav({ wantTabs, searchType }) {
 						</button>
 						{isCrtBtnActive && <CreateComponent handleUpload={handleUpload} />}
 					</div>
+					{
+						signinInstruction &&
+						<SignInBanner setShowPopup={setSigninInstruction} />
+					}
 					{
 						showPopup &&
 						popup[
@@ -437,28 +454,6 @@ export default function Nav({ wantTabs, searchType }) {
 					)}
 				</div>
 			</div>
-			{wantTabs && (
-				<div className="flex flex-row w-full mt-6">
-					<span
-						className={`text-xl relative mt-3.5 font-semibold w-50 cursor-pointer ${isHomeSelected ? `text-blue-700` : `text-gray-800 `}`}
-						onClick={() => setIsHomeSelected(true)}
-					>
-						Home
-						<div
-							className={`absolute -bottom-2 w-full h-1 ${isHomeSelected ? `bg-blue-800` : ``}`}
-						></div>
-					</span>
-					<span
-						className={`text-xl relative mt-3.5 font-semibold w-50 cursor-pointer ${isHomeSelected ? `text-gray-800` : `text-blue-700 `}`}
-						onClick={() => setIsHomeSelected(false)}
-					>
-						Posts
-						<div
-							className={`absolute -bottom-2 w-full h-1 ${isHomeSelected ? `` : `bg-blue-800`}`}
-						></div>
-					</span>
-				</div>
-			)}
 		</nav>
 	);
 }
