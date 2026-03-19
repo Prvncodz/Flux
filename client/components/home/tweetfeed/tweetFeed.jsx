@@ -2,23 +2,22 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
-import { Flashlight, Loader2 } from "lucide-react";
+import { Flashlight, Frown, Loader2 } from "lucide-react";
 
 export default function Feed({ fetchType, userId, searchQuery }) {
 	const [tweets, setTweets] = useState([]);
 	const [areTweetsFetched, SetAreTweetsFetched] = useState(false);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1)
 	const { user, isUserLogged } = useContext(UserContext);
-	const [hasNoMore,setHasNoMore]=useState(false)
+	const [hasNoMore, setHasNoMore] = useState(false)
 	const ref = useRef(null);
 
 	useEffect(() => {
 		const el = ref.current;
 		function handleScroll() {
-		  if(loading||hasNoMore)return;
+			if (loading || hasNoMore) return;
 			if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
-				setLoading(true)
 				setPage(prev => prev + 1);
 			}
 		}
@@ -26,14 +25,18 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		return (() => el.removeEventListener('scroll', handleScroll))
 	})
 	useEffect(() => {
+		if (loading) return;
+		setLoading(true);
+
+		const controller = new AbortController();
+		const signal = controller.signal;
 		async function fetchAllTweets() {
 			try {
-				console.log("trying to fetch page no:", page);
 				await axios
-					.get(`/tweets/get-all-tweets?${page > 1 ? `page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`)
+					.get(`/tweets/get-all-tweets?${page > 1 ? `page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`, { signal })
 					.then((res) => {
 						if (res.data.data.length == 0) {
-						  setHasNoMore(true);
+							setHasNoMore(true);
 							setLoading(false)
 						}
 						setTweets(prev => [...prev, ...res.data.data]);
@@ -46,7 +49,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		async function fetchSearchedTweets(query) {
 			try {
 				await axios
-					.get(`/tweets/get-all-tweets?query=${query}${isUserLogged ? `&userId=${user?._id}` : ``}`)
+					.get(`/tweets/get-all-tweets?query=${query}${page > 1 ? `&page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`)
 					.then((res) => {
 						setTweets(res.data.data);
 						SetAreTweetsFetched(true);
@@ -59,7 +62,8 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		async function fetchAllTweetsByUser() {
 			if (!userId) return;
 			try {
-				await axios.get(`/tweets/${userId}`).then((res) => {
+				await axios.get(`/tweets/${userId}${page > 1 ? `?page=${page}` : ``}`)
+				.then((res) => {
 					setTweets(res.data.data);
 					SetAreTweetsFetched(true);
 				});
@@ -75,7 +79,9 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		} else {
 			fetchAllTweets();
 		}
-
+		return () => {
+			controller.abort();
+		}
 	}, [user, fetchType, searchQuery, page]);
 
 	if (tweets.length == 0 && areTweetsFetched) {
@@ -94,7 +100,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					))}
 			</div>
 			{loading && (
-				<div className="relative top-0 h-15 w-full  inset-0 flex items-center justify-center z-20 pointer-events-none">
+				<div className="h-15 w-full  inset-0 flex items-center justify-center z-20 pointer-events-none">
 					<Loader2
 						className="w-12 h-12 animate-spin"
 						style={{ color: "#0A98FC" }}

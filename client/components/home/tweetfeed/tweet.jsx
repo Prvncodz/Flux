@@ -54,7 +54,6 @@ export default function TweetComponent({ tweet, mainPost, idx, tweetsLength, set
 			}
 		}
 		if (idx === tweetsLength - 1) {
-			console.log("fetched",tweetsLength," tweets")
 			setLoading(false);
 		}
 		getAllCommentPosts();
