@@ -10,19 +10,22 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1)
 	const { user, isUserLogged } = useContext(UserContext);
+	const [hasNoMore,setHasNoMore]=useState(false)
 	const ref = useRef(null);
 
 	useEffect(() => {
 		const el = ref.current;
 		function handleScroll() {
+		  if(loading||hasNoMore)return;
 			if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
-				console.log("reached the end of the scroll")
 				setLoading(true)
 				setPage(prev => prev + 1);
 			}
 		}
 		el.addEventListener("scroll", handleScroll);
-
+		return (() => el.removeEventListener('scroll', handleScroll))
+	})
+	useEffect(() => {
 		async function fetchAllTweets() {
 			try {
 				console.log("trying to fetch page no:", page);
@@ -30,6 +33,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					.get(`/tweets/get-all-tweets?${page > 1 ? `page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`)
 					.then((res) => {
 						if (res.data.data.length == 0) {
+						  setHasNoMore(true);
 							setLoading(false)
 						}
 						setTweets(prev => [...prev, ...res.data.data]);
@@ -71,7 +75,6 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		} else {
 			fetchAllTweets();
 		}
-		return (() => el.removeEventListener('scroll', handleScroll))
 
 	}, [user, fetchType, searchQuery, page]);
 
