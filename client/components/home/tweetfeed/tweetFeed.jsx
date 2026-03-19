@@ -29,6 +29,9 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 				await axios
 					.get(`/tweets/get-all-tweets?${page > 1 ? `page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`)
 					.then((res) => {
+						if (res.data.data.length == 0) {
+							setLoading(false)
+						}
 						setTweets(prev => [...prev, ...res.data.data]);
 						SetAreTweetsFetched(true);
 					});
@@ -80,8 +83,8 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		);
 	}
 	return (
-		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""}`} >
-			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} ${loading?"pb-12":""}relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
+		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""}h-screen overflow-y-auto`} >
+			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} ${loading ? "pb-12" : ""}relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
 				{areTweetsFetched &&
 					tweets.map((tweet, idx) => (
 						<TweetComponent key={idx} tweet={tweet} idx={idx} tweetsLength={tweets.length} setLoading={setLoading} />
