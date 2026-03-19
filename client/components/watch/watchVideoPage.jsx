@@ -69,7 +69,7 @@ export default function WatchVideoPage() {
 			<Nav wantTabs={false} />
 			<div className="lg:flex lg:flex-row lg:h-screen lg:w-screen">
 				<div className="lg:flex lg:flex-col lg:h-screen lg:w-full lg:max-w-[70vw] lg:overflow-y-auto lg:overflow-x-hidden ">
-					<div className="relative overflow-hidden lg:p-5 lg:h-full lg:max-h-[70vh] lg:bg-[#ffffff] lg:z-10  ">
+					<div className="relative aspect-video overflow-hidden lg:p-5 lg:h-full lg:max-h-[70vh] lg:bg-[#ffffff] lg:z-10  ">
 						<VideoPlayer
 							videoUrl={video?.videofile?.url} // Source URL for the video
 							autoplay={true} // Automatically start playing on load

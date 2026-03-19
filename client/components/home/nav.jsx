@@ -143,7 +143,7 @@ export default function Nav({ wantTabs, searchType }) {
 								/>
 							</div>
 						)}
-						<div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2 md:z-3 lg:z-4  ">
+						<div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2   ">
 							<div
 								className={`h-20  p-2 flex items-center  flex-col text-left w-full`}
 								onClick={() => navigate("/")}

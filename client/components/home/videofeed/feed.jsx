@@ -18,7 +18,6 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 					.then((res) => {
 						setVideos(prev => [...prev, ...res.data.data]);
 						SetAreVideosFetched(true);
-					  setLoading(false)
 						setPage(prev => prev + 1);
 					});
 			} catch (error) {
@@ -72,16 +71,16 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 	return (
 		<>
 			<div
-				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-[40vh]" : "h-[95vh]"} w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
+				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-[40vh]" : "h-[95vh]"} relative w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
 			>
 				{areVideosFetched &&
 					videos.map((video, idx) => (
 						playingVideoId ?
 							video._id !== playingVideoId && <VideoComponent key={idx} video={video} idx={idx} /> :
-							<VideoComponent key={idx} video={video} idx={idx} />
+							<VideoComponent key={idx} video={video} idx={idx} videosLength={videos.length} setLoading={setLoading}/>
 					))}
 				{loading && (
-					<div className="absolute bottom-0  inset-0 flex items-center justify-center z-20 pointer-events-none">
+					<div className="relative top-0   inset-0 flex items-center justify-center z-20 pointer-events-none">
 						<Loader2
 							className="w-12 h-12 animate-spin"
 							style={{ color: "#0A98FC" }}
