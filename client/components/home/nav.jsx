@@ -145,7 +145,7 @@ export default function Nav({ wantTabs, searchType }) {
 						)}
 						<div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2   ">
 							<div
-								className={`h-20  p-2 flex items-center  flex-col text-left w-full`}
+								className={`h-20  p-2 flex items-center  flex-col text-left w-full cursor-pointer`}
 								onClick={() => navigate("/")}
 							>
 								<HomeIcon size={20} className="flex flex-start text-gray-800" />
@@ -154,7 +154,7 @@ export default function Nav({ wantTabs, searchType }) {
 								</div>
 							</div>
 							<div
-								className="h-20  p-2 flex items-center w-full flex-col text-left"
+								className="h-20  p-2 flex items-center w-full flex-col text-left cursor-pointer"
 								onClick={() => navigate("/", { state: { tab: "posts" } })}
 							>
 								<LayoutList size={20} className="text-gray-800" />
@@ -163,7 +163,7 @@ export default function Nav({ wantTabs, searchType }) {
 								</div>
 							</div>
 							<div
-								className="h-20  p-2 flex items-center w-full flex-col text-left font-normal"
+								className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
 								onClick={() =>{
 								if(isUserLogged){
 								navigate("/userchannel")
