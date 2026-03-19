@@ -29,7 +29,6 @@ export default function VideoComponent({ video, idx, videosLength, setLoading })
 
 		if (idx === videosLength - 1) {
 			setLoading(false);
-			console.log("allvideosfetched")
 		}
 		function calcDuration(dur) {
 			if (!dur) return;

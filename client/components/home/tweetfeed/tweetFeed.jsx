@@ -49,8 +49,12 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		async function fetchSearchedTweets(query) {
 			try {
 				await axios
-					.get(`/tweets/get-all-tweets?query=${query}${page > 1 ? `&page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`)
+					.get(`/tweets/get-all-tweets?query=${query}${page > 1 ? `&page=${page}` : ``}${isUserLogged ? `&userId=${user?._id}` : ``}`, { signal })
 					.then((res) => {
+						if (res.data.data.length == 0) {
+							setHasNoMore(true);
+							setLoading(false)
+						}
 						setTweets(res.data.data);
 						SetAreTweetsFetched(true);
 					});
@@ -62,11 +66,15 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		async function fetchAllTweetsByUser() {
 			if (!userId) return;
 			try {
-				await axios.get(`/tweets/${userId}${page > 1 ? `?page=${page}` : ``}`)
-				.then((res) => {
-					setTweets(res.data.data);
-					SetAreTweetsFetched(true);
-				});
+				await axios.get(`/tweets/${userId}${page > 1 ? `?page=${page}` : ``}`, { signal })
+					.then((res) => {
+						if (res.data.data.length == 0) {
+							setHasNoMore(true);
+							setLoading(false)
+						}
+						setTweets(res.data.data);
+						SetAreTweetsFetched(true);
+					});
 			} catch (error) {
 				console.log(error);
 			}
