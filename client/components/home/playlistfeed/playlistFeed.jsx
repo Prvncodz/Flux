@@ -12,12 +12,36 @@ export default function PlaylistFeed({ userId }) {
 	const [hasNoMore, setHasNoMore] = useState(false)
 	const ref = useRef(null);
 
+
 	useEffect(() => {
+		const el = ref.current;
+		function handleScroll() {
+			if (loading || hasNoMore) return;
+			if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
+				setPage(prev => prev + 1);
+			}
+		}
+		el?.addEventListener("scroll", handleScroll);
+		return (() => el.removeEventListener('scroll', handleScroll))
+	})
+
+	useEffect(() => {
+
+		if (loading) return;
+		setLoading(true);
+
+		const controller = new AbortController();
+		const signal = controller.signal;
 		async function fetchAllPlaylists(Id) {
 			if (!Id) return;
 			try {
-				await axios.get(`/playlists/user/${Id}`).then((res) => {
-					setPlaylists(res.data?.data);
+				await axios.get(`/playlists/user/${Id}?page=${page}`, { signal }).then((res) => {
+					if (res.data.data.length == 0) {
+						setHasNoMore(true);
+						setLoading(false)
+					}
+
+					setPlaylists(prev => [...prev, ...res.data?.data]);
 					SetArePlaylistsFetched(true);
 				});
 			} catch (error) {
@@ -25,7 +49,11 @@ export default function PlaylistFeed({ userId }) {
 			}
 		}
 		fetchAllPlaylists(userId);
-	}, []);
+
+		return () => {
+			controller.abort();
+		}
+	}, [userId,page]);
 
 	if (arePlaylistsFetched && playlists.length === 0) {
 		return (
