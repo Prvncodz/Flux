@@ -200,7 +200,7 @@ export default function Nav({ wantTabs, searchType }) {
 							</button>
 							{isSearchFieldOpen && (
 								<div className="absolute h-screen w-full top-0 left-0 bottom-0 right-0 z-10">
-									<div className="h-auto w-full transition-all bg-gray-50 flex gap-5 items-center md:justify-between md:gap-0 md:mt-2  ">
+									<div className="h-auto w-full transition-all bg-[#ffffff] flex gap-5 items-center md:justify-between md:gap-0 md:mt-2  ">
 										<button
 											onClick={() => setIsSearchFieldOpen(false)}
 											className="flex flex-start ml-5"
@@ -212,7 +212,7 @@ export default function Nav({ wantTabs, searchType }) {
 												type="text"
 												name="query"
 												placeholder="Search on flux"
-												className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-9 pr-5 flex flex-start focus:outline-none "
+												className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-4 pr-5 flex flex-start focus:outline-none md:pl-9"
 												onKeyDown={(e) => {
 													if (e.key == "Enter") {
 														handleSearch();

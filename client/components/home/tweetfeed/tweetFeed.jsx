@@ -3,6 +3,7 @@ import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 import { Flashlight, Frown, Loader2 } from "lucide-react";
+import SignInBanner from "../../signinInstructPopup.jsx";
 
 export default function Feed({ fetchType, userId, searchQuery }) {
 	const [tweets, setTweets] = useState([]);
@@ -11,6 +12,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	const [page, setPage] = useState(1)
 	const { user, isUserLogged } = useContext(UserContext);
 	const [hasNoMore, setHasNoMore] = useState(false)
+	const [showSiginPopup, setShowSiginPopup] = useState(false);
 	const ref = useRef(null);
 
 	useEffect(() => {
@@ -55,7 +57,12 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 							setHasNoMore(true);
 							setLoading(false)
 						}
-						setTweets(prev => [...prev, ...res.data.data]);
+
+						if (page > 1) {
+							setTweets(prev => [...prev, ...res.data?.data]);
+						} else {
+							setTweets(res.data.data);
+						}
 						SetAreTweetsFetched(true);
 					});
 			} catch (error) {
@@ -101,10 +108,11 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	}
 	return (
 		<div className={`${fetchType === "user" ? "md:flex md:justify-center " : ""} overflow-y-auto`} >
+			{showSiginPopup && <SignInBanner setShowPopup={setShowSiginPopup} />}
 			<div className={`${fetchType === "user" ? " h-[65vh] md:h-[60vh] lg:max-w-[70vw] " : "h-[95vh] md:w-[65vh] "} relative w-full overflow-y-auto pb-5 overflow-x-hidden flex flex-col md:block `} ref={ref}>
 				{areTweetsFetched &&
 					tweets.map((tweet, idx) => (
-						<TweetComponent key={idx} tweet={tweet} idx={idx} tweetsLength={tweets.length} setLoading={setLoading} />
+						<TweetComponent key={idx} tweet={tweet} idx={idx} tweetsLength={tweets.length} setLoading={setLoading} setShowSiginPopup={setShowSiginPopup} />
 					))}
 			</div>
 			{loading && (

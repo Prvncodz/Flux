@@ -21,8 +21,8 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 				setPage(prev => prev + 1);
 			}
 		}
-		el.addEventListener("scroll", handleScroll);
-		return (() => el.removeEventListener('scroll', handleScroll))
+		el?.addEventListener("scroll", handleScroll);
+		return (() => el?.removeEventListener('scroll', handleScroll))
 	})
 
 	useEffect(() => {
@@ -56,9 +56,13 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 						if (res.data.data.length == 0) {
 							setHasNoMore(true);
 							setLoading(false)
-						}
 
-						setVideos(prev => [...prev, ...res.data.data]);
+						}
+						if (page > 1) {
+							setVideos(prev => [...prev, ...res.data?.data]);
+						} else {
+							setVideos(res.data?.data);
+						}
 						SetAreVideosFetched(true);
 					});
 			} catch (error) {
@@ -75,8 +79,7 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 							setHasNoMore(true);
 							setLoading(false)
 						}
-
-						setVideos(prev => [...prev, ...res.data.data]);
+						setVideos(prev => [...prev, ...res.data?.data])
 						SetAreVideosFetched(true);
 					});
 			} catch (error) {
@@ -106,21 +109,13 @@ export default function Feed({ fetchType, userId, searchQuery, recommendations, 
 	return (
 		<>
 			<div
-				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-screen" : "h-[95vh]"} relative w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 gap-6 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `} ref={ref}>
+				className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-screen" : "h-[95vh]"} relative w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `} ref={ref}>
 				{areVideosFetched &&
 					videos.map((video, idx) => (
 						playingVideoId ?
 							video._id !== playingVideoId && <VideoComponent key={idx} video={video} idx={idx} /> :
 							<VideoComponent key={idx} video={video} idx={idx} videosLength={videos.length} setLoading={setLoading} />
 					))}
-				{loading && (
-					<div className="relative top-0   inset-0 flex items-center justify-center z-20 pointer-events-none">
-						<Loader2
-							className="w-12 h-12 animate-spin"
-							style={{ color: "#0A98FC" }}
-						/>
-					</div>
-				)}
 			</div>
 		</>
 	);

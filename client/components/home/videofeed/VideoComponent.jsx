@@ -30,6 +30,9 @@ export default function VideoComponent({ video, idx, videosLength, setLoading })
 		if (idx === videosLength - 1) {
 			setLoading(false);
 		}
+	}, [videosLength])
+
+	useEffect(() => {
 		function calcDuration(dur) {
 			if (!dur) return;
 			const hours = Math.trunc(dur / 3600);
@@ -78,7 +81,7 @@ export default function VideoComponent({ video, idx, videosLength, setLoading })
 	}, []);
 
 	return (
-		<div className="md:p-2 lg:p-2 ">
+		<div className="md:p-2 lg:p-2">
 			<div className="relative z-0 aspect-video md:rounded-xl">
 				<img
 					src={video.thumbnail.url}

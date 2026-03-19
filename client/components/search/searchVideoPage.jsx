@@ -27,7 +27,7 @@ const SearchVideoPage = () => {
           >
             <ArrowLeft />
           </button>
-          <div className="w-80 h-10 rounded-full border border-gray-200 my-2 flex">
+          <div className="w-80 h-10 rounded-full border border-gray-200 my-2 flex md:w-[60vw] md:ml-25 lg:mx-auto  lg:w-[50vw]">
             <input
               type="text"
               name="query"

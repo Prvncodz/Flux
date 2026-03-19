@@ -9,7 +9,7 @@ import AddCommentsBox from "../../commentFeed/AddCommentBox.jsx";
 import ReplyIcon from "../../assets/replyIcon.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 
-export default function TweetComponent({ tweet, mainPost, idx, tweetsLength, setLoading }) {
+export default function TweetComponent({ tweet, mainPost, idx, tweetsLength, setLoading, setShowSigninPopup }) {
 	const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
 	const [commentsPost, setCommentPosts] = useState([{}]);
 	const [showAddTweetBox, setShowAddTweetBox] = useState(false);
