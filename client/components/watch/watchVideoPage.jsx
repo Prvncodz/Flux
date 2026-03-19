@@ -65,9 +65,9 @@ export default function WatchVideoPage() {
 	}, [videoId, isUserLogged, isLiked]);
 
 	return (
-		<div className="overflow-auto h-screen">
+		<div className="overflow-y-auto h-screen">
 			<Nav wantTabs={false} />
-			<div className="lg:flex lg:flex-row lg:h-screen lg:w-screen">
+			<div className="h-screen overflow-y-auto lg:flex lg:flex-row lg:h-screen lg:w-screen">
 				<div className="lg:flex lg:flex-col lg:h-screen lg:w-full lg:max-w-[70vw] lg:overflow-y-auto lg:overflow-x-hidden ">
 					<div className="relative aspect-video overflow-hidden lg:p-5 lg:h-full lg:max-h-[70vh] lg:bg-[#ffffff] lg:z-10  ">
 						<VideoPlayer
@@ -80,7 +80,7 @@ export default function WatchVideoPage() {
 							className=" h-full w-full" // Container classes
 						/>
 					</div>
-					<div className="relative h-auto lg:h-[70vh] overflow-auto rounded-xl ">
+					<div className="relative h-auto  lg:h-[70vh] overflow-auto rounded-xl ">
 						<div className="relative flex flex-col">
 							<h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">
 								{video?.title || ""}
@@ -148,7 +148,7 @@ export default function WatchVideoPage() {
 						</div>
 					</div>
 				</div>
-				<div className="">
+				<div className="h-screen overflow-y-auto">
 					<VideoFeed fetchType={"all"} recommendations={true} playingVideoId={video?._id}/>
 				</div>
 			</div>

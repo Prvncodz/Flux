@@ -27,11 +27,12 @@ export default function Profile() {
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isProfileFetched, setIsProfileFetched] = useState(false);
 	let timeoutId;
+
 	async function handleSubscription() {
 		clearTimeout(timeoutId);
 		setIsSubscribed(!isSubscribed);
 		timeoutId = setTimeout(async () => {
-			try {
+		 try {
 				await axios.post(`/subscriptions/c/${UserProfile?._id}`);
 			} catch (error) {
 				console.log(error);

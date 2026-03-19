@@ -2,16 +2,17 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import PlaylistComponent from "./playlistComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
+import { Loader2 } from "lucide-react";
 
 export default function PlaylistFeed({ userId }) {
-	const [playlists, setPlaylists] = useState([{}]);
+	const [playlists, setPlaylists] = useState([]);
 	const [arePlaylistsFetched, SetArePlaylistsFetched] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1)
 	const { user, isUserLogged } = useContext(UserContext);
 	const [hasNoMore, setHasNoMore] = useState(false)
 	const ref = useRef(null);
-
+	const [error, setError] = useState(false);
 
 	useEffect(() => {
 		const el = ref.current;
@@ -22,7 +23,7 @@ export default function PlaylistFeed({ userId }) {
 			}
 		}
 		el?.addEventListener("scroll", handleScroll);
-		return (() => el.removeEventListener('scroll', handleScroll))
+		return (() => el?.removeEventListener('scroll', handleScroll))
 	})
 
 	useEffect(() => {
@@ -40,7 +41,6 @@ export default function PlaylistFeed({ userId }) {
 						setHasNoMore(true);
 						setLoading(false)
 					}
-
 					setPlaylists(prev => [...prev, ...res.data?.data]);
 					SetArePlaylistsFetched(true);
 				});
@@ -53,9 +53,9 @@ export default function PlaylistFeed({ userId }) {
 		return () => {
 			controller.abort();
 		}
-	}, [userId,page]);
+	}, [userId, page]);
 
-	if (arePlaylistsFetched && playlists.length === 0) {
+	if ((arePlaylistsFetched && playlists.length === 0) || error) {
 		return (
 			<div className="flex h-100 w-full justify-center items-center text-base font-medium ">
 				No Playlist has been published by this user
@@ -68,9 +68,17 @@ export default function PlaylistFeed({ userId }) {
 			<div className={`h-[65vh] md:h-[60vh] w-full p-5  mt-4 overflow-y-auto overflow-x-hidden grid grid-cols-1 , md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-2`}>
 				{arePlaylistsFetched &&
 					playlists.map((playlist, idx) => (
-						<PlaylistComponent key={idx} playlist={playlist} idx={idx} />
+						<PlaylistComponent key={idx} playlist={playlist} idx={idx} playlistsLength={playlists.length} setLoading={setLoading}/>
 					))}
 			</div>
+			{loading && (
+				<div className="h-15 w-full  inset-0 flex items-center justify-center z-20 pointer-events-none">
+					<Loader2
+						className="w-12 h-12 animate-spin"
+						style={{ color: "#0A98FC" }}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }
