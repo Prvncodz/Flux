@@ -104,7 +104,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost }) {
           <span
             className="flex text-sm text-black cursor-pointer "
             onClick={HandleReplyToComment}
-	          >
+          >
             <span className="mr-1">
               <ReplyIcon />
             </span>

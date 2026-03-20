@@ -88,7 +88,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //login
 const loginUser = asyncHandler(async (req, res) => {
-	console.log("touched the login endpoint");
 	//get the info
 	// validate the input
 	// check for user in db
@@ -144,8 +143,6 @@ const loginUser = asyncHandler(async (req, res) => {
 				200,
 				{
 					user: loggedUser,
-					accessTokens,
-					refreshTokens,
 				},
 				"user logged in successfully",
 			),
@@ -516,7 +513,6 @@ const getWatchHistory = asyncHandler(async (req, res) => {
 			},
 		},
 	]);
-	console.log("watchHistory:", user[0].watchHistory);
 	return res
 		.status(200)
 		.json(

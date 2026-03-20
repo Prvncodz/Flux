@@ -27,31 +27,31 @@ export default function LikedVideos() {
   return (
     <>
       <Nav />
-			<div className="flex justify-center">
-      <div className="max-w-lg p-5 h-[95vh] w-full overflow-y-auto rounded-xl md:max-w-[90vw] md:w-full md:ml-20 md:p-5 md:flex md:flex-col">
-        {videos.length === 0 ? (
-          <div className="flex flex-col items-center justify-center mt-20 gap-4 text-center">
-            <p className="text-gray-500">You haven't liked any video yet</p>
+      <div className="flex justify-center">
+        <div className="max-w-lg p-5 h-[95vh] w-full overflow-y-auto rounded-xl md:max-w-[90vw] md:w-full md:ml-20 md:p-5 md:flex md:flex-col">
+          {videos.length === 0 ? (
+            <div className="flex flex-col items-center justify-center mt-20 gap-4 text-center">
+              <p className="text-gray-500">You haven't liked any video yet</p>
 
-            <button
-              onClick={() => navigate("/")}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Explore Videos
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <h1 className="text-2xl text-left font-semibold mb-6 mt-5 ">
-              Liked Videos
-            </h1>
-            {videos.map((video) => (
-              <VideoCardComponent video={video} key={video._id} />
-            ))}
-          </div>
-        )}
+              <button
+                onClick={() => navigate("/")}
+                className="bg-black text-white px-4 py-2 rounded-lg"
+              >
+                Explore Videos
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <h1 className="text-2xl text-left font-semibold mb-6 mt-5 ">
+                Liked Videos
+              </h1>
+              {videos.map((video) => (
+                <VideoCardComponent video={video} key={video._id} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-			</div>
     </>
   );
 }

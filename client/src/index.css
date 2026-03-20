@@ -3,10 +3,10 @@
 @plugin "tailwind-scrollbar";
 
 *::-webkit-scrollbar {
-  display: none;               /* Chrome, Edge, Safari */
+  display: none; /* Chrome, Edge, Safari */
 }
 * {
-	scrollbar-width: none;
+  scrollbar-width: none;
   font-family:
     Roboto,
     system-ui,

@@ -1,5 +1,9 @@
-export default function SubmitButton({ currentSubmitStatus, text, className ,ref}) {
-
+export default function SubmitButton({
+  currentSubmitStatus,
+  text,
+  className,
+  ref,
+}) {
   return (
     <button
       className={`bg-[#0A98FC] hover:bg-blue-600 
@@ -8,7 +12,7 @@ export default function SubmitButton({ currentSubmitStatus, text, className ,ref
 		 flex justify-center items-center rounded-full 
 		  font-semibold text-center text-md transition-bg ease cursor-pointer ${className}`}
       type="submit"
-			ref={ref}
+      ref={ref}
     >
       {currentSubmitStatus == "normal"
         ? text
