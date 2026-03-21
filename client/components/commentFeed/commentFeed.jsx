@@ -107,7 +107,7 @@ export default function CommentFeed({ fetchType, Id, isOpen, setIsOpen, setShowS
 			fetchAllCommentsOnVideo(Id);
 		}
 		return () => controller.abort()
-	}, [fetchType, Id, user?.id,page]);
+	}, [fetchType, Id, user?.id, page]);
 
 	return (
 		<>
