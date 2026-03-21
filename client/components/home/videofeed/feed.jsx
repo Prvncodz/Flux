@@ -121,7 +121,7 @@ export default function Feed({
   return (
     <div className="h-auto">
       <div
-        className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-screen" : "h-[80vh]"} relative gap-6 w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
+        className={`${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-screen" : "h-[85vh]"} relative gap-6 w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 mb-2 pb-5 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[30vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-screen" : "md:pl-16 md:pr-5 lg:pl-18  lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
         ref={ref}
       >
         {areVideosFetched &&
