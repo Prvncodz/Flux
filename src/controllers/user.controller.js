@@ -128,15 +128,12 @@ const loginUser = asyncHandler(async (req, res) => {
 		secure: true,
 		sameSite: "none",
 		maxAge: 60 * 60 * 1000, //cookie's max age is 1 hour
-		domain: "https://fluxdrift.vercel.app"
 	};
 	const RtOptions = {
 		httpOnly: true,
 		secure: true,
 		sameSite: "none",
 		maxAge: 3 * 24 * 60 * 60 * 1000, //cookie's max age is 3 days
-
-		domain: "https://fluxdrift.vercel.app"
 	};
 
 	return res
