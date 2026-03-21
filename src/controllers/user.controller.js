@@ -128,14 +128,14 @@ const loginUser = asyncHandler(async (req, res) => {
 		secure: true,
 		sameSite: "none",
 		maxAge: 60 * 60 * 1000, //cookie's max age is 1 hour
-		domain: "https://flux-backend-r0u6.onrender.com"
+		domain: "flux-backend-r0u6.onrender.com"
 	};
 	const RtOptions = {
 		httpOnly: true,
 		secure: true,
 		sameSite: "none",
 		maxAge: 3 * 24 * 60 * 60 * 1000, //cookie's max age is 3 days
-		domain: "https://flux-backend-r0u6.onrender.com"
+		domain: "flux-backend-r0u6.onrender.com"
 	};
 
 	return res
