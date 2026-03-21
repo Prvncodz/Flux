@@ -13,7 +13,6 @@ function LikeButton({
 }) {
 	const [liked, setLiked] = useState(likeStatus);
 	const [count, setCount] = useState(0);
-	const { isUserLogged } = useContext(UserContext);
 
 	useEffect(() => {
 		setLiked(likeStatus);

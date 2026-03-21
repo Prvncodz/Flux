@@ -45,26 +45,26 @@ export default function CommentComponent({ comment, onlyContent, mainPost, setSh
 	}
 
 	useEffect(() => {
-		if (idx===commentsLength-1){
+		if (idx === commentsLength - 1) {
 			setLoading(false);
 		}
-			async function getAllCommentPosts() {
-				try {
-					const res = await axios.get(
-						`/comments/${comment?._id}/get-comment-comments${user?._id ? `?userId=${user._id}` : ``}`,
-					); //if userid is there it will be sent as query else no query will be sent
-					if (res.status === 200) {
-						setCommentPosts(res.data?.data);
-						if (res.data.data.length !== 0) {
-							setAreAnyComments(true);
-						} else {
-							setAreAnyComments(false);
-						}
+		async function getAllCommentPosts() {
+			try {
+				const res = await axios.get(
+					`/comments/${comment?._id}/get-comment-comments${user?._id ? `?userId=${user._id}` : ``}`,
+				); //if userid is there it will be sent as query else no query will be sent
+				if (res.status === 200) {
+					setCommentPosts(res.data?.data);
+					if (res.data.data.length !== 0) {
+						setAreAnyComments(true);
+					} else {
+						setAreAnyComments(false);
 					}
-				} catch (err) {
-					console.log(err);
 				}
+			} catch (err) {
+				console.log(err);
 			}
+		}
 		getAllCommentPosts();
 	}, [comment?._id, user?._id]);
 	if (onlyContent) {
@@ -111,6 +111,7 @@ export default function CommentComponent({ comment, onlyContent, mainPost, setSh
 							Id={comment._id}
 							likeStatus={comment?.isLiked}
 							setShowSignInPopup={setShowSignInPopup}
+							isUserLogged={isUserLogged}
 						/>
 					</span>
 					<span

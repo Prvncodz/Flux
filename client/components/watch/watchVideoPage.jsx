@@ -125,6 +125,7 @@ export default function WatchVideoPage() {
 											Id={videoId}
 											likeStatus={isLiked}
 											setShowSignInPopup={setSigninInstruction}
+											isUserLogged={isUserLogged}
 										/>
 									</div>
 									{isOtherChannel && (
