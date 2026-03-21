@@ -2,5 +2,5 @@ import axios from "axios";
 
 export default axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:8000/api/v1",
+  baseURL: "https://flux-backend-r0u6.onrender.com/api/v1",
 });
