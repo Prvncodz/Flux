@@ -103,13 +103,14 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
           </li>
         </ul>
 
-        <button
+				{isUserLogged && <button
           onClick={onSignout}
           className="bg-[#1e98fe] hover:bg-blue-600 focus:outline-offset-2 active:bg-blue-800  text-gray-100 p-5 w-38 h-11 ml-auto mr-auto flex justify-center items-center rounded-full font-semibold text-center text-md transition-bg ease cursor-pointer mb-20 md:hidden lg:hidden"
         >
           <SignoutIcon />
           <span className="ml-2 text-medium font-medium">Logout</span>
         </button>
+				}
       </div>
     </>
   );
