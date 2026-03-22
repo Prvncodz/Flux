@@ -1,8 +1,8 @@
 {
-	"rewrites": [
-		{
-			"source": "/api/v1/:path*",
-			"destination": "https://flux-backend-r0u6.onrender.com/api/v1/:path*"
-		}
-	]
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://flux-backend-r0u6.onrender.com/api/v1/:path*"
+    }
+  ]
 }

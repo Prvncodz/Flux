@@ -60,7 +60,7 @@ export default function VideoComponent({
       const now = new Date();
       const dif = now.getTime() - new Date(t).getTime();
       const hours = Math.floor(dif / (1000 * 60 * 60));
-      const minutes = Math.floor((dif / 1000) * 60);
+      const minutes = Math.floor(dif / (1000 * 60));
       const seconds = Math.floor(dif / 1000);
       const days = Math.floor(dif / (1000 * 60 * 60 * 24));
       const months = Math.floor(days / 30);
