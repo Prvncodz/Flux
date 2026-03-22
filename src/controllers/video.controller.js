@@ -69,10 +69,12 @@ const getAllVideos = asyncHandler(async (req, res) => {
 	if (sortBy) {
 		sort[sortBy] = sortType === "desc" ? -1 : 1;
 	}
-	const videos = await Video.find(filter)
+	const videos = await Video
+		.find(filter)
 		.sort(sort)
 		.skip(skipNum)
 		.limit(limitNum);
+
 
 	const promises = videos.map(async (video) => {
 		const obj = video.toObject();
@@ -83,8 +85,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
 	});
 
 	const allVideos = await Promise.all(promises);
-
-	if (!allVideos) {
+	if (!allVideos || allVideos.length === 0) {
 		throw new ApiError(500, "unable to fetch all videos with like status");
 	}
 	return res

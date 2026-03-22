@@ -125,12 +125,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
 	const AtOptions = {
 		httpOnly: true,
-		secure: true,
+		secure: false,
 		maxAge: 60 * 60 * 1000, //cookie's max age is 1 hour
 	};
 	const RtOptions = {
 		httpOnly: true,
-		secure: true,
+		secure: false,
 		maxAge: 3 * 24 * 60 * 60 * 1000, //cookie's max age is 3 days
 	};
 
@@ -164,14 +164,12 @@ const logoutUser = asyncHandler(async (req, res) => {
 	);
 	const AtOptions = {
 		httpOnly: true,
-		secure: true,
-		sameSite: "none",
+		secure: false,
 		maxAge: 60 * 60 * 1000, //cookie's max age is 1 hour
 	};
 	const RtOptions = {
 		httpOnly: true,
-		secure: true,
-		sameSite: "none",
+		secure: false,
 		maxAge: 3 * 24 * 60 * 60 * 1000, //cookie's max age is 3 days
 	};
 
@@ -210,14 +208,12 @@ const refreshAccessTokens = asyncHandler(async (req, res) => {
 
 	const AtOptions = {
 		httpOnly: true,
-		secure: true,
-		sameSite: "none",
+		secure: false,
 		maxAge: 60 * 60 * 1000, //cookie's max age is 1 hour
 	};
 	const RtOptions = {
 		httpOnly: true,
-		secure: true,
-		sameSite: "none",
+		secure: false,
 		maxAge: 3 * 24 * 60 * 60 * 1000, //cookie's max age is 3 days
 	};
 
