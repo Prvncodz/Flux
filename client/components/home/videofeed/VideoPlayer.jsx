@@ -494,7 +494,7 @@ const VideoPlayer = ({
       {/* Volume Overlay Feedback */}
       {volumeOverlay.show && (
         <div
-          className={`absolute top-8 left-1/2 -translate-x-1/2 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium z-40 flex items-center gap-2 animate-in fade-in zoom-in duration-200 ${themeStyles.overlayBg} ${themeStyles.overlayText}`}
+          className={`absolute top-8 left-1/2 -translate-x-1/2 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium z-21 flex items-center gap-2 animate-in fade-in zoom-in duration-200 ${themeStyles.overlayBg} ${themeStyles.overlayText}`}
         >
           {volumeOverlay.value === 0 ? (
             <VolumeX size={16} />
@@ -592,7 +592,7 @@ const VideoPlayer = ({
 
       {/* --- Bottom Toolbar --- */}
       <div
-        className={`absolute bottom-0 left-0 right-0 p-2 md:p-6 mb-0 sm:mb-2 transition-all duration-500 ease-out z-30 ${showControls && !error ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        className={`absolute bottom-0 left-0 right-0 p-2 md:p-6 mb-0 sm:mb-2 transition-all duration-500 ease-out z-22 ${showControls && !error ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Floating Control Island */}

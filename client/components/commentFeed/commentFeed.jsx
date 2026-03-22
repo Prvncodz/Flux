@@ -117,7 +117,7 @@ export default function CommentFeed({
 	return (
 		<>
 			<div
-				className={`my-2 ${isOpen ? "h-[50vh]" : "h-30"} overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100`}
+				className={`my-2 scroll-smooth ${isOpen ? "h-[50vh]" : "h-30"} overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100`}
 				onClick={() => !isOpen && setIsOpen(true)}
 			>
 				<h1 className="text-gray-900 text-left text-base text-medium">
