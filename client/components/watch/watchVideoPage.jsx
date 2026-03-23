@@ -153,7 +153,7 @@ export default function WatchVideoPage() {
 								</div>
 							</div>
 						</div>
-						<div className="overflow-auto my-2 px-5">
+						<div className="overflow-auto my-2 lg:px-5">
 							<CommentFeed
 								fetchType={"video"}
 								Id={video?._id}

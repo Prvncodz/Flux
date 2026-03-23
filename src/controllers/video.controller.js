@@ -85,7 +85,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
 	});
 
 	const allVideos = await Promise.all(promises);
-	if (!allVideos || allVideos.length === 0) {
+	if (!allVideos) {
 		throw new ApiError(500, "unable to fetch all videos with like status");
 	}
 	return res
