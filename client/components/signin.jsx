@@ -48,7 +48,7 @@ export default function SignIn() {
       <div
         id="signin-card"
         className="h-auto w-87 bg-gray-100 flex flex-col
-			justify-center overflow-hidden rounded-xl"
+			justify-center overflow-hidden rounded-xl md:w-100 md:p-5"
       >
         <h1 className="mt-5 text-3xl font-bold text-[#0A98FC] relative text-center">
           Sign In
@@ -89,7 +89,7 @@ export default function SignIn() {
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }
           />
-          <p className="mt-2">
+          <p className="mt-2 text-center md:mt-5">
             Don't have an account?
             <span
               onClick={() => {

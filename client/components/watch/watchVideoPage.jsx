@@ -79,7 +79,7 @@ export default function WatchVideoPage() {
 			<div className="h-screen overflow-y-auto overflow-x-hidden lg:flex lg:flex-row lg:h-screen lg:w-screen lg:pb-80 scroll-smooth">
 				<div className="lg:flex lg:flex-col lg:h-auto lg:w-full lg:max-w-[75vw] ">
 					<div className="relative h-auto lg:h-900  lg:px-10 lg:py-5 lg:z-2 lg:bg-[#ffffff]">
-						<div className=" aspect-video h-full w-full">
+						<div className=" aspect-video h-full w-full rounded-xl overflow-hidden">
 
 							<VideoPlayer
 								videoUrl={video?.videofile?.url} // Source URL for the video
@@ -88,13 +88,13 @@ export default function WatchVideoPage() {
 								theme="light" // Player theme: 'dark' | 'light'
 								color="#1e549f" // Accent color for controls and progress bar
 								fit={false} // If true, video fits within container. If false, it fills (cover).
-								className=" h-full w-full" // Container classes
+								className=" h-full w-full overflow-hidden" // Container classes
 							/>
 						</div>
 					</div>
 					<div className="relative h-auto  rounded-xl ">
 						<div className="relative flex flex-col lg:px-5">
-							<h1 className="text-xl font-semibold text-gray-800 mx-2 text-left p-3  text-bold">
+							<h1 className="text-lg line-clamp-2 font-semibold text-gray-800 mx-2 text-left p-3  text-bold md:text-2xl">
 								{video?.title || ""}
 							</h1>
 							<VideoDescription
@@ -110,7 +110,7 @@ export default function WatchVideoPage() {
 										className="rounded-full h-11 w-11 mx-3"
 									/>
 									<div className="flex-col  justify-left">
-										<h1 className=" text-base font-normal text-gray-700 text-left">
+										<h1 className=" text-base font-normal text-gray-700 text-left w-30 truncate md:w-auto">
 											{fullname || username || ""}
 										</h1>
 										<h1 className="text-xs font-normal text-gray-500">

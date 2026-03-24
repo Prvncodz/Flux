@@ -54,13 +54,13 @@ export default function VideoDescription({
       >
         {showVideoDetails && (
           <div className="flex gap-1">
-            <p className="text-sm font-semibold text-gray-800">
+            <p className="text-sm font-semibold text-gray-700">
               {views + " views"} · {timeOfUpload + " ago"}
             </p>
           </div>
         )}
         <div
-          className={`my-2 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"}`}
+          className={`my-2 text-sm h-auto w-full ${isOpen ? "break-all" : "overflow-hidden"} text-gray-700`}
           ref={ref}
         >
           {content || "This video does not contains any description"}

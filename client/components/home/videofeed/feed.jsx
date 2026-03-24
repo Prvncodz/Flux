@@ -121,7 +121,7 @@ export default function Feed({
 	return (
 		<div className="h-auto">
 			<div
-				className={`scroll-smooth ${fetchType === "user" ? `h-[64vh]` : recommendations ? "h-screen" : "h-[90vh]"} relative gap-6 w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 mb-5 pb-10 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "md:p-3 md:pb-10 lg:max-w-[20vw] lg:grid-cols-1 xl:grid-cols-1 lg:h-full" : "md:pl-16 md:pr-5 lg:pl-18 lg:h-screen lg:pb-20 lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
+				className={`scroll-smooth  relative gap-6 w-full overflow-y-auto overflow-x-hidden grid gird-cols-1 mb-5 pb-10 md:grid-cols-2  md:gap-3 ${fetchType === "user" ? "h-[64] md:p-5 md:pb-15 lg:pb-35 lg:grid-cols-3 xl:grid-cols-4" : recommendations ? "h-auto md:p-3 lg:max-w-[20vw] lg:grid-cols-1 xl:grid-cols-1  lg:w-full box-border" : "h-[90vh] md:pl-16 md:pr-5 lg:pl-18 lg:h-screen lg:pb-20 lg:pr-4 lg:grid-cols-3 xl:grid-cols-4 "}  md:py-4  `}
 				ref={ref}
 			>
 				{areVideosFetched &&
