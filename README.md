@@ -1,5 +1,7 @@
 # Flux
 
+![Flux Platform Interface](https://github.com/Prvncodz/Flux/raw/main/flux-interface.png)
+
 ## Project Description
 Flux is a social media platform designed specifically for tech enthusiasts. It serves as a hub for sharing knowledge, experiences, and ideas, fostering a community where individuals can connect and engage on various technology-related topics.
 
