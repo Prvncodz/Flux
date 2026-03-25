@@ -5,6 +5,7 @@ import axios from "../../api/axios";
 import dbanner from "../assets/dbanner.jpg";
 import dpfp from "../assets/dpfp.jpg";
 import EditProfilePopUp from "../userProfile/editProfilePopup.jsx";
+import EditVideoPopup from "./EditVideoPopup.jsx";
 
 const CheckIcon = () => (
 	<svg
@@ -83,6 +84,7 @@ const Toast = ({ message, visible, onClose, type = "success" }) => {
 export default function Dashboard() {
 	const [userChannelStats, setUserChannelStats] = useState({});
 	const [videos, setVideos] = useState([]);
+	const [showEditVideo, setShowEditVideo] = useState(false);
 	const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
 	const [showDeleted, setShowDeleted] = useState(false);
 	const [showUpdated, setShowUpdated] = useState(false);
@@ -125,11 +127,15 @@ export default function Dashboard() {
 		<div className="h-screen ">
 			<Nav />
 			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
-				<div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
+				<div className="h-screen relative overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
-					<div className="absolute top-10 w-full flex flex-col gap-3 left-0 h-auto justify-center items-center z-50">
+					{showEditVideo && (
+						<EditVideoPopup />
+					)
+					}
+					<div className="absolute top-0 w-full flex flex-col gap-3 left-0 h-auto justify-center items-center z-10">
 						<Toast
 							message={`${publishStatus === "published" ? "Video published successfully" : "Video unpublished successfully"}`}
 							visible={showPublished}
@@ -254,7 +260,9 @@ export default function Dashboard() {
 									setPublishStatus={setPublishStatus}
 									setShowPublishError={setShowPublishError}
 									setShowDeleteError={setShowDeleteError}
-									setShowUpdateError={setShowUpdateError} />
+									setShowUpdateError={setShowUpdateError}
+									setShowEditVideo={setShowEditVideo}
+								/>
 							))}
 						</div>
 					</div>
@@ -301,7 +309,7 @@ function VideoCard({ video, setShowDeleted, setShowUpdated, setShowPublished, se
 		}
 	}
 	async function handleUpdateVideo() {
-		
+		setShowEditVideo(true);
 	}
 	return (
 		<div

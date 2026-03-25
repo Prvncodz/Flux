@@ -1,3 +1,4 @@
+
 import defaultPfp from "../assets/dpfp.jpg";
 import defaultBanner from "../assets/dbanner.jpg";
 import editIcon from "../assets/editimage.png";
@@ -7,7 +8,7 @@ import axios from "../../api/axios.js";
 import UserContext from "../../contexts/UserContext.jsx";
 import PopUpComponent from "../uploadPopup/popupComponent.jsx";
 
-export default function editProfilePopup({ setIsEditPopUpActive }) {
+export default function EditVideoPopup({ setIsEditPopUpActive }) {
 	const [coverImagePreview, setCoverImagePreview] = useState(null);
 	const [avatarPreview, setAvatarPreview] = useState(null);
 	const fileRefci = useRef(null);
@@ -276,3 +277,4 @@ export default function editProfilePopup({ setIsEditPopUpActive }) {
 		</PopUpComponent>
 	);
 }
+
