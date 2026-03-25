@@ -6,7 +6,7 @@ import axios from "../../api/axios.js";
 export default function VideoUploadPopup({ setShowPopup }) {
   const [loading, SetLoading] = useState(false);
   const [isSubmmited, setIsSubmmited] = useState(false);
-  const [fileName, setFileName] = useState("Select video file");
+  const [fileName, setFileName] = useState("select video file");
   function handleVideoFile(fname) {
     setFileName(fname);
   }
@@ -57,7 +57,7 @@ export default function VideoUploadPopup({ setShowPopup }) {
                 <rect x="1" y="5" width="15" height="14" rx="2" />
                 <polygon points="23 7 16 12 23 17 23 7" />
               </svg>
-              <h3 className="text-sm text-gray-400 mt-2">{fileName}</h3>
+              <h3 className="text-sm text-gray-400 mt-2 w-65 text-center truncate md:w-70 lg:w-75">{fileName}</h3>
               <input
                 type="file"
                 name="videofile"
