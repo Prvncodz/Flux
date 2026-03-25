@@ -42,7 +42,7 @@ export default function Dashboard() {
     <div className="h-screen ">
       <Nav />
       <div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
-        <div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[70vw] ">
+        <div className="h-screen overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
           {isEditPopUpActive && (
             <EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
           )}
@@ -90,7 +90,7 @@ export default function Dashboard() {
               CHANNEL STATS
             </h2>
 
-            <div className="space-y-3 h-auto w-full   md:flex md:flex-col md:justify-center  md:items-center lg:space-y-0 lg:flex lg:flex-row lg:space-x-3 ">
+            <div className="space-y-3 h-auto w-full   md:flex md:flex-col md:justify-center  md:items-center  ">
               <StatCard
                 icon={<Eye size={16} />}
                 label="Total views"
@@ -162,7 +162,7 @@ function VideoCard({ video }) {
     >
       <div className="flex items-center gap-3 text-sm">
         <Video size={16} />
-        <div className="sm:w-25 w-35 min-w-40 max-w-[240x] text-left text-wrap md:w-50 lg:w-100">
+        <div className="sm:w-25 w-35 min-w-40 max-w-[240x] text-left text-wrap line-clamp-3 md:w-50 lg:w-100 ">
           {video.title}
         </div>
       </div>

@@ -79,7 +79,7 @@ export default function WatchVideoPage() {
 			<div className="h-screen overflow-y-auto overflow-x-hidden lg:flex lg:flex-row lg:h-screen lg:w-screen lg:pb-80 scroll-smooth">
 				<div className="lg:flex lg:flex-col lg:h-auto lg:w-full lg:max-w-[75vw] ">
 					<div className="relative h-auto lg:h-900  lg:px-10 lg:py-5 lg:z-2 lg:bg-[#ffffff]">
-						<div className=" aspect-video h-full w-full rounded-xl overflow-hidden">
+						<div className=" aspect-video h-full w-full lg:rounded-xl lg:overflow-hidden">
 
 							<VideoPlayer
 								videoUrl={video?.videofile?.url} // Source URL for the video
@@ -103,14 +103,14 @@ export default function WatchVideoPage() {
 								uploadTime={video?.createdAt || ""}
 								showVideoDetails={true}
 							/>
-							<div className="flex mx-1 justify-between">
+							<div className="flex mx-1 justify-between w-auto">
 								<div className="flex">
 									<img
 										src={ownerAvatar || dpfp}
 										className="rounded-full h-11 w-11 mx-3"
 									/>
 									<div className="flex-col  justify-left">
-										<h1 className=" text-base font-normal text-gray-700 text-left w-30 truncate md:w-auto">
+										<h1 className=" text-base font-normal text-gray-700  text-left w-30 truncate md:w-auto">
 											{fullname || username || ""}
 										</h1>
 										<h1 className="text-xs font-normal text-gray-500">
@@ -121,7 +121,7 @@ export default function WatchVideoPage() {
 									</div>
 								</div>
 								<div className="flex gap-0">
-									<div className="flex items-center  px-7 py-3">
+									<div className={`flex items-center py-3 ${!isOtherChannel?"px-3 mr-4":""} `}>
 										<LikeButton
 											size={20}
 											fetchType={"video"}
