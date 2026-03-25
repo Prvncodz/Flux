@@ -53,7 +53,7 @@ const Toast = ({ message, visible, onClose, type = "success" }) => {
 
 	return (
 		<div
-			className={`flex items-center gap-3 bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 min-w-[300px] max-w-xs transition-all duration-500 ${visible
+			className={`flex items-center gap-3 bg-white border border-gray-200 shadow-lg rounded-xl px-4 py-3 min-w-75 max-w-xs transition-all duration-500 ${visible
 				? "opacity-100 translate-y-0 pointer-events-auto"
 				: "opacity-0 translate-y-4 pointer-events-none"
 				}`}
@@ -84,7 +84,6 @@ const Toast = ({ message, visible, onClose, type = "success" }) => {
 export default function Dashboard() {
 	const [userChannelStats, setUserChannelStats] = useState({});
 	const [videos, setVideos] = useState([]);
-	const [showEditVideo, setShowEditVideo] = useState(false);
 	const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
 	const [showDeleted, setShowDeleted] = useState(false);
 	const [showUpdated, setShowUpdated] = useState(false);
@@ -127,53 +126,52 @@ export default function Dashboard() {
 		<div className="h-screen ">
 			<Nav />
 			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
-				<div className="h-screen relative overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
+				<div className="h-screen  overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
-					{showEditVideo && (
-						<EditVideoPopup />
-					)
-					}
-					<div className="absolute top-0 w-full flex flex-col gap-3 left-0 h-auto justify-center items-center z-10">
-						<Toast
-							message={`${publishStatus === "published" ? "Video published successfully" : "Video unpublished successfully"}`}
-							visible={showPublished}
-							onClose={() => setShowPublished(false)}
-						/>
+					<div className="relative">
 
-						<Toast
-							message="Error toggling video publish status"
-							visible={showPublishError}
-							onClose={() => setShowPublishError(false)}
-							type="error"
-						/>
+						<div className="absolute top-0 w-full flex flex-col gap-3 left-0 h-auto justify-center items-center z-10">
+							<Toast
+								message={`${publishStatus === "published" ? "Video published successfully" : "Video unpublished successfully"}`}
+								visible={showPublished}
+								onClose={() => setShowPublished(false)}
+							/>
+
+							<Toast
+								message="Error toggling video publish status"
+								visible={showPublishError}
+								onClose={() => setShowPublishError(false)}
+								type="error"
+							/>
 
 
-						<Toast
-							message="Video deleted successfully"
-							visible={showDeleted}
-							onClose={() => setShowDeleted(false)}
-						/>
-						<Toast
-							message="Unable to delete the video"
-							visible={showDeleteError}
-							onClose={() => setShowDeleteError(false)}
-							type="error"
-						/>
+							<Toast
+								message="Video deleted successfully"
+								visible={showDeleted}
+								onClose={() => setShowDeleted(false)}
+							/>
+							<Toast
+								message="Unable to delete the video"
+								visible={showDeleteError}
+								onClose={() => setShowDeleteError(false)}
+								type="error"
+							/>
 
-						<Toast
-							message="Video updated successfully"
-							visible={showUpdated}
-							onClose={() => setShowUpdated(false)}
-						/>
-						<Toast
-							message="Unable to update the video"
-							visible={showUpdateError}
-							onClose={() => setShowUpdateError(false)}
-							type="error"
-						/>
+							<Toast
+								message="Video updated successfully"
+								visible={showUpdated}
+								onClose={() => setShowUpdated(false)}
+							/>
+							<Toast
+								message="Unable to update the video"
+								visible={showUpdateError}
+								onClose={() => setShowUpdateError(false)}
+								type="error"
+							/>
 
+						</div>
 					</div>
 					<div className="hidden md:flex flex-col items-center mb-6 md:mt-5">
 						<h1 className="text-2xl font-semibold text-gray-800">
@@ -261,7 +259,6 @@ export default function Dashboard() {
 									setShowPublishError={setShowPublishError}
 									setShowDeleteError={setShowDeleteError}
 									setShowUpdateError={setShowUpdateError}
-									setShowEditVideo={setShowEditVideo}
 								/>
 							))}
 						</div>
@@ -272,8 +269,9 @@ export default function Dashboard() {
 	);
 }
 
-function VideoCard({ video, setShowDeleted, setShowUpdated, setShowPublished, setPublishStatus, setShowPublishError, setShowDeleteError }) {
+function VideoCard({ video, setShowDeleted, setShowUpdated,setShowUpdateError, setShowPublished, setPublishStatus, setShowPublishError, setShowDeleteError }) {
 	const [isPublished, setIsPublished] = useState(video.isPublished);
+	const [showEditVideo, setShowEditVideo] = useState(false);
 
 	let timeoutId;
 	async function handleTogglePublish(videoId) {
@@ -316,6 +314,10 @@ function VideoCard({ video, setShowDeleted, setShowUpdated, setShowPublished, se
 			key={video._id}
 			className="flex items-center justify-between border border-neutral-300 rounded-lg px-3 py-2 h-auto"
 		>
+
+			{showEditVideo && (
+				<EditVideoPopup setIsEditPopUpActive={setShowEditVideo} video={video} setShowUpdated={setShowUpdated} setShowUpdateError={setShowUpdateError}/>
+			)}
 			<div className="flex items-center gap-3 text-sm">
 				<Video size={16} />
 				<div className="sm:w-25 w-35 min-w-40 max-w-[240x] text-left text-wrap line-clamp-2 md:line-clamp-3 md:w-50 lg:w-100  ">
@@ -329,11 +331,11 @@ function VideoCard({ video, setShowDeleted, setShowUpdated, setShowPublished, se
 				) : (
 					<EyeOff size={16} className="text-red-500" />
 				)}
-				<Edit2 className="text-gray-500 hidden md:block" size={16} onClick={handleUpdateVideo} />
-				<Trash2 className="text-gray-500 hidden md:block" size={16} onClick={() => handleDeleteVideo(video._id)} />
+				<Edit2 className="text-gray-500 hidden cursor-pointer md:block" size={16} onClick={handleUpdateVideo} />
+				<Trash2 className=" hidden cursor-pointer text-red-500 md:block " size={16} onClick={() => handleDeleteVideo(video._id)} />
 				<div className="flex items-center gap-2">
 					<button
-						className={`text-xs px-3 py-1 w-20 rounded-md text-white active:scale-95 transition-all ${isPublished ? "bg-gray-800" : "bg-gray-600"
+						className={`text-xs px-3 py-1 w-20 rounded-md text-white active:scale-95 transition-all cursor-pointer ${isPublished ? "bg-gray-800" : "bg-gray-600"
 							}`}
 						onClick={() => handleTogglePublish(video._id)}
 					>
@@ -341,7 +343,7 @@ function VideoCard({ video, setShowDeleted, setShowUpdated, setShowPublished, se
 					</button>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }
 

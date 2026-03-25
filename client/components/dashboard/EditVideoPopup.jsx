@@ -1,100 +1,51 @@
 
-import defaultPfp from "../assets/dpfp.jpg";
 import defaultBanner from "../assets/dbanner.jpg";
-import editIcon from "../assets/editimage.png";
 import { useState, useRef, useContext } from "react";
 import SubmitButton from "../submitButton.jsx";
 import axios from "../../api/axios.js";
 import UserContext from "../../contexts/UserContext.jsx";
 import PopUpComponent from "../uploadPopup/popupComponent.jsx";
+import { CameraIcon, ImageIcon } from "lucide-react";
 
-export default function EditVideoPopup({ setIsEditPopUpActive }) {
-	const [coverImagePreview, setCoverImagePreview] = useState(null);
-	const [avatarPreview, setAvatarPreview] = useState(null);
+export default function EditVideoPopup({ setIsEditPopUpActive, video, setShowUpdated, setShowUpdateError }) {
+	const [thumbnailPreview, setThumbnailPreview] = useState(null);
 	const fileRefci = useRef(null);
-	const fileRefav = useRef(null);
-	const { user } = useContext(UserContext);
 	const [loading, SetLoading] = useState(false);
 	const [isSubmmited, setIsSubmmited] = useState(false);
-	const [fullNameInput, setFullNameInput] = useState(
-		user.fullName ? user.fullName : "",
-	);
-	const [usernameInput, setUsernameInput] = useState(
-		user.userName ? user.userName : "",
-	);
-	const [emailInput, setEmailInput] = useState(user.email ? user.email : "");
-	const [isInfoModified, setIsInfoModified] = useState(false);
+	const { user } = useContext(UserContext)
+	const [titleInput, setTitleInput] = useState(video?.title || "");
+	const [descriptionInput, setDescriptionInput] = useState(video?.description || "")
 
 	async function handleFormSubmission(e) {
 		SetLoading(true);
 		e.preventDefault();
 		const formData = new FormData(e.target);
-		const avatar = formData.get("avatar");
-		const coverImage = formData.get("coverImage");
-		const fullName = formData.get("fullName");
-		const userName = formData.get("userName");
-		const email = formData.get("email");
 
-		//if we have a coverImage update it with this endpoint below
-		if (coverImage && coverImage.size !== 0) {
+		async function updateVideo(videoId) {
 			try {
 				const res = await axios.patch(
-					"/user/update-user-coverimage",
-					{ coverImage },
+					`/videos/c/${videoId}/update-video`,
+					formData,
 					{
 						headers: {
 							"Content-Type": "multipart/form-data",
 						},
 					},
 				);
+				if (res.status === 200) {
+					setShowUpdated(true);
+				} else {
+					setShowUpdateError(true);
+				}
 			} catch (error) {
-				console.log(error);
-				console.log(`Error name: ${error.name}`);
-				console.log(`Backend message: ${error.response?.data?.message}`);
+				setShowUpdateError(true);
 				e.target.reset();
 			} finally {
 				SetLoading(false);
 			}
 		}
-
-		if (avatar && avatar.size !== 0) {
-			try {
-				const res = await axios.patch(
-					"/user/update-user-avatar",
-					{ avatar },
-					{
-						headers: {
-							"Content-Type": "multipart/form-data",
-						},
-					},
-				);
-			} catch (error) {
-				console.log(`Error name: ${error.name}`);
-				console.log(`Backend message: ${error.response?.data?.message}`);
-
-				e.target.reset();
-			} finally {
-				SetLoading(false);
-			}
-		}
-		if (isInfoModified) {
-			try {
-				const res = await axios.patch("/user/update-user-info", {
-					fullname: fullName,
-					username: userName,
-					email: email,
-				});
-			} catch (error) {
-				console.log(error);
-				console.log(`Error name: ${error.name}`);
-				console.log(`Backend message: ${error.response?.data?.message}`);
-				e.target.reset();
-			} finally {
-				SetLoading(false);
-			}
-		}
-		setCoverImagePreview(null);
-		setAvatarPreview(null);
+		updateVideo(video?._id);
+		setThumbnailPreview(null);
 		setIsSubmmited(true);
 		e.target.reset();
 		setTimeout(() => {
@@ -103,35 +54,31 @@ export default function EditVideoPopup({ setIsEditPopUpActive }) {
 		}, 1000);
 	}
 
-	function handleCoverImage(e) {
+	function handleThumbnail(e) {
 		const file = e.target.files[0];
 		if (file) {
-			setCoverImagePreview(URL.createObjectURL(file));
+			setThumbnailPreview(URL.createObjectURL(file));
 		}
 	}
 
-	function handleAvatar(e) {
-		const file = e.target.files[0];
-		if (file) {
-			setAvatarPreview(URL.createObjectURL(file));
-		}
-	}
+
 
 	return (
 		<PopUpComponent onCancel={() => setIsEditPopUpActive(false)}>
 			<h1 className="mt-5 text-xl font-semibold text-[#0A98FC] relative text-center">
-				Update Profile
+				Update Video
 			</h1>
 
-			<form className="p-7" onSubmit={handleFormSubmission}>
+			<form className="p-5" onSubmit={handleFormSubmission}>
+
 				<div className="wrapper relative transition-all ease">
 					<div className="relative z-1">
 						<img
 							src={
-								coverImagePreview
-									? coverImagePreview
-									: user.coverImage
-										? user.coverImage.url
+								thumbnailPreview
+									? thumbnailPreview
+									: video?.thumbnail?.url
+										? video?.thumbnail?.url
 										: defaultBanner
 							}
 							onClick={() => {
@@ -139,125 +86,64 @@ export default function EditVideoPopup({ setIsEditPopUpActive }) {
 							}}
 							onError={(e) => (e.target.src = dbanner)}
 							className="h-33
-                w-full rounded-lg relative cursor-pointer md:h-40"
+                w-full rounded-lg relative cursor-pointer md:h-53"
 							loading="lazy"
 						/>
 
 						<div
-							onClick={() => {
-								fileRefci.current.click();
-							}}
+							className="absolute z-2 bg-black/50 h-full w-full rounded-lg
+                  cursor-pointer top-0 flex items-center justify-center" onClick={() => fileRefci.current.click()}
 						>
-							<div
-								className="absolute z-2 bg-black/50 h-33 w-full rounded-lg
-                  cursor-pointer top-0 "
-							></div>
-							<img
-								src={editIcon}
-								className="absolute h-15 w-15 z-3 -top-2 right-0 cursor-pointer"
-								loading="lazy"
-							/>
+							<ImageIcon className="text-gray-300" />
+							<div className="text-gray-300 ml-2 text-sm" >Video thumbnail </div>
 						</div>
+
 						<input
 							type="file"
 							ref={fileRefci}
 							className="hidden"
-							name="coverImage"
+							name="thumbnail"
 							accept="image/*"
-							onChange={handleCoverImage}
+							onChange={handleThumbnail}
 						/>
 					</div>
 
-					<div className="relative">
-						<img
-							src={
-								avatarPreview
-									? avatarPreview
-									: user.avatar
-										? user.avatar.url
-										: defaultPfp
-							}
-							onError={(e) => (e.target.src = dbanner)}
-							onClick={() => {
-								fileRefav.current.click();
-							}}
-							className="h-15
-                w-15 rounded-full absolute -left-1 -bottom-3 cursor-pointer
-                z-1"
-						/>
-						<div
-							onClick={() => {
-								fileRefav.current.click();
-							}}
-						>
-							<img
-								src={editIcon}
-								className="absolute h-12 w-13 -bottom-1 left-0 z-3 cursor-pointer"
-							/>
-						</div>
-
-						<input
-							type="file"
-							ref={fileRefav}
-							className="hidden"
-							name="avatar"
-							accept="image/*"
-							onChange={handleAvatar}
-						/>
-					</div>
 				</div>
 
 				<div
-					className="form-inputs mt-10 mb-5  h-auto w-full relative
+					className="form-inputs mt-10 mb-2  h-auto w-full relative
             text-left"
 				>
-					<label className="text-md font-medium text-gray-700">
-						Fullname
+					<label className="text-base font-medium text-gray-700">
+						Title
 						<input
-							name="fullName"
+							name="title"
 							type="text"
 							className="bg-gray-100
-                w-full  mt-1 mb-4 rounded-md p-1 border border-gray-200 shadow-xs"
-							value={fullNameInput}
+                w-full  mt-1 mb-4 rounded-md p-2 md:p-3 border border-gray-200 shadow-xs font-normal text-sm"
+							value={titleInput}
 							onChange={(e) => {
-								setFullNameInput(e.target.value);
-								setIsInfoModified(true);
+								setTitleInput(e.target.value);
 							}}
-							onError={(e) => (e.target.value = user.fullName)}
+							onError={(e) => (e.target.value = video.title)}
 						/>
 					</label>
-					<label className="text-md font-medium text-gray-700">
-						Username
-						<input
-							name="userName"
+					<label className="text-base font-medium text-gray-700">
+						Description
+						<textarea
+							name="description"
 							type="text"
-							className="bg-gray-100 w-full  mb-4 rounded-md p-1 border
-                border-gray-200 shadow-xs mt-1"
-							value={usernameInput}
+							className="bg-gray-100 w-full  h-35 mb-4 rounded-md p-2 border
+                border-gray-200 shadow-xs mt-1 md:p-3 font-normal text-sm"
+							value={descriptionInput}
 							onChange={(e) => {
-								setUsernameInput(e.target.value);
-								setIsInfoModified(true);
+								setDescriptionInput(e.target.value);
 							}}
-							onError={(e) => (e.target.value = user.userName)}
-						/>
-					</label>
-					<label className="text-md font-medium text-gray-700">
-						Email
-						<input
-							name="email"
-							type="email"
-							className="bg-gray-100 w-full mb-4 rounded-md p-1 border border-gray-200
-                shadow-xs mt-1"
-							value={emailInput}
-							onError={(e) => (e.target.value = user.email)}
-							onChange={(e) => {
-								setEmailInput(e.target.value);
-								setIsInfoModified(true);
-							}}
+							onError={(e) => (e.target.value = video?.description)}
 						/>
 					</label>
 				</div>
-				<div className="flex items-center justify-center mt-1 gap-3">
+				<div className="flex items-center justify-center gap-3">
 					<button
 						type="button"
 						onClick={() => setIsEditPopUpActive(false)}

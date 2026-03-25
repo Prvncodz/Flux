@@ -311,6 +311,7 @@ const getVideoById = asyncHandler(async (req, res) => {
 const updateVideo = asyncHandler(async (req, res) => {
 	try {
 		const { videoId } = req.params;
+
 		if (!isValidObjectId(videoId)) {
 			throw new ApiError(400, "videoid is not provided in videoId");
 		}
@@ -318,9 +319,10 @@ const updateVideo = asyncHandler(async (req, res) => {
 		const { title, description } = req.body;
 
 		const NewThumbnailPath = req.file?.path;
-
-		const thumbnailResponse = await uploadOnCloud(NewThumbnailPath);
-
+		let thumbnailResponse;
+		if (NewThumbnailPath) {
+			thumbnailResponse = await uploadOnCloud(NewThumbnailPath);
+		}
 		const video = await Video.findById(videoId);
 		const fileToBeDeleted = video?.thumbnail.public_id;
 		const videoChanges = await Video.findByIdAndUpdate(
@@ -362,7 +364,7 @@ const updateVideo = asyncHandler(async (req, res) => {
 				new ApiResponse(
 					200,
 					videoChanges,
-					"Changes applied applied to the video succesfully",
+					"Changes applied to the video succesfully",
 				),
 			);
 	} catch (error) {

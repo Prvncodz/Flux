@@ -143,6 +143,8 @@ const loginUser = asyncHandler(async (req, res) => {
 				200,
 				{
 					user: loggedUser,
+					accessTokens,
+					refreshTokens,
 				},
 				"user logged in successfully",
 			),
