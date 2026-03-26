@@ -125,8 +125,8 @@ export default function Dashboard() {
 	return (
 		<div className="h-screen">
 			<Nav />
-			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2 relative">
-				<div className="h-screen  overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
+			<div className="flex relative justify-center h-screen overflow-y-auto w-full md:pb-2">
+				<div className="h-screen   overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
@@ -147,14 +147,12 @@ export default function Dashboard() {
 							visible={showUpdated}
 							onClose={() => setShowUpdated(false)}
 						/>
-
 						<Toast
 							message="Error toggling video publish status"
 							visible={showPublishError}
 							onClose={() => setShowPublishError(false)}
 							type="error"
 						/>
-
 						<Toast
 							message="Unable to delete the video"
 							visible={showDeleteError}
@@ -169,6 +167,7 @@ export default function Dashboard() {
 						/>
 
 					</div >
+
 					<div className="hidden md:flex flex-col items-center mb-6 md:mt-5">
 						<h1 className="text-2xl font-semibold text-gray-800">
 							Welcome back, {userChannelStats?.fullName} 👋
