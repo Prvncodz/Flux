@@ -137,6 +137,16 @@ export default function Dashboard() {
 							visible={showPublished}
 							onClose={() => setShowPublished(false)}
 						/>
+						<Toast
+							message="Video deleted successfully"
+							visible={showDeleted}
+							onClose={() => setShowDeleted(false)}
+						/>
+						<Toast
+							message="Video updated successfully"
+							visible={showUpdated}
+							onClose={() => setShowUpdated(false)}
+						/>
 
 						<Toast
 							message="Error toggling video publish status"
@@ -145,23 +155,11 @@ export default function Dashboard() {
 							type="error"
 						/>
 
-
-						<Toast
-							message="Video deleted successfully"
-							visible={showDeleted}
-							onClose={() => setShowDeleted(false)}
-						/>
 						<Toast
 							message="Unable to delete the video"
 							visible={showDeleteError}
 							onClose={() => setShowDeleteError(false)}
 							type="error"
-						/>
-
-						<Toast
-							message="Video updated successfully"
-							visible={showUpdated}
-							onClose={() => setShowUpdated(false)}
 						/>
 						<Toast
 							message="Unable to update the video"
@@ -170,7 +168,7 @@ export default function Dashboard() {
 							type="error"
 						/>
 
-					</div>
+					</div >
 					<div className="hidden md:flex flex-col items-center mb-6 md:mt-5">
 						<h1 className="text-2xl font-semibold text-gray-800">
 							Welcome back, {userChannelStats?.fullName} 👋
@@ -261,9 +259,9 @@ export default function Dashboard() {
 							))}
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
+				</div >
+			</div >
+		</div >
 	);
 }
 

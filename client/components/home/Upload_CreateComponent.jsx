@@ -19,7 +19,7 @@ export default function CreateComponent({ handleUpload }) {
 			</div>
 			<div
 				className="flex items-center gap-3 w-55 p-3 rounded-lg hover:bg-gray-100"
-				onClick={() => handleUpload("post")}
+				onClick={() => handleUpload("playlist")}
 			>
 				<ListVideo/>
 				<h3 className="ml-1">Create playlist</h3>
