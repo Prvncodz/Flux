@@ -24,7 +24,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 			}
 		}
 		el?.addEventListener("scroll", handleScroll);
-		return () => el.removeEventListener("scroll", handleScroll);
+		return () => el?.removeEventListener("scroll", handleScroll);
 	});
 	useEffect(() => {
 		if (loading) return;
