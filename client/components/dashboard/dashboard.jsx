@@ -130,7 +130,6 @@ export default function Dashboard() {
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
-
 					<div className="absolute top-0  flex flex-col gap-3 right-7 h-auto justify-center items-center z-10">
 						<Toast
 							message={`${publishStatus === "published" ? "Video published successfully" : "Video unpublished successfully"}`}
