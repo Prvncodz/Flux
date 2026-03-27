@@ -20,6 +20,7 @@ import {
 	Search,
 } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
+import CreatePlaylistPopup from "./playlistfeed/CreatePlaylistPopup.jsx";
 
 export default function Nav({ wantTabs, searchType }) {
 	const navigate = useNavigate();
@@ -41,6 +42,7 @@ export default function Nav({ wantTabs, searchType }) {
 	const popup = {
 		video: <VideoUploadPopup setShowPopup={setShowPopup} />,
 		post: <PostUploadPopup setShowPopup={setShowPopup} />,
+		playlist:<CreatePlaylistPopup setShowPopup={setShowPopup}/>
 	};
 
 	useEffect(() => {
@@ -78,8 +80,10 @@ export default function Nav({ wantTabs, searchType }) {
 		setShowPopup(true);
 		if (fetchtype === "video") {
 			setPopupType("video");
-		} else {
+		} else if (fetchtype === "post") {
 			setPopupType("post");
+		} else {
+			setPopupType("playlist");
 		}
 	}
 

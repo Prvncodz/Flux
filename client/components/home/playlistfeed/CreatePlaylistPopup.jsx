@@ -1,9 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
-import axios from "../../api/axios";
-import SubmitButton from "../submitButton";
-import PopUpComponent from "./popupComponent";
+import SubmitButton from "../../submitButton";
+import PopUpComponent from "../../uploadPopup/popupComponent";
 
-export default function PostUploadPopup({ setShowPopup }) {
+export default function CreatePlaylistPopup({ setShowPopup }) {
 	const [loading, SetLoading] = useState(false);
 	const [isSubmmited, setIsSubmmited] = useState(false);
 
@@ -36,21 +36,31 @@ export default function PostUploadPopup({ setShowPopup }) {
 	return (
 		<>
 			<PopUpComponent onCancel={() => setShowPopup(false)}>
+
+				<h1 className="text-xl text-[#0A98FC] font-bold text-center mt-4 my-2">Create Playlist</h1>
 				<form
-					className="text-left p-3 my-2"
+					className="text-left p-3 my-2 flex flex-col gap-2"
 					onSubmit={(e) => handlePostUpload(e)}
 				>
-					<label className="text-md font-base text-gray-700 ">
-						what's on your mind?
-						<textarea
-							name="content"
+					<label className="text-md font-base text-gray-700 my-1">
+						Playlist name
+						<input
+							name="name"
 							type="text"
-							placeholder="The weather is beautifull..."
-							className="bg-gray-100
-                h-30 w-full p-2 border border-gray-300 text-sm mt-1 outline-none md:h-40"
+							placeholder="My playlist 1..."
+							className="bg-gray-100 w-full border border-gray-300 rounded-xl  p-3  text-sm my-1 outline-none"
 						/>
 					</label>
-					<div className="flex justify-center gap-3 mt-1">
+					<label className="text-md font-base text-gray-700 ">
+						Descripton
+						<textarea
+							name="name"
+							type="text"
+							placeholder="Playlist description..."
+							className="bg-gray-100 w-full border border-gray-300 rounded-xl h-30  p-3  text-sm mt-1 outline-none"
+						/>
+					</label>
+					<div className="flex mt-1 gap-3 justify-center">
 						<button
 							type="button"
 							onClick={() => setShowPopup(false)}
@@ -62,9 +72,8 @@ export default function PostUploadPopup({ setShowPopup }) {
 							currentSubmitStatus={
 								isSubmmited ? "submited" : loading ? "loading" : "normal"
 							}
-							text={"Upload"}
-							centered={false}
-							className={"mt-3 mb-3"}
+							text={"Create"}
+							className={"my-3"}
 						/>
 					</div>
 				</form>
