@@ -11,12 +11,11 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 		e.preventDefault();
 		const formdata = new FormData(e.target);
 		SetLoading(true);
-		const content = formdata.get("content");
 
 		try {
 			await axios.post(
-				"tweets/create-tweet",
-				{ content },
+				"/playlists/create",
+				formdata,
 				{
 					headers: {
 						"Content-Type": "application/json",
@@ -24,7 +23,7 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 				},
 			);
 		} catch (error) {
-			console.log(error);
+			console.log(error.message);
 		}
 		SetLoading(false);
 		setIsSubmmited(true);
@@ -49,12 +48,13 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 							type="text"
 							placeholder="My playlist 1..."
 							className="bg-gray-100 w-full border border-gray-300 rounded-xl  p-3  text-sm my-1 outline-none"
+							required
 						/>
 					</label>
 					<label className="text-md font-base text-gray-700 ">
 						Descripton
 						<textarea
-							name="name"
+							name="description"
 							type="text"
 							placeholder="Playlist description..."
 							className="bg-gray-100 w-full border border-gray-300 rounded-xl h-30  p-3  text-sm mt-1 outline-none"
