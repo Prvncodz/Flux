@@ -40,9 +40,9 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 				<div className="md:hidden">
 					<CancelIconComponent onClick={() => setIsMenuOPen((prev) => !prev)} />
 				</div>
-				<ul className=" flex flex-col justify-left items-center gap-3 w-full h-150 p-4 md:mt-6 md:gap-5 md:p-0 md:h-full md:w-full md:ml-1 ">
+				<ul className=" flex flex-col justify-left items-center w-full h-150 p-4 md:mt-3  md:p-0 md:h-full md:w-full md:ml-1 ">
 					<li
-						className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50"
+						className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center rounded-full py-3 md:bg-[#ffffff] md:hover:bg-neutral-100"
 						onClick={() => handleNavigation("home")}
 					>
 						<span className="mx-2 md:mx-4 ">
@@ -55,7 +55,7 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 					{isUserLogged && (
 						<>
 							<li
-								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50"
+								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center rounded-full py-3 md:bg-[#ffffff] md:hover:bg-neutral-100"
 								onClick={() => handleNavigation("dashboard")}
 							>
 								<span className="mx-2 md:mx-4">
@@ -67,7 +67,7 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 							</li>
 
 							<li
-								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50"
+								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center rounded-full py-3 md:bg-[#ffffff] md:hover:bg-neutral-100"
 								onClick={() => handleNavigation("likedvideos")}
 							>
 								<span className="mx-2 md:mx-4 ">
@@ -78,7 +78,7 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 								</span>
 							</li>
 							<li
-								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50"
+								className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center rounded-full py-3 md:bg-[#ffffff] md:hover:bg-neutral-100"
 								onClick={() => handleNavigation("watchhistory")}
 							>
 								<span className="mx-2 md:mx-4">
@@ -91,7 +91,7 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 						</>
 					)}
 					<li
-						className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center md:bg-[#ffffff] md:hover:bg-neutral-50"
+						className="h-auto w-full bg-neutral-100 hover:bg-neutral-200 cursor-pointer text-gray-800 flex items-center rounded-full py-3 md:bg-[#ffffff] md:hover:bg-neutral-100"
 						onClick={() => handleNavigation("posts")}
 					>
 						<span className="mx-2 md:mx-4">
