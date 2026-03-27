@@ -125,12 +125,12 @@ export default function Dashboard() {
 	return (
 		<div className="h-screen">
 			<Nav />
-			<div className="flex relative justify-center h-screen overflow-y-auto w-full md:pb-2">
-				<div className="h-screen   overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
+			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
+				<div className="h-screen  overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
 					{isEditPopUpActive && (
 						<EditProfilePopUp setIsEditPopUpActive={setIsEditPopUpActive} />
 					)}
-					<div className="absolute top-0  flex flex-col gap-3 right-7 h-auto justify-center items-center z-10">
+					<div className="absolute pointer-events-none top-15  flex-col gap-3 right-8 h-auto justify-center items-center z-10">
 						<Toast
 							message={`${publishStatus === "published" ? "Video published successfully" : "Video unpublished successfully"}`}
 							visible={showPublished}
