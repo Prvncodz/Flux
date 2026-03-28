@@ -1,15 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, PlayCircleIcon, PlusCircleIcon, VideoIcon } from "lucide-react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { ArrowLeft, Ellipsis, PlayCircleIcon, VideoIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Description from "../watch/videoDescription.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import dbanner from "../assets/dbanner.jpg"
+import UserContext from "../../contexts/UserContext.jsx"
+import PlaylistOptions from "./PlaylistOptions.jsx";
+
 export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const { user, isUserLogged } = useContext(UserContext);
 	const { playlist, avatarUrl, fullname, name } = location.state || {};
 	const [videos] = useState(playlist?.videos);
 	const playPlaylist = useRef(null);
+	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
+	const [isOptionActive,setIsOptionsActive]=useState(false);
 
 	function handleShowWatchVideo(videoId) {
 		if (videoId) {
@@ -22,13 +28,37 @@ export default function ShowPlaylistPage() {
 			});
 		}
 	}
+	async function handleOption(optType){
+		try {
+		 if(optType==="edit"){
+			//edit playlist
+			}else if(optType=== "delete"){
+				//delete playlist
+			}
+		} catch (err) {
+		 console.log(err);	
+		}
+	}
+	useEffect(() => {
+		if ((playlist?.owner === user?._id) && isUserLogged) {
+			setIsUserPlaylistOwner(true);
+		}
+	}, [])
 
 	return (
 		<div className="max-w-md mx-auto h-screen overflow-y-auto p-6 space-y-6">
 			{/* back button */}
-			<button onClick={() => navigate("/")} className="flex flex-start">
-				<ArrowLeft />
-			</button>
+			<div className="flex justify-between relative">
+				<button onClick={() => navigate("/")} className="flex flex-start">
+					<ArrowLeft />
+				</button>
+				<button onClick={() => setIsOptionsActive(prev => !prev)} className="flex">
+					<Ellipsis size={28}/>
+				</button>
+				{
+					isOptionActive && <PlaylistOptions handleOption={handleOption}/>
+				}
+			</div>
 
 			{/* playlist banner */}
 			<div className="w-full h-65  rounded-xl overflow-hidden bg-yellow-400">
@@ -53,7 +83,7 @@ export default function ShowPlaylistPage() {
 					/>
 
 					<span className="text-sm text-gray-600 wrap-break-word">
-					{fullname}
+						{fullname}
 					</span>
 				</div>
 
@@ -70,7 +100,7 @@ export default function ShowPlaylistPage() {
 					</button>
 					<button
 						className="flex items-center gap-2 text-gray-700 px-6 py-2 rounded-full p-3 font-semibold text-xs ring ring-gray-700"
-						
+
 					>
 						<VideoIcon size={18} />
 						ADD VIDEO
