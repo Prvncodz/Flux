@@ -45,7 +45,7 @@ export default function Feed({
 						{ signal },
 					)
 					.then((res) => {
-						setVideos((prev) => [...prev, ...res.data.data]);
+						setVideos((prev) => [...prev, ...res.data?.data]);
 						SetAreVideosFetched(true);
 						if (res.data.data.length == 0) {
 							setHasNoMore(true);

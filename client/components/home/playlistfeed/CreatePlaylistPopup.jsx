@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState } from "react";
 import SubmitButton from "../../submitButton";
 import PopUpComponent from "../../uploadPopup/popupComponent";
+import axios from "../../../api/axios";
 
 export default function CreatePlaylistPopup({ setShowPopup }) {
 	const [loading, SetLoading] = useState(false);
@@ -72,7 +72,7 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 							currentSubmitStatus={
 								isSubmmited ? "submited" : loading ? "loading" : "normal"
 							}
-							text={"Create"}
+							text={"Submit"}
 							className={"my-3"}
 						/>
 					</div>
