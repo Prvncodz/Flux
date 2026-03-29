@@ -153,7 +153,7 @@ export default function AddVideosModal({
                   `}
 								>
 									{/* Thumbnail */}
-									<div className={`w-14 h-9 rounded-lg flex-shrink-0 overflow-hidden ${video.color} flex items-center justify-center relative`}>
+									<div className={`w-14 h-9 rounded-lg shrink-0 overflow-hidden ${video.color} flex items-center justify-center relative`}>
 										{video.thumbnail ? (
 											<img src={video.thumbnail?.url} alt="" className="w-full h-full object-cover" />
 										) : (
@@ -178,7 +178,7 @@ export default function AddVideosModal({
 
 									{/* Checkbox */}
 									<div className={`
-                    w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center border transition-all
+                    w-5 h-5 rounded-full shrink-0 flex items-center justify-center border transition-all
                     ${isAdded
 											? "border-neutral-300 dark:border-neutral-600"
 											: isSelected

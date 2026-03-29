@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { memo, useContext, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Ellipsis, PlayCircleIcon, VideoIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Description from "../watch/videoDescription.jsx";
@@ -14,7 +14,7 @@ export default function ShowPlaylistPage() {
 	const location = useLocation();
 	const { user, isUserLogged } = useContext(UserContext);
 	const { playlist, avatarUrl, fullname, name } = location.state || {};
-	const [videos] = useState(playlist?.videos);
+	const [videos, setVideos] = useState(playlist?.videos);
 	const playPlaylist = useRef(null);
 	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
 	const [isOptionActive, setIsOptionsActive] = useState(false);
@@ -23,19 +23,12 @@ export default function ShowPlaylistPage() {
 	const set = new Set(playlist?.videos || []);
 
 
-	function handleShowWatchVideo(videoId) {
-		if (videoId) {
-			navigate("/watch/video", {
-				state: {
-					videoId: videoId,
-					ownerAvatar: avatarUrl,
-					fullname: fullname,
-				},
-			});
+	async function handleAddVideosToPlaylist(videoIds) {
+		try {
+			await axios.patch(`/playlists/add/${playlist?._id}`, { videoIds: videoIds }).then(setVideos(res.data?.data?.videos));
+		} catch (err) {
+			console.log(err);
 		}
-	}
-	async function handleAddVideosToPlaylist() {
-		return
 	}
 	async function handleOption(optType) {
 		try {
@@ -59,11 +52,13 @@ export default function ShowPlaylistPage() {
 				console.log(err)
 			}
 		}
+
 		if ((playlist?.owner === user?._id) && isUserLogged) {
 			setIsUserPlaylistOwner(true);
 			fetchAllVideos();
 		}
 	}, [])
+
 
 	return (
 		<div className="max-w-md mx-auto h-screen overflow-y-auto p-6 space-y-6">
@@ -85,7 +80,7 @@ export default function ShowPlaylistPage() {
 			</div>
 
 			{/* playlist banner */}
-			<div className="w-full h-65  rounded-xl overflow-hidden bg-yellow-400">
+			<div className="w-full h-55  rounded-xl overflow-hidden bg-yellow-400">
 				<img
 					src={playlist?.videos[0]?.thumbnail?.url || dbanner}
 					alt=""
@@ -142,33 +137,62 @@ export default function ShowPlaylistPage() {
 			</div>
 
 			{/* videos list */}
-			<div className="space-y-4">
-				{videos.length === 0 ?
-
-					videos.map((video, idx) => (
-						<VideoCardComponent
-							key={idx}
-							video={video}
-							idx={idx}
-							ref={idx === 0 ? playPlaylist : null}
-							onClick={() => handleShowWatchVideo(video._id)}
-							fullname={fullname}
-						/>
-					))
-					:
-					<h1>No videos are uploaded to this playlist yet</h1>
-				}
-			</div>
+			<VideoList
+				videos={videos}
+				playPlaylist={playPlaylist}
+				fullname={fullname}
+				avatarUrl={avatarUrl}
+			/>
 		</div>
 	);
 }
+
+const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl }) => {
+
+	const navigate = useNavigate();
+	function handleShowWatchVideo(videoId) {
+
+		if (videoId) {
+			navigate("/watch/video", {
+				state: {
+					videoId: videoId,
+					ownerAvatar: avatarUrl,
+					fullname: fullname,
+				},
+			});
+		}
+	}
+	useEffect(() => {
+
+	}, [videos])
+	return (
+		<div className="space-y-4 mt-10">
+			{videos.length !== 0 ?
+
+				videos.map((video, idx) => (
+					<VideoCardComponent
+						key={idx}
+						video={video}
+						idx={idx}
+						ref={idx === 0 ? playPlaylist : null}
+						onClick={() => handleShowWatchVideo(video._id)}
+						fullname={fullname}
+					/>
+				))
+				:
+				<h1 className="text-center">No videos are uploaded to this playlist yet</h1>
+			}
+		</div>
+	)
+})
+
 function VideoCardComponent({ video, ref, onClick, fullname }) {
 	const [duration, setDuration] = useState("00:00");
 
 	useEffect(() => {
 		function calcDuration(dur) {
 			if (!dur) return;
-			hours = Math.trunc(dur / 3600);
+			const hours = Math.trunc(dur / 3600);
 			const minutes = Math.trunc((dur % 3600) / 60);
 			const seconds = Math.trunc((dur % 3600) % 60);
 
@@ -191,11 +215,11 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 		<div key={video._id} className="flex gap-4" onClick={onClick} ref={ref}>
 			<div className="relative">
 				<img
-					src={video.thumbnail?.url}
+					src={video.thumbnail?.url || dbanner}
 					alt=""
 					className="w-50 h-21 rounded-lg object-cover"
 				/>
-				<div className="absolute bg-gray-800 rounded-xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300">
+				<div className="absolute bg-gray-800 rounded-xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300 text-center">
 					{duration}
 				</div>
 			</div>
