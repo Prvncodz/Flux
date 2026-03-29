@@ -297,12 +297,12 @@ export default function Nav({ wantTabs, searchType }) {
 																					{"@" + username}
 																				</div>
 																			</span>
-																			<a
-																				href="/userchannel"
+																			<div
+																			  onClick={()=>navigate("/userchannel")}
 																				className="text-base font-medium  text-blue-600 text-left "
 																			>
-																				View your channel{" "}
-																			</a>
+																				View your channel
+																			</div>
 																		</div>
 																	</div>
 																</div>
