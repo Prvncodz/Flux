@@ -9,21 +9,37 @@ import PlaylistOptions from "./PlaylistOptions.jsx";
 import axios from "../../api/axios.js";
 import AddVideosModal from "./VideoOptionsPopup.jsx";
 import VideoCardOptions from "./VideoCardOptionsPopup.jsx";
+import EditPlaylistPopup from "./EditPlaylist.jsx";
+import DeletePlaylist from "./DeletePlaylist.jsx";
 
 export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { user, isUserLogged } = useContext(UserContext);
+	const { user } = useContext(UserContext);
 	const { playlist, avatarUrl, fullname, name, owner } = location.state || {};
 	const [videos, setVideos] = useState(playlist?.videos);
-	const [curPlaylist, setCurPlaylist] = useState(playlist || [])
 	const playPlaylist = useRef(null);
 	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
 	const [isOptionActive, setIsOptionsActive] = useState(false);
 	const [isVideoOptionsActive, setIsVideoOptionsActive] = useState(false);
 	const [allUserVideos, setAllUserVideos] = useState([]);
 	const [set, setSet] = useState(() => new Set(playlist?.videos?.map(video => video._id) || []));
+	const [isShowPopup, setShowPopup] = useState(false);
+	const [popupType, setPopupType] = useState("edit");
 
+	async function handleDeletePlaylist(id) {
+		try {
+			await axios.delete(`/playlists/${playlist?._id}`)
+				.then(() => navigate("/"));
+		} catch (error) {
+			console.log(error.message);
+		}
+	}
+
+	const popup = {
+		"edit": <EditPlaylistPopup setShowPopup={setShowPopup} playlist={playlist} />,
+		"delete": <DeletePlaylist isOpen={isShowPopup} onClose={() => setShowPopup(false)} onConfirm={handleDeletePlaylist} playlistName={playlist?.name} />
+	}
 	async function handleAddVideosToPlaylist(videoIds) {
 		try {
 			await axios.patch(`/playlists/add/${playlist?._id}`, { videoIds: videoIds })
@@ -38,19 +54,23 @@ export default function ShowPlaylistPage() {
 			console.log(err);
 		}
 	}
+	useEffect(() => { }, [videos])
 	async function handleOption(optType) {
 		try {
 			if (optType === "edit") {
-				console.log("edit videooos")
+				setShowPopup(true);
+				setPopupType("edit");
+				setIsOptionsActive(false);
 			} else if (optType === "delete") {
-				console.log("delete videooos")
+				setShowPopup(true);
+				setPopupType("delete");
+				setIsOptionsActive(false);
 			}
 		} catch (err) {
 			console.log(err);
 		}
 	}
 	useEffect(() => {
-		if (playlist) setCurPlaylist(playlist);
 		async function fetchAllVideos(id) {
 			try {
 				const res = await axios.get(`/videos/all-videos-by-user?userId=${id}`)
@@ -66,7 +86,6 @@ export default function ShowPlaylistPage() {
 			try {
 				const res = await axios.get(`/playlists/${id}`)
 				if (res.status === 200) {
-					setCurPlaylist(res.data?.data);
 					setVideos(res.data?.data?.videos);
 				}
 			} catch (err) {
@@ -96,6 +115,9 @@ export default function ShowPlaylistPage() {
 						</button>
 						{
 							isOptionActive && <PlaylistOptions handleOption={handleOption} />
+						}
+						{isShowPopup &&
+							popup[popupType]
 						}
 					</>
 				}
@@ -243,6 +265,7 @@ function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner
 		if (type === "remove") {
 			try {
 				await axios.patch(`/playlists/remove/${video._id}/${playlistId}`)
+					.then(() => setVideos(prev => prev.filter(v => v._id !== video._Id)))
 			} catch (err) {
 				console.log(err);
 			}
