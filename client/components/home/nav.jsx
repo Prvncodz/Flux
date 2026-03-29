@@ -42,7 +42,7 @@ export default function Nav({ wantTabs, searchType }) {
 	const popup = {
 		video: <VideoUploadPopup setShowPopup={setShowPopup} />,
 		post: <PostUploadPopup setShowPopup={setShowPopup} />,
-		playlist:<CreatePlaylistPopup setShowPopup={setShowPopup}/>
+		playlist: <CreatePlaylistPopup setShowPopup={setShowPopup} />
 	};
 
 	useEffect(() => {

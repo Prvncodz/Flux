@@ -35,8 +35,6 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 	return (
 		<>
 			<PopUpComponent onCancel={() => setShowPopup(false)}>
-
-				<h1 className="text-xl text-[#0A98FC] font-bold text-center mt-4 my-2">Create Playlist</h1>
 				<form
 					className="text-left p-3 my-2 flex flex-col gap-2"
 					onSubmit={(e) => handlePostUpload(e)}
@@ -60,7 +58,7 @@ export default function CreatePlaylistPopup({ setShowPopup }) {
 							className="bg-gray-100 w-full border border-gray-300 rounded-xl h-30  p-3  text-sm mt-1 outline-none"
 						/>
 					</label>
-					<div className="flex mt-1 gap-3 justify-center">
+					<div className="flex mt-1 gap-3 justify-center md:justify-end">
 						<button
 							type="button"
 							onClick={() => setShowPopup(false)}

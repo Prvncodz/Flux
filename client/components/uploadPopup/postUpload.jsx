@@ -50,7 +50,7 @@ export default function PostUploadPopup({ setShowPopup }) {
                 h-30 w-full p-2 border border-gray-300 text-sm mt-1 outline-none md:h-40"
 						/>
 					</label>
-					<div className="flex justify-center gap-3 mt-1">
+					<div className="flex justify-center gap-3 mt-1 md:justify-end">
 						<button
 							type="button"
 							onClick={() => setShowPopup(false)}

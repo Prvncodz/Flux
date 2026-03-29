@@ -6,14 +6,19 @@ export default function PopUpComponent({ children, onCancel }) {
 			className="h-screen w-screen flex flex-col justify-center
       items-center bg-none absolute z-20 top-0 left-0  "
 		>
-			<div className="absolute top-0  h-full w-full opacity-90 overflow-hidden z-20 bg-gray-300"></div>
-			<CancelIconComponent onClick={onCancel} />
 			<div
-				className="h-auto w-87 bg-gray-100 flex flex-col
-        justify-center overflow-hidden rounded-lg absolute z-22 p-2 md:w-120 md:p-5 "
+				className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+				onClick={(e) => e.target === e.currentTarget && onClose()}
 			>
-				{children}
+
+				<CancelIconComponent onClick={onCancel} />
+				<div
+					className="h-auto w-87 bg-gray-100 flex flex-col
+        justify-center overflow-hidden rounded-lg absolute z-22 p-2 md:w-120 md:p-5 "
+				>
+					{children}
+				</div>
+				</div>
 			</div>
-		</div>
-	);
+			);
 }

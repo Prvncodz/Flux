@@ -6,6 +6,8 @@ import dpfp from "../assets/dpfp.jpg";
 import dbanner from "../assets/dbanner.jpg"
 import UserContext from "../../contexts/UserContext.jsx"
 import PlaylistOptions from "./PlaylistOptions.jsx";
+import axios from "../../api/axios.js";
+import AddVideosModal from "./VideoOptionsPopup.jsx";
 
 export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
@@ -15,7 +17,11 @@ export default function ShowPlaylistPage() {
 	const [videos] = useState(playlist?.videos);
 	const playPlaylist = useRef(null);
 	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
-	const [isOptionActive,setIsOptionsActive]=useState(false);
+	const [isOptionActive, setIsOptionsActive] = useState(false);
+	const [isVideoOptionsActive, setIsVideoOptionsActive] = useState(false);
+	const [allUserVideos, setAllUserVideos] = useState([]);
+	const set = new Set(playlist?.videos || []);
+
 
 	function handleShowWatchVideo(videoId) {
 		if (videoId) {
@@ -28,20 +34,34 @@ export default function ShowPlaylistPage() {
 			});
 		}
 	}
-	async function handleOption(optType){
+	async function handleAddVideosToPlaylist() {
+		return
+	}
+	async function handleOption(optType) {
 		try {
-		 if(optType==="edit"){
-			//edit playlist
-			}else if(optType=== "delete"){
-				//delete playlist
+			if (optType === "edit") {
+				console.log("edit videooos")
+			} else if (optType === "delete") {
+				console.log("delete videooos")
 			}
 		} catch (err) {
-		 console.log(err);	
+			console.log(err);
 		}
 	}
 	useEffect(() => {
+		async function fetchAllVideos() {
+			try {
+				const res = await axios.get("/videos/all-videos-by-user")
+				if (res.status === 200) {
+					setAllUserVideos(res.data?.data);
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		}
 		if ((playlist?.owner === user?._id) && isUserLogged) {
 			setIsUserPlaylistOwner(true);
+			fetchAllVideos();
 		}
 	}, [])
 
@@ -52,11 +72,15 @@ export default function ShowPlaylistPage() {
 				<button onClick={() => navigate("/")} className="flex flex-start">
 					<ArrowLeft />
 				</button>
-				<button onClick={() => setIsOptionsActive(prev => !prev)} className="flex">
-					<Ellipsis size={28}/>
-				</button>
-				{
-					isOptionActive && <PlaylistOptions handleOption={handleOption}/>
+				{isUserPlaylistOwner &&
+					<>
+						<button onClick={() => setIsOptionsActive(prev => !prev)} className="flex">
+							<Ellipsis size={28} />
+						</button>
+						{
+							isOptionActive && <PlaylistOptions handleOption={handleOption} />
+						}
+					</>
 				}
 			</div>
 
@@ -98,13 +122,22 @@ export default function ShowPlaylistPage() {
 						<PlayCircleIcon size={18} />
 						PLAY
 					</button>
-					<button
-						className="flex items-center gap-2 text-gray-700 px-6 py-2 rounded-full p-3 font-semibold text-xs ring ring-gray-700"
-
-					>
-						<VideoIcon size={18} />
-						ADD VIDEO
-					</button>
+					{isUserPlaylistOwner &&
+						<button
+							className="flex items-center gap-2 text-gray-800 px-6 py-2 rounded-full p-3 font-semibold text-xs ring ring-gray-800 outline-none cursor-pointer"
+							onClick={() => setIsVideoOptionsActive(prev => !prev)}
+						>
+							<VideoIcon size={18} />
+							ADD VIDEO
+						</button>
+					}
+					{isVideoOptionsActive && <AddVideosModal
+						isOpen={isVideoOptionsActive}
+						onClose={() => setIsVideoOptionsActive(false)}
+						onAdd={handleAddVideosToPlaylist}
+						videos={allUserVideos}
+						alreadyAdded={set}
+					/>}
 				</div>
 			</div>
 
@@ -160,7 +193,7 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 				<img
 					src={video.thumbnail?.url}
 					alt=""
-					className="w-50 h-[84px] rounded-lg object-cover"
+					className="w-50 h-21 rounded-lg object-cover"
 				/>
 				<div className="absolute bg-gray-800 rounded-xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300">
 					{duration}

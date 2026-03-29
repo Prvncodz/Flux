@@ -143,11 +143,11 @@ export default function EditVideoPopup({ setIsEditPopUpActive, video, setShowUpd
 						/>
 					</label>
 				</div>
-				<div className="flex items-center justify-center gap-3">
+				<div className="flex items-center justify-center gap-3 md:gap-8">
 					<button
 						type="button"
 						onClick={() => setIsEditPopUpActive(false)}
-						className="border border-neutral-400 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3 mx-auto"
+						className="border border-neutral-400 text-base font-semibold text-gray-800 p-4 flex items-center justify-center text-center rounded-full w-38 h-11 mt-3 mb-3"
 					>
 						Cancel
 					</button>
