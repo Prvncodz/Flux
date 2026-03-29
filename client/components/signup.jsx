@@ -219,6 +219,7 @@ export default function SignUp() {
 						currentSubmitStatus={
 							isSubmmited ? "submited" : loading ? "loading" : "normal"
 						}
+						className={"mx-auto"}
 					/>
 					<p className="mt-3 text-center">
 						Already have an account?
@@ -226,7 +227,7 @@ export default function SignUp() {
 							onClick={() => {
 								navigate("/signin");
 							}}
-							className="text-blue-400 decoration-blue-400 underline cursor-pointer"
+							className="text-blue-400 decoration-blue-400 underline cursor-pointer "
 						>
 							{" "}
 							Sign in

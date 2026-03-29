@@ -8,6 +8,7 @@ import UserContext from "../../contexts/UserContext.jsx"
 import PlaylistOptions from "./PlaylistOptions.jsx";
 import axios from "../../api/axios.js";
 import AddVideosModal from "./VideoOptionsPopup.jsx";
+import VideoCardOptions from "./VideoCardOptionsPopup.jsx";
 
 export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
@@ -81,7 +82,7 @@ export default function ShowPlaylistPage() {
 		<div className="max-w-md mx-auto h-screen overflow-y-auto p-6 space-y-6">
 			{/* back button */}
 			<div className="flex justify-between relative">
-				<button onClick={() => navigate("/")} className="flex flex-start">
+				<button onClick={() => navigate("/userchannel")} className="flex flex-start">
 					<ArrowLeft />
 				</button>
 				{isUserPlaylistOwner &&
@@ -159,12 +160,14 @@ export default function ShowPlaylistPage() {
 				playPlaylist={playPlaylist}
 				fullname={fullname}
 				avatarUrl={avatarUrl}
+				isUserPlaylistOwner={isUserPlaylistOwner}
+				playlistId={playlist?._id}
 			/>
 		</div>
 	);
 }
 
-const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl }) => {
+const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl,isUserPlaylistOwner,playlistId }) => {
 
 	const navigate = useNavigate();
 	function handleShowWatchVideo(videoId) {
@@ -194,6 +197,8 @@ const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl }) => {
 						ref={idx === 0 ? playPlaylist : null}
 						onClick={() => handleShowWatchVideo(video._id)}
 						fullname={fullname}
+						isUserPlaylistOwner={isUserPlaylistOwner}
+						playlistId={playlistId}
 					/>
 				))
 				:
@@ -203,8 +208,9 @@ const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl }) => {
 	)
 })
 
-function VideoCardComponent({ video, ref, onClick, fullname }) {
+function VideoCardComponent({ video, ref, onClick, fullname,isUserPlaylistOwner,playlistId }) {
 	const [duration, setDuration] = useState("00:00");
+	const [isOptionActive, setIsOptionsActive] = useState(false);
 
 	useEffect(() => {
 		function calcDuration(dur) {
@@ -227,10 +233,18 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 		}
 		calcDuration(video?.duration);
 	}, [video]);
-
+	async function handleOption(type) {
+		if(type==="remove"){
+      try {
+       await axios.patch(`/playlists/remove/${video._id}/${playlistId}`)	
+      } catch (err) {
+       console.log(err);	
+      }
+		}
+	}
 	return (
-		<div key={video._id} className="flex gap-4" onClick={onClick} ref={ref}>
-			<div className="relative">
+		<div key={video._id} className="flex gap-4" ref={ref}>
+			<div className="relative" onClick={onClick}>
 				<img
 					src={video.thumbnail?.url || dbanner}
 					alt=""
@@ -241,15 +255,27 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 				</div>
 			</div>
 
-			<div className="flex flex-col justify-start w-70 relative">
-				<h3 className="text-sm font-base line-clamp-3 wrap-break-word text-left">
-					{video.title}
-				</h3>
+			<div className="flex  justify-between w-70 relative">
+				<div className="flex flex-col" onClick={onClick}>
 
-				<p className="text-xs text-gray-500 mt-1 wrap-break-word text-left">
-					{fullname}
-				</p>
-				<EllipsisVertical className="absolute top-1 right-1"/>
+					<h3 className="text-sm font-base line-clamp-3 wrap-break-word text-left w-45">
+						{video.title}
+					</h3>
+
+					<p className="text-xs text-gray-500 mt-1 wrap-break-word text-left">
+						{fullname}
+					</p>
+				</div>
+				{isUserPlaylistOwner &&
+					<>
+						<button onClick={() => setIsOptionsActive(prev => !prev)} className="absolute top-1 right-1">
+							<EllipsisVertical size={20} />
+						</button>
+						{
+							isOptionActive && <VideoCardOptions handleOption={handleOption} />
+						}
+					</>
+				}
 			</div>
 		</div>
 	);

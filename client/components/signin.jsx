@@ -88,6 +88,7 @@ export default function SignIn() {
             currentSubmitStatus={
               isSubmmited ? "submited" : loading ? "loading" : "normal"
             }
+						className={"mx-auto"}
           />
           <p className="mt-2 text-center md:mt-5">
             Don't have an account?
