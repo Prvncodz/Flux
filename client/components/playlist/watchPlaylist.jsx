@@ -20,12 +20,20 @@ export default function ShowPlaylistPage() {
 	const [isOptionActive, setIsOptionsActive] = useState(false);
 	const [isVideoOptionsActive, setIsVideoOptionsActive] = useState(false);
 	const [allUserVideos, setAllUserVideos] = useState([]);
-	const set = new Set(playlist?.videos || []);
-
+	const [set, setSet] = useState(() => new Set(playlist?.videos?.map(video => video._id) || []));
+	console.log(playlist?.videos?.map((video) => {video._id}))
 
 	async function handleAddVideosToPlaylist(videoIds) {
 		try {
-			await axios.patch(`/playlists/add/${playlist?._id}`, { videoIds: videoIds }).then(setVideos(res.data?.data?.videos));
+			await axios.patch(`/playlists/add/${playlist?._id}`, { videoIds: videoIds })
+				.then((res) => {
+					setVideos(res.data?.data?.videos)
+					setSet(prev => {
+						const newSet = new Set(prev);
+						newSet.add(...videoIds);
+						return newSet
+					})
+				});
 		} catch (err) {
 			console.log(err);
 		}

@@ -1,19 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 
-// Mock data — replace with your actual API call
-const MOCK_USER_VIDEOS = [
-	{ id: 1, title: "Introduction to React Hooks", duration: "12:04", thumbnail: null, color: "bg-amber-200" },
-	{ id: 2, title: "CSS Grid Deep Dive", duration: "8:47", thumbnail: null, color: "bg-blue-200" },
-	{ id: 3, title: "API Design Patterns", duration: "21:30", thumbnail: null, color: "bg-green-200" },
-	{ id: 4, title: "TypeScript Generics Explained", duration: "15:22", thumbnail: null, color: "bg-yellow-200" },
-	{ id: 5, title: "Node.js Event Loop", duration: "9:10", thumbnail: null, color: "bg-teal-200" },
-	{ id: 6, title: "Docker for Beginners", duration: "33:07", thumbnail: null, color: "bg-sky-200" },
-	{ id: 7, title: "Tailwind Tips and Tricks", duration: "6:55", thumbnail: null, color: "bg-pink-200" },
-	{ id: 8, title: "Testing with Vitest", duration: "11:40", thumbnail: null, color: "bg-lime-200" },
-];
-
-// Already-in-playlist video IDs (to disable them)
-const ALREADY_IN_PLAYLIST = new Set([2, 3]);
 
 export default function AddVideosModal({
 	isOpen,
