@@ -1,9 +1,10 @@
 import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import dpfp from "../../assets/dpfp.jpg";
 import dbanner from "../../assets/dbanner.jpg";
 import PlaylistIcon from "../../assets/playlistIcon.jsx";
 import { useNavigate } from "react-router-dom";
+import UserPlaylistcontext from "../../../contexts/userPlaylistContext.jsx";
 
 export default function PlaylistComponents({
   playlist,
@@ -12,6 +13,7 @@ export default function PlaylistComponents({
   setLoading,
 }) {
   const { avatarUrl, fullname } = useGetUserById(playlist?.owner) || {};
+	const {owner} = useContext(UserPlaylistcontext);
   const [videos] = useState(playlist?.videos || []);
   const navigate = useNavigate();
 
@@ -22,6 +24,7 @@ export default function PlaylistComponents({
         name: playlist?.name,
         avatarUrl,
         fullname,
+				owner
       },
     });
   }

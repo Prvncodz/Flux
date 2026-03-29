@@ -3,7 +3,7 @@ import axios from "../../../api/axios.js";
 import PlaylistComponent from "./playlistComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 import { Loader2 } from "lucide-react";
-
+import UserPlaylistContext from "../../../contexts/userPlaylistContext.jsx"
 export default function PlaylistFeed({ userId }) {
 	const [playlists, setPlaylists] = useState([]);
 	const [arePlaylistsFetched, SetArePlaylistsFetched] = useState(false);
@@ -69,16 +69,18 @@ export default function PlaylistFeed({ userId }) {
 			<div
 				className={`h-[65vh] md:h-[60vh] w-full p-5 gap-6   overflow-y-auto overflow-x-hidden grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  mb-2`}
 			>
-				{arePlaylistsFetched &&
-					playlists.map((playlist, idx) => (
-						<PlaylistComponent
-							key={idx}
-							playlist={playlist}
-							idx={idx}
-							playlistsLength={playlists.length}
-							setLoading={setLoading}
-						/>
-					))}
+				<UserPlaylistContext.Provider value={{owner:userId}}>
+					{arePlaylistsFetched &&
+						playlists.map((playlist, idx) => (
+							<PlaylistComponent
+								key={idx}
+								playlist={playlist}
+								idx={idx}
+								playlistsLength={playlists.length}
+								setLoading={setLoading}
+							/>
+						))}
+				</UserPlaylistContext.Provider>
 			</div>
 		</div>
 	);

@@ -14,8 +14,9 @@ export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { user, isUserLogged } = useContext(UserContext);
-	const { playlist, avatarUrl, fullname, name } = location.state || {};
+	const { playlist, avatarUrl, fullname, name, owner } = location.state || {};
 	const [videos, setVideos] = useState(playlist?.videos);
+	const [curPlaylist, setCurPlaylist] = useState(playlist || [])
 	const playPlaylist = useRef(null);
 	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
 	const [isOptionActive, setIsOptionsActive] = useState(false);
@@ -49,9 +50,10 @@ export default function ShowPlaylistPage() {
 		}
 	}
 	useEffect(() => {
-		async function fetchAllVideos() {
+		if (playlist) setCurPlaylist(playlist);
+		async function fetchAllVideos(id) {
 			try {
-				const res = await axios.get("/videos/all-videos-by-user")
+				const res = await axios.get(`/videos/all-videos-by-user?userId=${id}`)
 				if (res.status === 200) {
 					setAllUserVideos(res.data?.data);
 				}
@@ -60,9 +62,11 @@ export default function ShowPlaylistPage() {
 			}
 		}
 		async function fetchPlaylist(id) {
+			if (!id) return;
 			try {
 				const res = await axios.get(`/playlists/${id}`)
 				if (res.status === 200) {
+					setCurPlaylist(res.data?.data);
 					setVideos(res.data?.data?.videos);
 				}
 			} catch (err) {
@@ -71,11 +75,11 @@ export default function ShowPlaylistPage() {
 		}
 
 		fetchPlaylist(playlist?._id);
-		if ((playlist?.owner === user?._id) && isUserLogged) {
+		if (owner === user?._id) {
 			setIsUserPlaylistOwner(true);
-			fetchAllVideos();
+			fetchAllVideos(user?._id);
 		}
-	}, [])
+	}, [user])
 
 
 	return (
@@ -157,6 +161,7 @@ export default function ShowPlaylistPage() {
 			{/* videos list */}
 			<VideoList
 				videos={videos}
+				setVideos={setVideos}
 				playPlaylist={playPlaylist}
 				fullname={fullname}
 				avatarUrl={avatarUrl}
@@ -167,7 +172,7 @@ export default function ShowPlaylistPage() {
 	);
 }
 
-const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl,isUserPlaylistOwner,playlistId }) => {
+const VideoList = ({ videos, setVideos, playPlaylist, fullname, avatarUrl, isUserPlaylistOwner, playlistId }) => {
 
 	const navigate = useNavigate();
 	function handleShowWatchVideo(videoId) {
@@ -191,7 +196,7 @@ const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl,isUserPlayli
 
 				videos.map((video, idx) => (
 					<VideoCardComponent
-						key={idx}
+						key={video._id}
 						video={video}
 						idx={idx}
 						ref={idx === 0 ? playPlaylist : null}
@@ -199,6 +204,7 @@ const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl,isUserPlayli
 						fullname={fullname}
 						isUserPlaylistOwner={isUserPlaylistOwner}
 						playlistId={playlistId}
+						setVideos={setVideos}
 					/>
 				))
 				:
@@ -206,9 +212,9 @@ const VideoList = memo(({ videos, playPlaylist, fullname, avatarUrl,isUserPlayli
 			}
 		</div>
 	)
-})
+}
 
-function VideoCardComponent({ video, ref, onClick, fullname,isUserPlaylistOwner,playlistId }) {
+function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner, playlistId, setVideos }) {
 	const [duration, setDuration] = useState("00:00");
 	const [isOptionActive, setIsOptionsActive] = useState(false);
 
@@ -234,12 +240,13 @@ function VideoCardComponent({ video, ref, onClick, fullname,isUserPlaylistOwner,
 		calcDuration(video?.duration);
 	}, [video]);
 	async function handleOption(type) {
-		if(type==="remove"){
-      try {
-       await axios.patch(`/playlists/remove/${video._id}/${playlistId}`)	
-      } catch (err) {
-       console.log(err);	
-      }
+		if (type === "remove") {
+			try {
+				await axios.patch(`/playlists/remove/${video._id}/${playlistId}`)
+			} catch (err) {
+				console.log(err);
+			}
+			setIsOptionsActive(false)
 		}
 	}
 	return (
