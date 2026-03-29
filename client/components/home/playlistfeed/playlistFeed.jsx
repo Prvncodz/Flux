@@ -67,7 +67,7 @@ export default function PlaylistFeed({ userId }) {
 	return (
 		<div className={` md:flex md:justify-center scroll-smooth`}>
 			<div
-				className={`h-[65vh] md:h-[60vh] w-full p-5  mt-4 overflow-y-auto overflow-x-hidden grid grid-cols-1 , md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-2`}
+				className={`h-[65vh] md:h-[60vh] w-full p-5 gap-6   overflow-y-auto overflow-x-hidden grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  mb-2`}
 			>
 				{arePlaylistsFetched &&
 					playlists.map((playlist, idx) => (

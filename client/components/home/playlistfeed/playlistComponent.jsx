@@ -32,7 +32,7 @@ export default function PlaylistComponents({
   }, []);
   return (
     <div
-      className="mb-3 h-50 w-full aspect-video max-w-100 md:max-w-190 lg:max-w-400  "
+      className="mb-3  w-full aspect-video max-w-100 md:max-w-190 lg:max-w-400  "
       onClick={hanldeShowPlaylistPage}
     >
       <div className="relative">

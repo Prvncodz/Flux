@@ -1,5 +1,5 @@
 import { memo, useContext, useEffect, useRef, useState } from "react";
-import { ArrowLeft, Ellipsis, PlayCircleIcon, VideoIcon } from "lucide-react";
+import { ArrowLeft, Eclipse, Ellipsis, EllipsisVertical, PlayCircleIcon, VideoIcon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Description from "../watch/videoDescription.jsx";
 import dpfp from "../assets/dpfp.jpg";
@@ -21,13 +21,11 @@ export default function ShowPlaylistPage() {
 	const [isVideoOptionsActive, setIsVideoOptionsActive] = useState(false);
 	const [allUserVideos, setAllUserVideos] = useState([]);
 	const [set, setSet] = useState(() => new Set(playlist?.videos?.map(video => video._id) || []));
-	console.log(playlist?.videos?.map((video) => {video._id}))
 
 	async function handleAddVideosToPlaylist(videoIds) {
 		try {
 			await axios.patch(`/playlists/add/${playlist?._id}`, { videoIds: videoIds })
 				.then((res) => {
-					setVideos(res.data?.data?.videos)
 					setSet(prev => {
 						const newSet = new Set(prev);
 						newSet.add(...videoIds);
@@ -60,7 +58,18 @@ export default function ShowPlaylistPage() {
 				console.log(err)
 			}
 		}
+		async function fetchPlaylist(id) {
+			try {
+				const res = await axios.get(`/playlists/${id}`)
+				if (res.status === 200) {
+					setVideos(res.data?.data?.videos);
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		}
 
+		fetchPlaylist(playlist?._id);
 		if ((playlist?.owner === user?._id) && isUserLogged) {
 			setIsUserPlaylistOwner(true);
 			fetchAllVideos();
@@ -232,7 +241,7 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 				</div>
 			</div>
 
-			<div className="flex flex-col justify-start w-70">
+			<div className="flex flex-col justify-start w-70 relative">
 				<h3 className="text-sm font-base line-clamp-3 wrap-break-word text-left">
 					{video.title}
 				</h3>
@@ -240,6 +249,7 @@ function VideoCardComponent({ video, ref, onClick, fullname }) {
 				<p className="text-xs text-gray-500 mt-1 wrap-break-word text-left">
 					{fullname}
 				</p>
+				<EllipsisVertical className="absolute top-1 right-1"/>
 			</div>
 		</div>
 	);
