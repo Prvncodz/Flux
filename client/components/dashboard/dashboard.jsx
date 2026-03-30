@@ -123,7 +123,7 @@ export default function Dashboard() {
 	}, []);
 
 	return (
-		<div className="h-screen">
+		<div className="h-auto">
 			<Nav />
 			<div className="flex justify-center h-screen overflow-y-auto w-full md:pb-2">
 				<div className="h-screen  overflow-y-auto w-full p-5 space-y-6 pb-20  md:h-full md:pl-16 md:max-w-[70vw] lg:max-w-[50vw] ">
@@ -230,7 +230,7 @@ export default function Dashboard() {
 						</div>
 					</div>
 
-					<div className="h-auto">
+					<div className="h-auto mb-10">
 						<h2 className="text-lg font-bold mb-3 text-gray-900 text-left ">
 							All Videos
 						</h2>

@@ -26,7 +26,6 @@ export default function Nav({ wantTabs, searchType }) {
 	const navigate = useNavigate();
 	const [isActive, setIsActive] = useState(false);
 	const [notLoggedOut, setNotLoggedOut] = useState(true);
-	const { isHomeSelected, setIsHomeSelected } = useContext(TabContext) || {};
 	const { user, isUserLogged, setIsUserLogged } = useContext(UserContext);
 	const [avatar, setAvatar] = useState(null);
 	const [fullname, setFullname] = useState("Jhon Doe");
@@ -38,7 +37,7 @@ export default function Nav({ wantTabs, searchType }) {
 	const [searchInput, setSearchInput] = useState("");
 	const [isMenuOpen, setIsMenuOPen] = useState(false);
 	const [signinInstruction, setSigninInstruction] = useState(false);
-
+	const { currentPage, setCurrentPage } = useContext(TabContext) || {}
 	const popup = {
 		video: <VideoUploadPopup setShowPopup={setShowPopup} />,
 		post: <PostUploadPopup setShowPopup={setShowPopup} />,
@@ -149,44 +148,46 @@ export default function Nav({ wantTabs, searchType }) {
 								isUserLogged={isUserLogged}
 							/>
 						)}
-						<div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2   ">
-							<div
-								className={`h-20  p-2 flex items-center  flex-col text-left w-full cursor-pointer`}
-								onClick={() => navigate("/")}
-							>
-								<HomeIcon size={20} className="flex flex-start text-gray-800" />
-								<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
-									Home
+						{currentPage !== "watchVideo" &&
+							<div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2   ">
+								<div
+									className={`h-20  p-2 flex items-center  flex-col text-left w-full cursor-pointer`}
+									onClick={() => navigate("/")}
+								>
+									<HomeIcon size={20} className="flex flex-start text-gray-800" />
+									<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
+										Home
+									</div>
+								</div>
+								<div
+									className="h-20  p-2 flex items-center w-full flex-col text-left cursor-pointer"
+									onClick={() => navigate("/", { state: { tab: "posts" } })}
+								>
+									<LayoutList size={20} className="text-gray-800" />
+									<div className=" text-center text-gray-900 font-normal text-sm text my-1">
+										Posts
+									</div>
+								</div>
+								<div
+									className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
+									onClick={() => {
+										if (isUserLogged) {
+											navigate("/userchannel");
+										} else {
+											navigate("/signin");
+										}
+									}}
+								>
+									<CircleUserRound
+										size={22}
+										className="flex flex-start text-gray-800"
+									/>
+									<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
+										You
+									</div>
 								</div>
 							</div>
-							<div
-								className="h-20  p-2 flex items-center w-full flex-col text-left cursor-pointer"
-								onClick={() => navigate("/", { state: { tab: "posts" } })}
-							>
-								<LayoutList size={20} className="text-gray-800" />
-								<div className=" text-center text-gray-900 font-normal text-sm text my-1">
-									Posts
-								</div>
-							</div>
-							<div
-								className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
-								onClick={() => {
-									if (isUserLogged) {
-										navigate("/userchannel");
-									} else {
-										navigate("/signin");
-									}
-								}}
-							>
-								<CircleUserRound
-									size={22}
-									className="flex flex-start text-gray-800"
-								/>
-								<div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
-									You
-								</div>
-							</div>
-						</div>
+						}
 					</div>
 				</div>
 				<div className="flex items-center justify-center gap-3 h-auto mr-2 mt-1 p-2 md:mr-5">

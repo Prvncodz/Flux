@@ -14,6 +14,7 @@ import UserContext from "../../contexts/UserContext.jsx";
 import VideoPlayer from "../home/videofeed/VideoPlayer.jsx";
 import { Loader2 } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
+import TabContext from "../../contexts/TabContext.jsx";
 
 export default function WatchVideoPage() {
 	const location = useLocation();
@@ -26,6 +27,7 @@ export default function WatchVideoPage() {
 	const [isOtherChannel, setIsOtherChannel] = useState(false);
 	const { user, isUserLogged } = useContext(UserContext);
 	const [signinInstruction, setSigninInstruction] = useState(false);
+	const { setCurrentPage } = useContext(TabContext);
 
 	let timeoutId;
 	async function handleSubscription() {
@@ -47,6 +49,7 @@ export default function WatchVideoPage() {
 
 	useEffect(() => {
 		if (!videoId) return;
+		setCurrentPage("watchVideo")
 		async function getVideoById(Id) {
 			try {
 				const res = await axios.get(
@@ -71,13 +74,13 @@ export default function WatchVideoPage() {
 	}, [videoId, isUserLogged, isLiked]);
 
 	return (
-		<div className=" scroll-smooth relative z-2">
+		<div className=" scroll-smooth  z-2 bg-[#ffffff]">
 			<Nav wantTabs={false} />
 			{signinInstruction && (
 				<SignInBanner setShowPopup={setSigninInstruction} />
 			)}
 			<div className="h-screen overflow-y-auto overflow-x-hidden lg:flex lg:flex-row lg:h-screen lg:w-screen lg:pb-80 scroll-smooth">
-				<div className="lg:flex lg:flex-col lg:h-auto lg:w-full lg:max-w-[75vw] ">
+				<div className="lg:flex lg:flex-col lg:h-auto lg:w-full lg:max-w-[75vw] lg:bg-[#ffffff] lg:3 ">
 					<div className="relative h-auto lg:h-900  lg:px-10 lg:py-5 lg:z-2 lg:bg-[#ffffff]">
 						<div className=" aspect-video h-full w-full lg:rounded-xl lg:overflow-hidden">
 
@@ -121,7 +124,7 @@ export default function WatchVideoPage() {
 									</div>
 								</div>
 								<div className="flex gap-0">
-									<div className={`flex items-center py-3 ${!isOtherChannel?"px-3 mr-4":""} `}>
+									<div className={`flex items-center py-3 ${!isOtherChannel ? "px-3 mr-4" : ""} `}>
 										<LikeButton
 											size={20}
 											fetchType={"video"}

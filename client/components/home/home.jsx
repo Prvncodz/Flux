@@ -10,10 +10,11 @@ export default function Home() {
   const values = { isHomeSelected, setIsHomeSelected };
   const location = useLocation();
   const { tab } = location.state || {};
-
+  
   useEffect(() => {
     if (tab === "posts") {
       setIsHomeSelected(false);
+
     } else {
       setIsHomeSelected(true);
     }

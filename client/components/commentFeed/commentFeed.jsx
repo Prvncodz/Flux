@@ -117,7 +117,7 @@ export default function CommentFeed({
 	return (
 		<>
 			<div
-				className={`my-2 scroll-smooth ${isOpen ? "h-[50vh]" : "h-30"} overflow-auto p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100`}
+				className={`my-2 scroll-smooth ${isOpen ? "h-auto" : "h-30"}  p-3 flex flex-col  rounded-2xl bg-gray-100 mx-2 ease-in-out relative z-0 ring ring-gray-100`}
 				onClick={() => !isOpen && setIsOpen(true)}
 			>
 				<h1 className="text-gray-900 text-left text-base text-medium">
@@ -126,8 +126,8 @@ export default function CommentFeed({
 				{areCommentsFetched && isOpen ? (
 					<div className="h-full w-full" ref={ref}>
 						<X
-							size={26}
-							className={"absolute top-4 right-4 z-1 text-gray-500"}
+							size={20}
+							className={"absolute top-3 right-4 z-1 text-gray-500"}
 							onClick={() => isOpen && setIsOpen(false)}
 						/>
 						<AddCommentsBox
@@ -135,6 +135,7 @@ export default function CommentFeed({
 							fetchType={fetchType}
 							className={"mb-8"}
 							setShowSignInPopup={setShowSignInPopup}
+							setComments={setComments}
 						/>
 						{comments.map((comment, idx) => (
 							<CommentComponent
