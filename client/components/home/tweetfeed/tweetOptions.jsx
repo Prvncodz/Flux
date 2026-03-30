@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubmitButton from "../../submitButton";
 import PopUpComponent from "../../uploadPopup/popupComponent";
 import dpfp from "../../assets/dpfp.jpg"
@@ -93,7 +93,7 @@ const EditPost = ({ setShowPopup, tweet, fullname, username, avatarUrl }) => {
 		</PopUpComponent>
 	);
 }
-const DeletePost = ({ isOpen, onClose, onConfirm, playlistName }) => {
+const DeletePost = ({ isOpen, onClose,tweetId}) => {
 	// Close on Escape
 	useEffect(() => {
 		const onKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -102,7 +102,17 @@ const DeletePost = ({ isOpen, onClose, onConfirm, playlistName }) => {
 	}, [isOpen, onClose]);
 
 	if (!isOpen) return null;
-
+  async function handleDeletePost(Id){
+		if(!Id)return;
+    try {
+      const res = await axios.delete(`/tweets/${Id}/delete-tweet`)
+			if(res.status===200){
+				console.log("tweet deleted successfully")
+			}
+    } catch (err) {
+     console.log(err)	
+    }
+	} 
 	return (
 		<div
 			className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
@@ -117,10 +127,7 @@ const DeletePost = ({ isOpen, onClose, onConfirm, playlistName }) => {
 						Are you sure?
 					</h2>
 					<p className="text-sm text-neutral-400 dark:text-neutral-500 leading-relaxed">
-						{playlistName
-							? <>This will permanently delete <span className="text-neutral-600 dark:text-neutral-300 font-medium">"{playlistName}"</span>. Your videos won't be affected.</>
-							: "This will permanently delete this playlist. Your videos won't be affected."
-						}
+						This will permanently delete this Post.
 					</p>
 				</div>
 
@@ -136,7 +143,7 @@ const DeletePost = ({ isOpen, onClose, onConfirm, playlistName }) => {
 						No, keep it
 					</button>
 					<button
-						onClick={() => { onConfirm?.(); onClose(); }}
+						onClick={() => { handleDeletePost(tweetId); onClose(); }}
 						className="flex-1 py-2.5 text-sm rounded-xl bg-red-500 hover:bg-red-600 active:scale-[0.98] text-white transition-all font-medium"
 					>
 						Yes, delete

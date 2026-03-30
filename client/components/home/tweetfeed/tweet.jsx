@@ -31,7 +31,7 @@ export default function TweetComponent({
 	const [popupType, setPopupType] = useState(false);
 	const popup = {
 		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username}/>,
-		"delete": <DeletePost />
+		"delete": <DeletePost isOpen={showPopup} onClose={()=>setShowPopup(false)} tweetId={tweet?._id}  />
 	}
 	const navigate = useNavigate();
 
