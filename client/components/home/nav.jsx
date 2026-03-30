@@ -298,7 +298,7 @@ export default function Nav({ wantTabs, searchType }) {
 																				</div>
 																			</span>
 																			<div
-																			  onClick={()=>navigate("/userchannel")}
+																				onClick={() => navigate("/userchannel")}
 																				className="text-base font-medium  text-blue-600 text-left "
 																			>
 																				View your channel
