@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import TweetComponent from "./tweet.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
-import { Flashlight, Frown, Loader2 } from "lucide-react";
+import { Flashlight, Frown, Loader2, LoaderCircle } from "lucide-react";
 import SignInBanner from "../../signinInstructPopup.jsx";
 
 export default function Feed({ fetchType, userId, searchQuery }) {
@@ -14,7 +14,6 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	const [hasNoMore, setHasNoMore] = useState(false);
 	const [showSigninPopup, setShowSigninPopup] = useState(false);
 	const ref = useRef(null);
-
 	useEffect(() => {
 		const el = ref.current;
 		function handleScroll() {
@@ -103,6 +102,8 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		} else {
 			fetchAllTweets();
 		}
+
+
 		return () => {
 			controller.abort();
 		};
@@ -137,7 +138,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					))}
 				{loading && (
 					<div className="h-15 w-full  inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-						<Loader2
+						<LoaderCircle
 							className="w-12 h-12 animate-spin"
 							style={{ color: "#0A98FC" }}
 						/>

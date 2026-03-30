@@ -26,9 +26,10 @@ export default function TweetComponent({
 	const [areAnyComments, setAreAnyComments] = useState(false);
 	const { user, isUserLogged } = useContext(UserContext);
 	const [isOptionActive, setIsOptionsActive] = useState(false)
-	const [isUserTweet, setIsUserTweet] = useState(true);
 	const [showPopup, setShowPopup] = useState(false);
 	const [popupType, setPopupType] = useState(false);
+	const [isUserTweet, setIsUserTweet] = useState(false);
+
 	const popup = {
 		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username} />,
 		"delete": <DeletePost isOpen={showPopup} onClose={() => setShowPopup(false)} tweetId={tweet?._id} />
@@ -81,9 +82,6 @@ export default function TweetComponent({
 
 	useEffect(() => {
 
-		if (tweet?.owner === user?._id) {
-			setIsUserTweet(true);
-		}
 		async function getAllCommentPosts() {
 			try {
 				const res = await axios.get(
@@ -104,12 +102,15 @@ export default function TweetComponent({
 		if (idx === tweetsLength - 1) {
 			setLoading(false);
 		}
+		if(tweet?.owner===user?._id){
+			setIsUserTweet(true);
+		}
 		getAllCommentPosts();
 	}, [tweet, user]);
 	return (
 		<>
 			<div
-				className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 "
+				className=" h-auto w-full p-3 border-b border-gray-300 mt-0 mb-0 relative "
 				onError={() => setShowSigninPopup(true)}
 			>
 				<div className="flex mt-3">
