@@ -44,7 +44,8 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 	const AllPlaylistsByUser = await Playlist.find({ owner: userId })
 		.skip(skipNum)
 		.limit(limitNum)
-		.populate("videos");
+		.populate("videos", "thumbnail")
+		.populate("owner", "avatar fullName userName");
 
 	if (!AllPlaylistsByUser) {
 		throw new ApiError(500, "unable to find playlist of this user");
