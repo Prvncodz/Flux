@@ -38,7 +38,8 @@ const getAllVideosByUser = asyncHandler(async (req, res) => {
 	const videos = await Video.find(filter)
 		.sort(sort)
 		.skip(skipNum)
-		.limit(limitNum);
+		.limit(limitNum)
+		.populate("owner", "avatar fullName userName")
 
 	return res
 		.status(200)
@@ -73,7 +74,8 @@ const getAllVideos = asyncHandler(async (req, res) => {
 		.find(filter)
 		.sort(sort)
 		.skip(skipNum)
-		.limit(limitNum);
+		.limit(limitNum)
+		.populate("owner", "avatar fullName userName");
 
 
 	const promises = videos.map(async (video) => {

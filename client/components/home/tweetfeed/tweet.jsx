@@ -20,7 +20,7 @@ export default function TweetComponent({
 	setLoading,
 	setShowSigninPopup,
 }) {
-	const { avatarUrl, fullname, username } = useGetUserById(tweet?.owner) || {};
+	const { avatar, fullName, userName } = tweet?.owner;
 	const [commentsPost, setCommentPosts] = useState([{}]);
 	const [showAddTweetBox, setShowAddTweetBox] = useState(false);
 	const [areAnyComments, setAreAnyComments] = useState(false);
@@ -31,7 +31,7 @@ export default function TweetComponent({
 	const [isUserTweet, setIsUserTweet] = useState(false);
 
 	const popup = {
-		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username} />,
+		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatar?.url} fullname={fullName} username={userName} />,
 		"delete": <DeletePost isOpen={showPopup} onClose={() => setShowPopup(false)} tweetId={tweet?._id} />
 	}
 	const navigate = useNavigate();
@@ -102,7 +102,7 @@ export default function TweetComponent({
 		if (idx === tweetsLength - 1) {
 			setLoading(false);
 		}
-		if(tweet?.owner===user?._id){
+		if (tweet?.owner === user?._id) {
 			setIsUserTweet(true);
 		}
 		getAllCommentPosts();
@@ -116,17 +116,17 @@ export default function TweetComponent({
 				<div className="flex mt-3">
 					<div className="h-10 w-10 ml-4">
 						<img
-							src={avatarUrl || dpfp}
+							src={avatar?.url || dpfp}
 							className="rounded-full h-10 w-10"
 							onError={(e) => (e.target.src = dpfp)}
 						/>
 					</div>
 					<span className="ml-4 h-7">
 						<h3 className="text-left text-neutral-700 font-medium text-lg">
-							{fullname}
+							{fullName}
 						</h3>
 						<h3 className="text-left text-neutral-600 font-medium text-xs mt-0">
-							{"@" + username}
+							{"@" + userName}
 						</h3>
 					</span>
 				</div>

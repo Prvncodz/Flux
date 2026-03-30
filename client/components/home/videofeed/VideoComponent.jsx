@@ -1,4 +1,3 @@
-import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import { useState, useEffect } from "react";
 import dpfp from "../../assets/dpfp.jpg";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +8,7 @@ export default function VideoComponent({
 	videosLength,
 	setLoading,
 }) {
-	const { avatarUrl, username, fullname } = useGetUserById(video.owner);
+	const { avatar, userName, fullName } = video?.owner;
 	const [duration, setDuration] = useState("00:00");
 	const [timeOfUpload, setTimeOfUpload] = useState("1 day");
 	const navigate = useNavigate();
@@ -17,7 +16,7 @@ export default function VideoComponent({
 	function handleShowUserProfile() {
 		navigate("/userchannel", {
 			state: {
-				otherUserName: username,
+				otherUserName: userName,
 			},
 		});
 	}
@@ -25,8 +24,8 @@ export default function VideoComponent({
 		navigate("/watch/video", {
 			state: {
 				videoId: video._id,
-				ownerAvatar: avatarUrl,
-				fullname: fullname,
+				ownerAvatar: avatar?.url,
+				fullname: fullName,
 			},
 		});
 	}
@@ -101,7 +100,7 @@ export default function VideoComponent({
 			<div className="flex mt-3 p-2">
 				<div className="h-10 w-10">
 					<img
-						src={avatarUrl || dpfp}
+						src={avatar?.url || dpfp}
 						className="rounded-full h-full w-full  object-fill"
 						loading="lazy"
 						onClick={handleShowUserProfile}
