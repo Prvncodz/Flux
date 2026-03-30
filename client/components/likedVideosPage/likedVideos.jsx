@@ -138,7 +138,7 @@ function VideoCardComponent({ video }) {
           src={video.thumbnail?.url}
           className="w-[142px] h-[84px] object-cover rounded-lg md:aspect-video md:h-30 md:w-50 lg:h-40 lg:w-70"
         />
-        <div className="absolute bg-gray-800 rounded-2xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300">
+        <div className="absolute bg-gray-800 rounded-2xl bottom-1 right-1 w-10 h-4 text-xs text-gray-300 text-center">
           {duration}
         </div>
       </div>

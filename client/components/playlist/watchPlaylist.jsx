@@ -184,7 +184,7 @@ export default function ShowPlaylistPage() {
 			<VideoList
 				videos={videos}
 				setVideos={setVideos}
-				playPlaylist={playPlaylist}
+				ref={playPlaylist}
 				fullname={fullname}
 				avatarUrl={avatarUrl}
 				isUserPlaylistOwner={isUserPlaylistOwner}
@@ -194,7 +194,7 @@ export default function ShowPlaylistPage() {
 	);
 }
 
-const VideoList = ({ videos, setVideos, playPlaylist, fullname, avatarUrl, isUserPlaylistOwner, playlistId }) => {
+const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylistOwner, playlistId }) => {
 
 	const navigate = useNavigate();
 	function handleShowWatchVideo(videoId) {
@@ -221,7 +221,7 @@ const VideoList = ({ videos, setVideos, playPlaylist, fullname, avatarUrl, isUse
 						key={video._id}
 						video={video}
 						idx={idx}
-						ref={idx === 0 ? playPlaylist : null}
+						ref={idx === 0 ? ref : null}
 						onClick={() => handleShowWatchVideo(video._id)}
 						fullname={fullname}
 						isUserPlaylistOwner={isUserPlaylistOwner}
@@ -273,8 +273,8 @@ function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner
 		}
 	}
 	return (
-		<div key={video._id} className="flex gap-4" ref={ref}>
-			<div className="relative" onClick={onClick}>
+		<div key={video._id} className="flex gap-4">
+			<div className="relative" onClick={onClick} ref={ref}>
 				<img
 					src={video.thumbnail?.url || dbanner}
 					alt=""

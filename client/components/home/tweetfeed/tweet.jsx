@@ -10,6 +10,7 @@ import ReplyIcon from "../../assets/replyIcon.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
 import TweetCardOptions from "./tweetCardOptions.jsx";
 import { EllipsisVertical } from "lucide-react";
+import { DeletePost, EditPost } from "./tweetOptions.jsx";
 
 export default function TweetComponent({
 	tweet,
@@ -26,7 +27,12 @@ export default function TweetComponent({
 	const { user, isUserLogged } = useContext(UserContext);
 	const [isOptionActive, setIsOptionsActive] = useState(false)
 	const [isUserTweet, setIsUserTweet] = useState(false);
-
+	const [showPopup, setShowPopup] = useState(false);
+	const [popupType, setPopupType] = useState(false);
+	const popup = {
+		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username}/>,
+		"delete": <DeletePost />
+	}
 	const navigate = useNavigate();
 
 	function handleShowTweetPage() {
@@ -71,6 +77,8 @@ export default function TweetComponent({
 			setShowAddTweetBox((prev) => !prev);
 		}
 	}
+
+	
 	useEffect(() => {
 		async function getAllCommentPosts() {
 			try {
@@ -127,6 +135,9 @@ export default function TweetComponent({
 						</button>
 						{
 							isOptionActive && <TweetCardOptions handleOption={handleOption} />
+						}
+						{
+							showPopup && popup[popupType]
 						}
 					</>
 				}

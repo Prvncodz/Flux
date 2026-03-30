@@ -8,7 +8,7 @@ export default function PopUpComponent({ children, onCancel }) {
 		>
 			<div
 				className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
-				onClick={(e) => e.target === e.currentTarget && onClose()}
+				onClick={(e) => e.target === e.currentTarget && onCancel()}
 			>
 
 				<CancelIconComponent onClick={onCancel} />
