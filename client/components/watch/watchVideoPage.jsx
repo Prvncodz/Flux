@@ -164,7 +164,7 @@ export default function WatchVideoPage() {
 						</div>
 					</div>
 				</div>
-				<div className="h-screen overflow-y-auto">
+				<div className="h-auto">
 					<VideoFeed
 						fetchType={"all"}
 						recommendations={true}

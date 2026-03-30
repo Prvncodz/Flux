@@ -228,7 +228,7 @@ export default function Nav({ wantTabs, searchType }) {
 												<Search size={20} />
 											</div>
 										</div>
-										<div className="flex gap-1 mr-10">
+										<div className="flex gap-1 mr-5">
 											<div className="hidden md:block lg:block md:mr-3">
 												<button
 													onClick={handleCreatePopup}
@@ -265,7 +265,7 @@ export default function Nav({ wantTabs, searchType }) {
 												notLoggedOut /*if user is logged in do this else show empty profileIcon*/ ? (
 												<>
 													<div
-														className=" flex justify-center relative items-center active:scale-95 cursor-pointer"
+														className=" flex justify-center relative h-10 w-10 items-center active:scale-95 cursor-pointer"
 														onClick={() => {
 															isActive ? setIsActive(false) : setIsActive(true);
 														}}
@@ -273,7 +273,7 @@ export default function Nav({ wantTabs, searchType }) {
 														<img
 															src={avatar || dpfp}
 															onError={(e) => (e.target.src = dpfp)}
-															className="h-10 w-10 rounded-full shadow-sm"
+															className="h-full w-full rounded-full shadow-sm"
 															loading="lazy"
 														/>
 													</div>
