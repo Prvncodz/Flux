@@ -102,14 +102,14 @@ export default function VideoComponent({
 				<div className="h-10 w-10">
 					<img
 						src={avatarUrl || dpfp}
-						className="rounded-full h-full w-full object-fill"
+						className="rounded-full h-full w-full  object-fill"
 						loading="lazy"
 						onClick={handleShowUserProfile}
 						onError={(e) => (e.target.src = dpfp)}
 					/>
 				</div>
-				<div className="ml-4 line-clamp-2 lg:w-full">
-					<h3 className="text-left text-neutral-700 font-medium text-sm">
+				<div className="ml-4">
+					<h3 className="text-left text-neutral-700 font-medium text-sm line-clamp-2 w-80">
 						{video.title}
 					</h3>
 					<h3 className="text-left text-neutral-600 font-medium text-xs">

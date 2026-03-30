@@ -12,9 +12,7 @@ const EditPost = ({ setShowPopup, tweet, fullname, username, avatarUrl }) => {
 
 	async function handleEditPost(e) {
 		e.preventDefault();
-		const formdata = new FormData(e.target);
 		SetLoading(true);
-		const content = formdata.get("content");
 
 		try {
 			await axios.patch(
@@ -69,7 +67,7 @@ const EditPost = ({ setShowPopup, tweet, fullname, username, avatarUrl }) => {
 						onChange={(e) => setContent(e.target.value)}
 						placeholder="The weather is beautifull..."
 						className="bg-gray-100
-                h-30 w-full p-4 border border-gray-300 text-sm mt-1 outline-none md:h-40"
+                h-30 w-full p-4 border border-gray-300 text-sm mt-1 outline-none whitespace-pre md:h-40"
 					/>
 				</label>
 				<div className="flex justify-center gap-3 mt-1 md:justify-end">
@@ -93,7 +91,7 @@ const EditPost = ({ setShowPopup, tweet, fullname, username, avatarUrl }) => {
 		</PopUpComponent>
 	);
 }
-const DeletePost = ({ isOpen, onClose,tweetId}) => {
+const DeletePost = ({ isOpen, onClose, tweetId }) => {
 	// Close on Escape
 	useEffect(() => {
 		const onKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -102,17 +100,17 @@ const DeletePost = ({ isOpen, onClose,tweetId}) => {
 	}, [isOpen, onClose]);
 
 	if (!isOpen) return null;
-  async function handleDeletePost(Id){
-		if(!Id)return;
-    try {
-      const res = await axios.delete(`/tweets/${Id}/delete-tweet`)
-			if(res.status===200){
+	async function handleDeletePost(Id) {
+		if (!Id) return;
+		try {
+			const res = await axios.delete(`/tweets/${Id}/delete-tweet`)
+			if (res.status === 200) {
 				console.log("tweet deleted successfully")
 			}
-    } catch (err) {
-     console.log(err)	
-    }
-	} 
+		} catch (err) {
+			console.log(err)
+		}
+	}
 	return (
 		<div
 			className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"

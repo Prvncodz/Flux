@@ -18,7 +18,7 @@ export default function PopUpComponent({ children, onCancel }) {
 				>
 					{children}
 				</div>
-				</div>
 			</div>
-			);
+		</div>
+	);
 }

@@ -26,12 +26,12 @@ export default function TweetComponent({
 	const [areAnyComments, setAreAnyComments] = useState(false);
 	const { user, isUserLogged } = useContext(UserContext);
 	const [isOptionActive, setIsOptionsActive] = useState(false)
-	const [isUserTweet, setIsUserTweet] = useState(false);
+	const [isUserTweet, setIsUserTweet] = useState(true);
 	const [showPopup, setShowPopup] = useState(false);
 	const [popupType, setPopupType] = useState(false);
 	const popup = {
-		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username}/>,
-		"delete": <DeletePost isOpen={showPopup} onClose={()=>setShowPopup(false)} tweetId={tweet?._id}  />
+		"edit": <EditPost setShowPopup={setShowPopup} tweet={tweet} avatarUrl={avatarUrl} fullname={fullname} username={username} />,
+		"delete": <DeletePost isOpen={showPopup} onClose={() => setShowPopup(false)} tweetId={tweet?._id} />
 	}
 	const navigate = useNavigate();
 
@@ -78,8 +78,12 @@ export default function TweetComponent({
 		}
 	}
 
-	
+
 	useEffect(() => {
+
+		if (tweet?.owner === user?._id) {
+			setIsUserTweet(true);
+		}
 		async function getAllCommentPosts() {
 			try {
 				const res = await axios.get(
@@ -101,10 +105,7 @@ export default function TweetComponent({
 			setLoading(false);
 		}
 		getAllCommentPosts();
-		if (tweet?.owner === user?._id) {
-			setIsUserTweet(true);
-		}
-	}, [tweet?._id, user?._id]);
+	}, [tweet, user]);
 	return (
 		<>
 			<div
@@ -129,7 +130,7 @@ export default function TweetComponent({
 					</span>
 				</div>
 				{isUserTweet &&
-					<>
+					<div>
 						<button onClick={() => setIsOptionsActive(prev => !prev)} className="absolute top-8 right-5">
 							<EllipsisVertical size={20} className="text-neutral-700" />
 						</button>
@@ -139,7 +140,7 @@ export default function TweetComponent({
 						{
 							showPopup && popup[popupType]
 						}
-					</>
+					</div>
 				}
 
 				<div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left ">

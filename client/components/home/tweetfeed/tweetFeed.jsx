@@ -127,7 +127,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 				{areTweetsFetched &&
 					tweets.map((tweet, idx) => (
 						<TweetComponent
-							key={idx}
+							key={tweet?._id}
 							tweet={tweet}
 							idx={idx}
 							tweetsLength={tweets.length}
