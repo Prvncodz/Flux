@@ -87,7 +87,7 @@ export default function Feed({
 						signal,
 					})
 					.then((res) => {
-						if (res.data.data.length == 0) {
+						if (res.data?.data?.length == 0) {
 							setHasNoMore(true);
 							setLoading(false);
 						}
@@ -111,7 +111,7 @@ export default function Feed({
 		};
 	}, [fetchType, searchQuery, page]);
 
-	if (areVideosFetched && videos.length === 0) {
+	if (areVideosFetched && videos?.length === 0) {
 		return (
 			<div className="flex h-100 w-full justify-center items-center text-base font-medium ">
 				No Videos available for this request
@@ -125,7 +125,7 @@ export default function Feed({
 				ref={ref}
 			>
 				{areVideosFetched &&
-					videos.map((video, idx) =>
+					videos?.map((video, idx) =>
 						playingVideoId ? (
 							video._id !== playingVideoId && (
 								<VideoComponent key={idx} video={video} idx={idx} />
