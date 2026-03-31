@@ -40,7 +40,7 @@ export default function CommentComponent({
       return;
     }
     if (!mainPost) {
-      navigate("/watch/post", {
+      navigate(`/watch/post/${comment?._id}`, {
         state: {
           post: comment,
           comments: commentsPosts,

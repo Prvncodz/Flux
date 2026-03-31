@@ -61,7 +61,7 @@ function App() {
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/userchannel/:username" element={<Profile />} />
 						<Route path="/watch/video/:videoId" element={<WatchVideoPage />} />
-						<Route path="/watch/post" element={<WatchPostPage />} />
+						<Route path="/watch/post/:postId" element={<WatchPostPage />} />
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/liked-videos" element={<LikedVideos />} />
 						<Route path="/watch-history" element={<HistoryPage />} />

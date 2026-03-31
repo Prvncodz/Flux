@@ -1,4 +1,3 @@
-import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import Like from "../likeComponent/likeButton.jsx";
 import dpfp from "../../assets/dpfp.jpg";
 import { useContext, useEffect, useState } from "react";
@@ -43,7 +42,7 @@ export default function TweetComponent({
 		}
 
 		if (!mainPost) {
-			navigate("/watch/post", {
+			navigate(`/watch/post/${tweet._id}`, {
 				state: {
 					post: tweet,
 					comments: commentsPost,
