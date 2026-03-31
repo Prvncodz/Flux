@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Nav from "../home/nav.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import Button from "../button.jsx";
@@ -17,7 +17,8 @@ import TabContext from "../../contexts/TabContext.jsx";
 
 export default function WatchVideoPage() {
 	const location = useLocation();
-	const { videoId, username, ownerAvatar, fullname } = location.state || {};
+	const {videoId}=useParams();
+	const { username, ownerAvatar, fullname } = location.state || {};
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
 	const [video, setVideo] = useState({});

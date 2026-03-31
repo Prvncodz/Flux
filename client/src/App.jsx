@@ -60,7 +60,7 @@ function App() {
 						<Route path="/signin" element={<SignIn />} />
 						<Route path="/signup" element={<SignUp />} />
 						<Route path="/userchannel/:username" element={<Profile />} />
-						<Route path="/watch/video" element={<WatchVideoPage />} />
+						<Route path="/watch/video/:videoId" element={<WatchVideoPage />} />
 						<Route path="/watch/post" element={<WatchPostPage />} />
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/liked-videos" element={<LikedVideos />} />

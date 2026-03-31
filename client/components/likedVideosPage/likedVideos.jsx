@@ -115,9 +115,8 @@ function VideoCardComponent({ video }) {
 	}, [video]);
 
 	function handleShowWatchVideo() {
-		navigate("/watch/video", {
+		navigate(`/watch/video/${video?._id}`, {
 			state: {
-				videoId: video?._id,
 				ownerAvatar: avatar?.url,
 				fullname: fullName
 			},

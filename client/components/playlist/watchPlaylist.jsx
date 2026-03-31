@@ -44,7 +44,7 @@ export default function ShowPlaylistPage() {
 	async function handleAddVideosToPlaylist(videoIds) {
 		try {
 			const res = await axios.patch(`/playlists/add/${playlistId}`, { videoIds: videoIds })
-			setSet(prev => new Set([...prev,...videoIds]));
+			setSet(prev => new Set([...prev, ...videoIds]));
 			setVideos(res?.data?.data?.videos);
 		} catch (err) {
 			console.log(err);
@@ -97,7 +97,7 @@ export default function ShowPlaylistPage() {
 		if (owner === user?._id) {
 			setIsUserPlaylistOwner(true);
 			fetchAllVideos(user?._id);
-		}else{
+		} else {
 			setIsUserPlaylistOwner(false);
 		}
 	}, [user])
@@ -130,7 +130,7 @@ export default function ShowPlaylistPage() {
 			</div>
 
 			{/* playlist banner */}
-			<div className="w-full h-55  rounded-xl overflow-hidden bg-yellow-400">
+			<div className="w-full h-55  rounded-xl overflow-hidden bg-gray-100">
 				<img
 					src={curPlaylist?.videos[0]?.thumbnail?.url || dbanner}
 					alt=""
@@ -207,9 +207,8 @@ const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylist
 	function handleShowWatchVideo(videoId) {
 
 		if (videoId) {
-			navigate("/watch/video", {
+			navigate(`/watch/video/${videoId}`, {
 				state: {
-					videoId: videoId,
 					ownerAvatar: avatarUrl,
 					fullname: fullname,
 				},
