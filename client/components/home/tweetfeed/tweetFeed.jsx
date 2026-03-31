@@ -14,6 +14,15 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 	const [hasNoMore, setHasNoMore] = useState(false);
 	const [showSigninPopup, setShowSigninPopup] = useState(false);
 	const ref = useRef(null);
+
+
+	useEffect(() => {
+		setTweets([]);
+		setPage(1);
+		setHasNoMore(false);
+		setLoading(false);
+	}, [searchQuery]);
+
 	useEffect(() => {
 		const el = ref.current;
 		function handleScroll() {
@@ -25,6 +34,7 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 		el?.addEventListener("scroll", handleScroll);
 		return () => el?.removeEventListener("scroll", handleScroll);
 	});
+
 	useEffect(() => {
 		if (loading) return;
 		setLoading(true);
@@ -48,7 +58,10 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
+
 		}
 		async function fetchSearchedTweets(query) {
 			try {
@@ -72,7 +85,10 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
+
 		}
 
 		async function fetchAllTweetsByUser() {
@@ -92,7 +108,10 @@ export default function Feed({ fetchType, userId, searchQuery }) {
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
+
 		}
 
 		if (fetchType === "user") {

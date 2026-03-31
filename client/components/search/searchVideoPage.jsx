@@ -34,6 +34,7 @@ const SearchVideoPage = () => {
 							className="h-full w-full placeholder:text-gray-500 text-gray-700 pl-9 pr-5 flex flex-start focus:outline-none"
 							onKeyDown={(e) => {
 								if (e.key == "Enter") {
+									e.target.blur();
 									handleSearch();
 								}
 							}}
@@ -42,7 +43,10 @@ const SearchVideoPage = () => {
 						/>
 						<div
 							className="h-10 w-18 rounded-4xl bg-gray-100 flex items-center justify-center flex-end"
-							onClick={handleSearch}
+							onClick={(e) => {
+								e.target.blur();
+								handleSearch();
+							}}
 						>
 							<Search size={20} />
 						</div>
