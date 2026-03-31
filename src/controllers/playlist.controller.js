@@ -63,7 +63,9 @@ const getPlaylistById = asyncHandler(async (req, res) => {
 	if (!isValidObjectId(playlistId)) {
 		throw new ApiError(403, "invlaid id");
 	}
-	const playlist = await Playlist.findById(playlistId).populate("videos");
+	const playlist = await Playlist.findById(playlistId)
+		.populate("videos")
+		.populate("owner", "avatar fullName userName");
 	if (!playlist) {
 		throw new ApiError(500, "unable to find this playlist");
 	}

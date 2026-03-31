@@ -1,4 +1,3 @@
-import { useGetUserById } from "../../../hooks/useGetUserById.jsx";
 import { useState, useEffect, useContext } from "react";
 import dpfp from "../../assets/dpfp.jpg";
 import dbanner from "../../assets/dbanner.jpg";
@@ -6,24 +5,25 @@ import PlaylistIcon from "../../assets/playlistIcon.jsx";
 import { useNavigate } from "react-router-dom";
 import UserPlaylistcontext from "../../../contexts/userPlaylistContext.jsx";
 
-export default function PlaylistComponents({
+export default function PlaylistComponent({
 	playlist,
 	idx,
 	playlistsLength,
 	setLoading,
 }) {
-	const { avatar, fullName } = playlist?.owner;
+	const { avatar, fullName ,userName} = playlist?.owner;
 	const { owner } = useContext(UserPlaylistcontext);
 	const [videos] = useState(playlist?.videos || []);
 	const navigate = useNavigate();
 
 	function hanldeShowPlaylistPage() {
-		navigate("/watch/playlist", {
+		navigate(`/watch/playlist/${playlist?._id}`, {
 			state: {
 				playlist: playlist,
 				name: playlist?.name,
 				avatarUrl: avatar?.url,
 				fullname: fullName,
+				username:userName,
 				owner
 			},
 		});

@@ -65,7 +65,7 @@ function App() {
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/liked-videos" element={<LikedVideos />} />
 						<Route path="/watch-history" element={<HistoryPage />} />
-						<Route path="/watch/playlist" element={<WatchPlaylist />} />
+						<Route path="/watch/playlist/:playlistId" element={<WatchPlaylist />} />
 						<Route path="/search/videos" element={<SearchVideoPage />} />
 						<Route path="/search/posts" element={<SearchPostPage />} />
 					</Routes>
