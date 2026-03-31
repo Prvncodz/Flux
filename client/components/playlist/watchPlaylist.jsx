@@ -16,10 +16,10 @@ export default function ShowPlaylistPage() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { user } = useContext(UserContext);
-	const { playlist, avatarUrl, fullname, username,name, owner } = location.state || {};
+	const { playlist, avatarUrl, fullname, username, name, owner } = location.state || {};
 	const [avatar, setAvatar] = useState(avatarUrl || null);
 	const [channelName, setChannelName] = useState(fullname || "");
-	const [userName,setUserName]=useState(username || "");
+	const [userName, setUserName] = useState(username || "");
 	const [videos, setVideos] = useState(playlist?.videos || []);
 	const playPlaylist = useRef(null);
 	const [isUserPlaylistOwner, setIsUserPlaylistOwner] = useState(false);
@@ -43,14 +43,9 @@ export default function ShowPlaylistPage() {
 
 	async function handleAddVideosToPlaylist(videoIds) {
 		try {
-			await axios.patch(`/playlists/add/${playlistId}`, { videoIds: videoIds })
-				.then((res) => {
-					setSet(prev => {
-						const newSet = new Set(prev);
-						newSet.add(...videoIds);
-						return newSet
-					})
-				});
+			const res = await axios.patch(`/playlists/add/${playlistId}`, { videoIds: videoIds })
+			setSet(prev => new Set([...prev,...videoIds]));
+			setVideos(res?.data?.data?.videos);
 		} catch (err) {
 			console.log(err);
 		}
@@ -198,12 +193,13 @@ export default function ShowPlaylistPage() {
 				avatarUrl={avatarUrl}
 				isUserPlaylistOwner={isUserPlaylistOwner}
 				playlistId={playlistId}
+				setSet={setSet}
 			/>
 		</div>
 	);
 }
 
-const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylistOwner, playlistId }) => {
+const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylistOwner, playlistId, setSet }) => {
 
 	const navigate = useNavigate();
 	function handleShowWatchVideo(videoId) {
@@ -236,6 +232,7 @@ const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylist
 						isUserPlaylistOwner={isUserPlaylistOwner}
 						playlistId={playlistId}
 						setVideos={setVideos}
+						setSet={setSet}
 					/>
 				))
 				:
@@ -245,7 +242,7 @@ const VideoList = ({ videos, setVideos, ref, fullname, avatarUrl, isUserPlaylist
 	)
 }
 
-function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner, playlistId, setVideos }) {
+function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner, playlistId, setVideos, setSet }) {
 	const [duration, setDuration] = useState("00:00");
 	const [isOptionActive, setIsOptionsActive] = useState(false);
 
@@ -274,14 +271,12 @@ function VideoCardComponent({ video, ref, onClick, fullname, isUserPlaylistOwner
 		if (type === "remove") {
 			try {
 				await axios.patch(`/playlists/remove/${video._id}/${playlistId}`)
-					.then(() => {
-						setVideos(prev => prev.filter(v => v._id !== video?._Id));
-						setSet(prev => {
-							const newSet = new Set(prev);
-							newSet.delete(video?._id);
-							return newSet
-						});
-					})
+				setVideos(prev => prev.filter(v => v._id !== video?._id));
+				setSet(prev => {
+					const newSet = new Set(prev);
+					newSet.delete(video?._id);
+					return newSet
+				});
 			} catch (err) {
 				console.log(err);
 			}

@@ -95,12 +95,13 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
 	if (!addVideoToPlaylist) {
 		throw new ApiError("unable to add videos to the playlist");
 	}
+	const newPlaylist = await Playlist.findById(playlistId).populate("videos")
 	return res
 		.status(200)
 		.json(
 			new ApiResponse(
 				200,
-				addedVideoToPlaylist,
+				newPlaylist,
 				"Videos added to the playlist successfully",
 			),
 		);
