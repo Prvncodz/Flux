@@ -89,17 +89,9 @@ export default function Nav({ wantTabs, searchType }) {
 	function handleSearch() {
 		if (isSearchFieldOpen) {
 			if (searchType === "post") {
-				navigate("/search/posts", {
-					state: {
-						searchQuery: searchInput,
-					},
-				});
+				navigate(`/search/posts?query=${searchInput}`); 
 			} else {
-				navigate("/search/videos", {
-					state: {
-						searchQuery: searchInput,
-					},
-				});
+				navigate(`/search/videos?query=${searchInput}`);
 			}
 		}
 		setIsSearchFieldOpen((prev) => !prev);

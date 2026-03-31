@@ -6,8 +6,8 @@ import CommentComponent from "../commentFeed/commentComponent.jsx";
 
 export default function WatchPostPage() {
 	const location = useLocation();
-	const {postId} = useParams();
 	const { post, comments, postType } = location.state || {};
+	const {postId}=useParams();
 	return (
 		<div className="scroll-smooth">
 			<Nav wantTabs={false} />

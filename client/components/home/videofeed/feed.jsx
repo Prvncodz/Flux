@@ -2,7 +2,6 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
 import UserContext from "../../../contexts/UserContext.jsx";
-import { Loader2 } from "lucide-react";
 
 export default function Feed({
 	fetchType,
@@ -18,6 +17,13 @@ export default function Feed({
 	const { user, isUserLogged } = useContext(UserContext);
 	const [hasNoMore, setHasNoMore] = useState(false);
 	const ref = useRef(null);
+
+	useEffect(() => {
+		setVideos([]);
+		setPage(1);
+		setHasNoMore(false);
+		setLoading(false);
+	}, [searchQuery]);
 
 	useEffect(() => {
 		const el = ref.current;
@@ -54,9 +60,13 @@ export default function Feed({
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
+
 		}
 		async function fetchSearchedVideos(query) {
+			if (!query) return;
 			try {
 				await axios
 					.get(
@@ -77,6 +87,8 @@ export default function Feed({
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
 		}
 		async function fetchVideosByUser(Id) {
@@ -96,7 +108,10 @@ export default function Feed({
 					});
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
+
 		}
 
 		if (fetchType === "user") {
@@ -124,20 +139,16 @@ export default function Feed({
 			ref={ref}
 		>
 			{areVideosFetched &&
-				videos?.map((video, idx) =>
-					playingVideoId ? (
-						video._id !== playingVideoId && (
-							<VideoComponent key={idx} video={video} idx={idx} />
-						)
-					) : (
-						<VideoComponent
-							key={idx}
-							video={video}
-							idx={idx}
-							videosLength={videos.length}
-							setLoading={setLoading}
-						/>
-					),
+				videos?.filter((v) => v._id !== playingVideoId).map((video, idx) =>
+
+					<VideoComponent
+						key={idx}
+						video={video}
+						idx={idx}
+						videosLength={videos.length}
+						setLoading={setLoading}
+					/>
+
 				)}
 		</div>
 	);

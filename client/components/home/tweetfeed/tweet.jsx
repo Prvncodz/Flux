@@ -101,11 +101,12 @@ export default function TweetComponent({
 		if (idx === tweetsLength - 1) {
 			setLoading(false);
 		}
-		if (tweet?.owner === user?._id) {
+		if (tweet?.owner?._id === user?._id) {
 			setIsUserTweet(true);
 		}
 		getAllCommentPosts();
 	}, [tweet, user]);
+
 	return (
 		<>
 			<div
@@ -130,7 +131,7 @@ export default function TweetComponent({
 					</span>
 				</div>
 				{isUserTweet &&
-					<div>
+					<>
 						<button onClick={() => setIsOptionsActive(prev => !prev)} className="absolute top-8 right-5">
 							<EllipsisVertical size={20} className="text-neutral-700" />
 						</button>
@@ -140,7 +141,7 @@ export default function TweetComponent({
 						{
 							showPopup && popup[popupType]
 						}
-					</div>
+					</>
 				}
 
 				<div className="pt-4 pl-4 h-auto w-full wrap-break-word text-neutral-700 text-body font-medium text-left ">
