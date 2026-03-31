@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import dpfp from "../../assets/dpfp.jpg";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../../contexts/UserContext";
 
 export default function VideoComponent({
 	video,
@@ -11,15 +12,13 @@ export default function VideoComponent({
 	const { avatar, userName, fullName } = video?.owner;
 	const [duration, setDuration] = useState("00:00");
 	const [timeOfUpload, setTimeOfUpload] = useState("1 day");
+	const { user } = useContext(UserContext);
 	const navigate = useNavigate();
 
 	function handleShowUserProfile() {
-		navigate("/userchannel", {
-			state: {
-				otherUserName: userName,
-			},
-		});
+		navigate(`/userchannel/${userName}`)
 	}
+
 	function handleShowWatchVideo() {
 		navigate("/watch/video", {
 			state: {
@@ -98,17 +97,18 @@ export default function VideoComponent({
 				</div>
 			</div>
 			<div className="flex mt-3 p-2">
-				<div className="h-10 w-10">
+				<div className="h-10 w-10 shrink-0">
 					<img
 						src={avatar?.url || dpfp}
-						className="rounded-full h-full w-full  object-fill"
+						name="Userprofile"
+						className="rounded-full h-full w-full cursor-pointer"
 						loading="lazy"
 						onClick={handleShowUserProfile}
 						onError={(e) => (e.target.src = dpfp)}
 					/>
 				</div>
 				<div className="ml-4">
-					<h3 className="text-left text-neutral-700 font-medium text-sm line-clamp-2 w-80">
+					<h3 className="text-left text-neutral-700 font-medium text-sm line-clamp-2 w-auto">
 						{video.title}
 					</h3>
 					<h3 className="text-left text-neutral-600 font-medium text-xs">

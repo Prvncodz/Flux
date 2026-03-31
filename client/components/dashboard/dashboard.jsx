@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Eye, ThumbsUp, Users, Video, EyeOff, Edit2, Delete, DeleteIcon, Trash, Trash2 } from "lucide-react";
 import Nav from "../home/nav";
 import axios from "../../api/axios";
@@ -6,6 +6,7 @@ import dbanner from "../assets/dbanner.jpg";
 import dpfp from "../assets/dpfp.jpg";
 import EditProfilePopUp from "../userProfile/editProfilePopup.jsx";
 import EditVideoPopup from "./EditVideoPopup.jsx";
+import TabContext from "../../contexts/TabContext.jsx";
 
 const CheckIcon = () => (
 	<svg
@@ -92,12 +93,14 @@ export default function Dashboard() {
 	const [showPublishError, setShowPublishError] = useState(false);
 	const [showDeleteError, setShowDeleteError] = useState(false);
 	const [showUpdateError, setShowUpdateError] = useState(false);
+  const {setCurrentPage}=useContext(TabContext);
 
 	function handleEditProfile() {
 		setIsEditPopUpActive(true);
 	}
 
 	useEffect(() => {
+		setCurrentPage("dashboard")
 		async function getStats() {
 			try {
 				const res = await axios.get("/dashboard/stats");

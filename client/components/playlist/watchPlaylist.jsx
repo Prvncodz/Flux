@@ -105,7 +105,7 @@ export default function ShowPlaylistPage() {
 		<div className="max-w-md mx-auto h-screen overflow-y-auto p-6 space-y-6">
 			{/* back button */}
 			<div className="flex justify-between relative">
-				<button onClick={() => navigate("/userchannel")} className="flex flex-start">
+				<button onClick={() => navigate("/userchannel/")} className="flex flex-start">
 					<ArrowLeft />
 				</button>
 				{isUserPlaylistOwner &&

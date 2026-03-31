@@ -12,7 +12,6 @@ import VideoFeed from "../home/videofeed/feed.jsx";
 import LikeButton from "../home/likeComponent/likeButton.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
 import VideoPlayer from "../home/videofeed/VideoPlayer.jsx";
-import { Loader2 } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
 import TabContext from "../../contexts/TabContext.jsx";
 

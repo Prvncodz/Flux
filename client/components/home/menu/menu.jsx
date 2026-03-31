@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import CancelIconComponent from "../../userProfile/cancelIconComponent.jsx";
-import SignoutIcon from "../../assets/signoutIcon.jsx";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../../contexts/UserContext.jsx";
 import {
 	History,
 	Home,
 	LayoutDashboard,
 	LayoutList,
+	LogOutIcon,
 	ThumbsUp,
 } from "lucide-react";
 
@@ -108,7 +107,7 @@ export default function MenuBar({ setIsMenuOPen, onSignout, isUserLogged }) {
 						onClick={onSignout}
 						className="bg-[#1e98fe] hover:bg-blue-600 focus:outline-offset-2 active:bg-blue-800  text-gray-100 p-5 w-38 h-11 ml-auto mr-auto flex justify-center items-center rounded-full font-semibold text-center text-md transition-bg ease cursor-pointer mb-20 md:hidden lg:hidden"
 					>
-						<SignoutIcon />
+						<LogOutIcon />
 						<span className="ml-2 text-medium font-medium">Logout</span>
 					</button>
 				)}

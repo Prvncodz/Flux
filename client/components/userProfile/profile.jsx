@@ -11,7 +11,7 @@ import PostFeed from "../home/tweetfeed/tweetFeed.jsx";
 import PlaylistFeed from "../home/playlistfeed/playlistFeed.jsx";
 import EditProfilePopUp from "./editProfilePopup.jsx";
 import ChangePassPopup from "./changePass.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { ArrowLeftIcon, Ellipsis, LucideDotSquare, Pen, UserRoundKey } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
 
@@ -24,8 +24,7 @@ export default function Profile() {
 	const [isEditPopUpActive, setIsEditPopUpActive] = useState(false);
 	const [isPassPopupActive, setIsPassPopupActive] = useState(false);
 	const [isOtherUserP, setIsOtherUserP] = useState(false);
-	const location = useLocation();
-	const { otherUserName } = location.state || {};
+	const { username } = useParams();
 	const [isSubscribed, setIsSubscribed] = useState(false);
 	const [isProfileFetched, setIsProfileFetched] = useState(false);
 	const [signinInstruction, setSigninInstruction] = useState(false);
@@ -48,12 +47,11 @@ export default function Profile() {
 		}, 800);
 	}
 	useEffect(() => {
-		if (otherUserName) {
-			if (otherUserName !== user?.userName) {
+		if (username) {
+			if (username !== user?.userName) {
 				setIsOtherUserP(true);
 				setShowElipse(false);
 			}
-			if (!otherUserName) return;
 			async function getUserProfile(username) {
 				if (!username) return;
 				try {
@@ -70,7 +68,7 @@ export default function Profile() {
 					);
 				}
 			}
-			getUserProfile(otherUserName);
+			getUserProfile(username);
 		} else {
 			if (!user?.userName) return;
 			async function getUserProfile(username) {
@@ -91,7 +89,7 @@ export default function Profile() {
 			}
 			getUserProfile(user?.userName);
 		}
-	}, [user?.userName, otherUserName]);
+	}, [user?.userName, username]);
 
 	const tabs = {
 		videos: <VideoFeed fetchType={"user"} userId={UserProfile?._id} />,

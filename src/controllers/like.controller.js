@@ -124,7 +124,8 @@ const getLikedVideos = asyncHandler(async (req, res) => {
 		_id: { $in: allLikedVideoIds.map((d) => d.video) },
 	})
 		.skip(skipNum)
-		.limit(limitNum);
+		.limit(limitNum)
+	  .populate("owner","avatar fullName")
 
 	if (!videos) {
 		throw new ApiError(500, "Unable to get all liked videos");

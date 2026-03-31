@@ -6,7 +6,6 @@ import axios from "../../api/axios.js";
 import TabContext from "../../contexts/TabContext.jsx";
 import UserContext from "../../contexts/UserContext.jsx";
 import dpfp from "../assets/dpfp.jpg";
-import SignoutIcon from "../assets/signoutIcon.jsx";
 import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
 import PostUploadPopup from "../uploadPopup/postUpload.jsx";
 import CreateComponent from "./Upload_CreateComponent.jsx";
@@ -17,6 +16,7 @@ import {
 	CircleUserRound,
 	HomeIcon,
 	LayoutList,
+	LogOutIcon,
 	Search,
 } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
@@ -172,7 +172,7 @@ export default function Nav({ wantTabs, searchType }) {
 									className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
 									onClick={() => {
 										if (isUserLogged) {
-											navigate("/userchannel");
+											navigate(`/userchannel/${user?.userName}`);
 										} else {
 											navigate("/signin");
 										}
@@ -299,8 +299,8 @@ export default function Nav({ wantTabs, searchType }) {
 																				</div>
 																			</span>
 																			<div
-																				onClick={() => navigate("/userchannel")}
-																				className="text-base font-medium  text-blue-600 text-left "
+																				onClick={() => navigate(`/userchannel/${user?.userName}`)}
+																				className="text-base font-medium  text-blue-600 text-left cursor-pointer"
 																			>
 																				View your channel
 																			</div>
@@ -313,7 +313,7 @@ export default function Nav({ wantTabs, searchType }) {
 																		onClick={handleSignout}
 																		className=" flex justify-left items-center pl-5 cursor-pointer"
 																	>
-																		<SignoutIcon />
+																		<LogOutIcon />
 																		<span className="ml-3 text-medium font-medium flex">
 																			Logout
 																		</span>
@@ -413,12 +413,12 @@ export default function Nav({ wantTabs, searchType }) {
 															{"@" + username}
 														</div>
 													</span>
-													<a
-														href="/userchannel"
-														className="text-base font-medium  text-blue-600 text-left "
+													<div
+														onClick={() => navigate(`/userchannel/${user?.userName}`)}
+														className="text-base font-medium  text-blue-600 text-left cursor-pointer"
 													>
-														View your channel{" "}
-													</a>
+														View your channel
+													</div>
 												</div>
 											</div>
 										</div>
@@ -426,10 +426,10 @@ export default function Nav({ wantTabs, searchType }) {
 										<div className="p-2.5">
 											<div
 												onClick={handleSignout}
-												className=" flex justify-left items-center pl-5"
+												className=" flex justify-left items-center pl-5 cursor-pointer"
 											>
-												<SignoutIcon />
-												<span className="ml-3 text-medium font-medium flex">
+												<LogOutIcon size={20} className="text-gray-800" />
+												<span className="ml-3 text-medium font-medium flex text-gray-800">
 													Logout
 												</span>
 											</div>
