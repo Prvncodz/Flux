@@ -97,6 +97,8 @@ export default function ShowPlaylistPage() {
 		if (owner === user?._id) {
 			setIsUserPlaylistOwner(true);
 			fetchAllVideos(user?._id);
+		}else{
+			setIsUserPlaylistOwner(false);
 		}
 	}, [user])
 
