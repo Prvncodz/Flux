@@ -1,11 +1,12 @@
 # Flux
 
-![Flux Platform Interface](./client/components/assets/interface.png)
+![screenshot-studio-1775364462160](https://github.com/user-attachments/assets/a06607ee-e2a7-4fe2-ad14-9ae2d8a7b078)
 
 ## Project Description
 Flux is a social media platform designed specifically for tech enthusiasts. It serves as a hub for sharing knowledge, experiences, and ideas, fostering a community where individuals can connect and engage on various technology-related topics.
 
 This project marks a significant milestone as it is the first MERN (MongoDB, Express, React, Node.js) project that has been manually coded 80%. This hands-on approach to development allowed for a deep understanding of the MERN stack and the opportunity to customize functionalities to better suit the needs of the user base.
+
 
 ## Technologies Used
 - **Frontend:** React JS
