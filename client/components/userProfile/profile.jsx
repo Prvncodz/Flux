@@ -47,11 +47,9 @@ export default function Profile() {
 		}, 800);
 	}
 	useEffect(() => {
-		if (username) {
-			if (username !== user?.userName) {
-				setIsOtherUserP(true);
-				setShowElipse(false);
-			}
+		if (username !== user?.userName) {
+			setIsOtherUserP(true);
+			setShowElipse(false);
 			async function getUserProfile(username) {
 				if (!username) return;
 				try {
@@ -70,14 +68,13 @@ export default function Profile() {
 			}
 			getUserProfile(username);
 		} else {
-			if (!user?.userName) return;
+			setShowElipse(true);
 			async function getUserProfile(username) {
 				if (!username) return;
 				try {
 					const res = await axios.get(`/user/p/${username}`);
 					if (res.status === 200) {
 						setUserProfile(res.data?.data);
-						setShowElipse(true);
 						setIsProfileFetched(true);
 					}
 				} catch (error) {

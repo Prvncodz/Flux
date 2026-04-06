@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "../contexts/UserContext.jsx";
 import Home from "../components/home/home.jsx";
-import SignUp from "../components/signup.jsx";
-import SignIn from "../components/signin.jsx";
+const SignUp = React.lazy(() => import("../components/signup.jsx"));
+const SignIn = React.lazy(() => import("../components/signin.jsx"));
 import Profile from "../components/userProfile/profile.jsx";
 import axios from "../api/axios.js";
 import WatchVideoPage from "../components/watch/watchVideoPage.jsx";
@@ -53,7 +53,7 @@ function App() {
 		<UserContext.Provider
 			value={{ user, isUserLogged, setUser, setIsUserLogged }}
 		>
-			<TabContext.Provider value={{currentPage,setCurrentPage}}>
+			<TabContext.Provider value={{ currentPage, setCurrentPage }}>
 				<BrowserRouter>
 					<Routes>
 						<Route path="/" element={<Home />} />
