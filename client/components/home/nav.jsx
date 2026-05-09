@@ -3,8 +3,6 @@ import profileIcon from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import axios from "../../api/axios.js";
-import TabContext from "../../contexts/TabContext.jsx";
-import UserContext from "../../contexts/UserContext.jsx";
 import dpfp from "../assets/dpfp.jpg";
 import VideoUploadPopup from "../uploadPopup/videoUpload.jsx";
 import PostUploadPopup from "../uploadPopup/postUpload.jsx";
@@ -22,12 +20,16 @@ import {
 import SignInBanner from "../signinInstructPopup.jsx";
 import CreatePlaylistPopup from "./playlistfeed/CreatePlaylistPopup.jsx";
 import { motion } from "motion/react"
+import useTab from "../../stores/tab.store.js";
+import useUserStore from "../../stores/user.store.js";
 
 export default function Nav({ wantTabs, searchType }) {
     const navigate = useNavigate();
     const [isActive, setIsActive] = useState(false);
     const [notLoggedOut, setNotLoggedOut] = useState(true);
-    const { user, isUserLogged, setIsUserLogged } = useContext(UserContext);
+    const user = useUserStore(s => s.user);
+    const isUserLogged = useUserStore(s => s.isUserLogged);
+    const setIsUserLogged = useUserStore(s => s.setIsUserLogged);
     const [avatar, setAvatar] = useState(null);
     const [fullname, setFullname] = useState("Jhon Doe");
     const [username, setUsername] = useState("jdoejr");
@@ -38,7 +40,7 @@ export default function Nav({ wantTabs, searchType }) {
     const [searchInput, setSearchInput] = useState("");
     const [isMenuOpen, setIsMenuOPen] = useState(false);
     const [signinInstruction, setSigninInstruction] = useState(false);
-    const { currentPage, setCurrentPage } = useContext(TabContext) || {}
+    const currentPage = useTab(s => s.tab) || {}
     const popup = {
         video: <VideoUploadPopup setShowPopup={setShowPopup} />,
         post: <PostUploadPopup setShowPopup={setShowPopup} />,

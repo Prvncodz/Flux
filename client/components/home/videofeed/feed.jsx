@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import axios from "../../../api/axios.js";
 import VideoComponent from "./VideoComponent.jsx";
-import UserContext from "../../../contexts/UserContext.jsx";
+import useUserStore from "../../../stores/user.store.js";
 
 export default function Feed({
     fetchType,
@@ -14,7 +14,8 @@ export default function Feed({
     const [areVideosFetched, SetAreVideosFetched] = useState(false);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const { user, isUserLogged } = useContext(UserContext);
+    const user = useUserStore(s => s.user);
+    const isUserLogged = useUserStore(s => s.isUserLogged);
     const [hasNoMore, setHasNoMore] = useState(false);
     const ref = useRef(null);
 

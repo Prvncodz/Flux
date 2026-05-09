@@ -36,11 +36,11 @@ export default function VideoUploadPopup({ setShowPopup }) {
 		<>
 			<PopUpComponent onCancel={() => setShowPopup(false)}>
 				<form onSubmit={(e) => handleVideoUpload(e)}>
-					<div className="flex items-center justify-center h-40 w-full px-4 py-0 my-4 mt-8 ">
+					<div className="flex items-center justify-center h-50 w-full px-4 py-0 my-4 mt-8 ">
 						<label
 							htmlFor="for-upload"
-							className="border-2 border-dotted border-gray-300 h-full max-h-[60vh] w-full flex justify-center items-center flex-col"
-						>
+							className="border-2 border-dotted rounded-2xl border-gray-300 h-full w-full flex justify-center items-center flex-col"
+						 >
 							<svg
 								width="40"
 								height="40"

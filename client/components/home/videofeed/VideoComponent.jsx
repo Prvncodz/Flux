@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import dpfp from "../../assets/dpfp.jpg";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../../../contexts/UserContext";
 
 export default function VideoComponent({
     video,
@@ -12,7 +11,6 @@ export default function VideoComponent({
     const { avatar, userName, fullName } = video?.owner;
     const [duration, setDuration] = useState("00:00");
     const [timeOfUpload, setTimeOfUpload] = useState("1 day");
-    const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
     function handleShowUserProfile() {

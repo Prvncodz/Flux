@@ -2,7 +2,7 @@ import { useState, useEvent, useRef, useContext } from "react";
 import axios from "../api/axios.js";
 import SubmitButton from "./submitButton.jsx";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../contexts/UserContext.jsx";
+import useUserStore from "../stores/user.store.js";
 
 export default function SignIn() {
   const [loading, SetLoading] = useState(false);
@@ -10,7 +10,8 @@ export default function SignIn() {
   const [isSubmmited, setIsSubmmited] = useState(false);
   const [firstInputField, setFirstInputField] = useState("");
   const navigate = new useNavigate();
-  const { setUser, setIsUserLogged } = useContext(UserContext);
+  const  setUser = useUserStore(s=>s.setUser);
+  const  setIsUserLogged = useUserStore(s=>s.setIsUserLogged);
 
   async function handleFormSubmission(e) {
     e.preventDefault();

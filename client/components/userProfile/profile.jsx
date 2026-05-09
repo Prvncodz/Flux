@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext, useCallback } from "react";
-import UserContext from "../../contexts/UserContext.jsx";
 import axios from "../../api/axios.js";
 import UserTick from "../assets/usertick.jsx";
 import UserAddIcon from "../assets/useradd.jsx";
@@ -15,9 +14,12 @@ import { useLocation, useParams } from "react-router-dom";
 import { ArrowLeftIcon, Ellipsis, LucideDotSquare, Pen, UserRoundKey } from "lucide-react";
 import SignInBanner from "../signinInstructPopup.jsx";
 import { motion } from "motion/react"
+import useUserStore from "../../stores/user.store.js";
 
 export default function Profile() {
-    const { user, isUserLogged } = useContext(UserContext);
+
+    const user = useUserStore(s => s.user);
+    const isUserLogged = useUserStore(s => s.isUserLogged);
     const [UserProfile, setUserProfile] = useState({});
     const [tabOpened, setTabOpened] = useState("videos");
     const [showElipse, setShowElipse] = useState(false);
