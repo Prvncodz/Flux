@@ -13,9 +13,12 @@ import HistoryPage from "../components/historyPage/historyPage.jsx";
 import WatchPlaylist from "../components/playlist/watchPlaylist.jsx";
 import SearchVideoPage from "../components/search/searchVideoPage.jsx";
 import SearchPostPage from "../components/search/searchPostPage.jsx";
+import useUserStore from "../stores/user.store.js";
 
 function App() {
     const [isTokenReceived, setIsTokenReceived] = useState(false);
+    const setUser = useUserStore(s => s.setUser);
+    const setIsUserLogged = useUserStore(s => s.setIsUserLogged);
 
     useEffect(() => {
         async function loginUser() {
