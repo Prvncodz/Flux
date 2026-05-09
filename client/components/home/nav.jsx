@@ -155,25 +155,25 @@ export default function Nav({ wantTabs, searchType }) {
                         {currentPage !== "watchVideo" &&
                             <div className="hidden md:absolute md:top-20 md:left-0 md:h-40 md:w-15 md:flex md:flex-col md:justify-between md:gap-2   ">
                                 <div
-                                    className={`h-20  p-2 flex items-center  flex-col text-left w-full cursor-pointer`}
+                                    className={`h-20  p-2 flex flex-col items-center  justify-center w-full cursor-pointer hover:bg-gray-100 ml-1 rounded-xl  `}
                                     onClick={() => navigate("/")}
                                 >
-                                    <HomeIcon size={20} className="flex flex-start text-gray-800" />
-                                    <div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
+                                    <HomeIcon size={20} className="flex flex-start text-gray-700" />
+                                    <div className=" text-center text-gray-800 font-normal text-sm w-full my-1 antialiased">
                                         Home
                                     </div>
                                 </div>
                                 <div
-                                    className="h-20  p-2 flex items-center w-full flex-col text-left cursor-pointer"
+                                    className="h-20  p-2 flex items-center w-full flex-col text-left cursor-pointe hover:bg-gray-100 ml-1 rounded-xl cursor-pointer"
                                     onClick={() => navigate("/", { state: { tab: "posts" } })}
                                 >
-                                    <LayoutList size={20} className="text-gray-800" />
-                                    <div className=" text-center text-gray-900 font-normal text-sm text my-1">
+                                    <LayoutList size={20} className="text-gray-700" />
+                                    <div className=" text-center text-gray-800 font-normal text-sm text my-1 antialiased">
                                         Posts
                                     </div>
                                 </div>
                                 <div
-                                    className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer"
+                                    className="h-20  p-2 flex items-center w-full flex-col text-left font-normal cursor-pointer ml-1 rounded-xl hover:bg-gray-100"
                                     onClick={() => {
                                         if (isUserLogged) {
                                             navigate(`/userchannel/${user?.userName}`);
@@ -184,9 +184,9 @@ export default function Nav({ wantTabs, searchType }) {
                                 >
                                     <CircleUserRound
                                         size={22}
-                                        className="flex flex-start text-gray-800"
+                                        className="flex flex-start text-gray-700"
                                     />
-                                    <div className=" text-center text-gray-900 font-normal text-sm w-full my-1">
+                                    <div className=" text-center text-gray-800 font-normal text-sm w-full my-1 antialiased">
                                         You
                                     </div>
                                 </div>
@@ -284,7 +284,20 @@ export default function Nav({ wantTabs, searchType }) {
                                                     </div>
                                                     {isActive && (
                                                         <>
-                                                            <div className="absolute z-10 top-15 right-10 bg-gray-50  border border-gray-200 h-auto w-75 rounded flex flex-col overflow-hidden pb-1">
+                                                            <motion.div
+                                                                className="absolute z-10 top-15 right-10 bg-gray-50  border border-gray-200 h-auto w-75 rounded flex flex-col overflow-hidden pb-1 antialiased"
+                                                                initial={{
+                                                                    opacity: 0,
+                                                                }}
+                                                                animate={{
+                                                                    opacity: 1,
+                                                                    duration: 100
+                                                                }}
+                                                                exit={{
+                                                                    opacity: 0
+                                                                }}
+
+                                                            >
                                                                 <div className="p-3 h-auto">
                                                                     <div className=" relative flex w-full mb-2">
                                                                         <img
@@ -295,16 +308,16 @@ export default function Nav({ wantTabs, searchType }) {
                                                                         />
                                                                         <div className="flex flex-col justify-start ml-2">
                                                                             <span>
-                                                                                <div className=" font-medium text-lg text-gray-800 w-auto text-left">
+                                                                                <div className=" font-medium text-lg text-gray-800 w-auto text-left antialiased">
                                                                                     {fullname}
                                                                                 </div>
-                                                                                <div className="text-gray-600 font-medium text-base text  w-auto -mt-1 text-left">
+                                                                                <div className="text-gray-600 font-medium text-base text  w-auto -mt-1 text-left antialiased">
                                                                                     {"@" + username}
                                                                                 </div>
                                                                             </span>
                                                                             <div
                                                                                 onClick={() => navigate(`/userchannel/${user?.userName}`)}
-                                                                                className="text-base font-medium  text-blue-600 text-left cursor-pointer"
+                                                                                className="text-base font-medium  text-blue-600 text-left cursor-pointer antialiased"
                                                                             >
                                                                                 View your channel
                                                                             </div>
@@ -318,12 +331,12 @@ export default function Nav({ wantTabs, searchType }) {
                                                                         className=" flex justify-left items-center pl-5 cursor-pointer"
                                                                     >
                                                                         <LogOutIcon />
-                                                                        <span className="ml-3 text-medium font-medium flex">
+                                                                        <span className="ml-3 text-medium font-medium flex antialiased">
                                                                             Logout
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                            </div>
+                                                            </motion.div>
                                                         </>
                                                     )}
                                                 </>
@@ -457,6 +470,6 @@ export default function Nav({ wantTabs, searchType }) {
                     )}
                 </div>
             </div>
-        </motion.nav>
+        </motion.nav >
     );
 }
