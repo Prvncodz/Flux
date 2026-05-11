@@ -9,8 +9,8 @@ This project marks a significant milestone as it is the first MERN (MongoDB, Exp
 
 
 ## Technologies Used
-- **Frontend:** React JS
-- **Backend:** Node.js, Express
+- **Frontend:** React JS, Tailwind CSS, Motion, Zustand(state management)
+- **Backend:** Node.js, Express, Mongoose
 - **Database:** MongoDB
 
 ## Features
@@ -29,7 +29,8 @@ To get a copy of the project up and running on your local machine for developmen
 3. Install dependencies: `npm install`
 4. Navigate to the client directory:`cd client`
 5. Install dependencies: `npm install`
-6. Start the server: `npm run dev`
+6. use your own .env file just like .env.sample file
+7. Start the server: `npm run dev`
 
 
 ## License
