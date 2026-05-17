@@ -1,6 +1,7 @@
 # Flux
 
-![screenshot-studio-1775364462160](https://github.com/user-attachments/assets/a06607ee-e2a7-4fe2-ad14-9ae2d8a7b078)
+<img width="1920" height="1080" alt="screenshot-2026-05-14_13-23-53" src="https://github.com/user-attachments/assets/88afdf3a-4244-4d6c-9a67-038aa587c8c5" />
+
 
 ## Project Description
 Flux is a social media platform designed specifically for tech enthusiasts. It serves as a hub for sharing knowledge, experiences, and ideas, fostering a community where individuals can connect and engage on various technology-related topics.
